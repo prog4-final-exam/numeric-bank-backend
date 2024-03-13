@@ -10,21 +10,6 @@ CREATE TABLE IF NOT EXISTS account
     overdraft_limit   DOUBLE PRECISION
 );
 
--- update the overdraft_limit value each time the net_monthly_pay is updated
-CREATE OR REPLACE FUNCTION update_overdraft_limit()
-    RETURNS TRIGGER AS
-$$
-BEGIN
-    NEW.overdraft_limit := NEW.net_monthly_pay / 3;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER update_overdraft_limit
-    BEFORE UPDATE OF net_monthly_pay
-    ON account
-    FOR EACH ROW
-EXECUTE FUNCTION update_overdraft_limit();
 
 CREATE TABLE IF NOT EXISTS balance
 (
@@ -78,6 +63,7 @@ CREATE TABLE IF NOT EXISTS transfer
     value_date                         TIMESTAMP,
     amount                             double precision not null,
     reason                             VARCHAR(200)     not null,
+    label                              varchar(200),
     status                             transfer_status,
     is_external                        BOOLEAN          not null,
     reference                          VARCHAR(200) unique not null,
