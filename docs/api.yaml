@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 1.6.0
+  version: 2.2.3
 
 servers:
   - url: 'http://localhost:8080'
@@ -15,6 +15,7 @@ tags:
   - name: Transfer
 
 paths:
+  ### Account endpoint
   /account:
     get:
       tags:
@@ -140,8 +141,6 @@ paths:
       summary: delete an account
       parameters:
         - $ref: '#/components/parameters/AccountId'
-      requestBody:
-        $ref: '#/components/requestBodies/AccountBody'
       responses:
         200:
           description: the deleted account
@@ -165,6 +164,185 @@ paths:
           $ref: '#/components/responses/500'
 
 
+  ### Balance endpoint
+  /balance/all:
+    get:
+      tags:
+        - Balance
+      summary: get list of balance associated with account
+      responses:
+        '200':
+          description: display the list of the balance
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/crudBalance"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /balance/account/{id}:
+    get:
+      tags:
+        - Balance
+      summary: get balance by the account_id
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        200:
+          description: the corresponding balance by the account_id
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/crudBalance"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /balance/{id}:
+    get:
+      tags:
+        - Balance
+      summary: get balance by his id
+      parameters:
+        - $ref: '#/components/parameters/BalanceId'
+      responses:
+        200:
+          description: the corresponding balance
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/Balance"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /balance/new:
+    post:
+      tags:
+        - Balance
+      summary: create new balance
+      requestBody:
+        $ref: '#/components/requestBodies/BalanceBody'
+      responses:
+        200:
+          description: the created account
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/Balance"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /balance/account/edit/{id}:
+    put:
+      tags:
+        - Balance
+      summary: update a balance by the account
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        $ref: '#/components/requestBodies/BalanceBody'
+      responses:
+        '200':
+          description: the updated balance
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/Balance"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /balance/delete/{id}:
+    delete:
+      tags:
+        - Balance
+      summary: delete a balance
+      parameters:
+        - $ref: '#/components/parameters/BalanceId'
+      responses:
+        200:
+          description: the deleted balance
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/Balance"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+
+
 components:
   ### requestBodies components
   requestBodies:
@@ -174,11 +352,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/crudAccount'
+    BalanceBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/crudBalance"
 
 
   ### parameters components
   parameters:
     AccountId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    BalanceId:
       name: id
       in: path
       required: true
@@ -269,6 +459,42 @@ components:
         - id
         - crudAccount
         - overdraft_allowed
+
+    crudBalance:
+      type: object
+      properties:
+        id_account:
+          type: integer
+          format: int64
+          description: Account ID associated with this balance entry
+        main_balance:
+          type: number
+          format: double
+          description: Main account balance at balance date.
+        loan_amount:
+          type: number
+          format: double
+          description: Amount of loan associated with the account on the balance date.
+        loan_interest:
+          type: number
+          format: double
+          description: Interest on the loan associated with the account at the balance date.
+      required:
+        - id_account
+        - main_balance
+    Balance:
+      allOf:
+        - $ref: '#/components/schemas/crudBalance'
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique ID of the balance entry
+        balance_date:
+          type: string
+          format: date
+          description: Date of balance entry
+
 
 
     ### RESPONSE MAIN LAYOUT
