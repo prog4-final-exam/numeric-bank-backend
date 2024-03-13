@@ -30,20 +30,29 @@ CREATE TABLE IF NOT EXISTS balance
 (
     id            serial PRIMARY KEY,
     id_account    INT,
-    balance_date  DATE,
+    balance_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     main_balance  DOUBLE PRECISION,
     loan_amount   DOUBLE PRECISION DEFAULT 0,
     loan_interest DOUBLE PRECISION DEFAULT 0,
     FOREIGN KEY (id_account) REFERENCES account (id)
 );
 
+CREATE TABLE withdrawal
+(
+    id              serial PRIMARY KEY,
+    id_account      INT,
+    withdrawal_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    amount          DOUBLE PRECISION,
+    FOREIGN KEY (id_account) REFERENCES account (id)
+);
+
 -- create type enum for the credit and debit
-create type category_type as enum ('CREDIT','DEBIT');
+create type category_type as enum ('IN','OUT');
 
 CREATE TABLE IF NOT EXISTS transaction_category
 (
     id   serial PRIMARY KEY,
-    name VARCHAR(100),
+    name VARCHAR(100) not null,
     type category_type
 );
 
@@ -71,7 +80,7 @@ CREATE TABLE IF NOT EXISTS transfer
     reason                             VARCHAR(200)     not null,
     status                             transfer_status,
     is_external                        BOOLEAN          not null,
-    reference                          VARCHAR(200) unique,
+    reference                          VARCHAR(200) unique not null,
     FOREIGN KEY (id_account_source) REFERENCES account (id),
     FOREIGN KEY (id_account_destination) REFERENCES account (id),
     FOREIGN KEY (id_transaction_category_assignment) REFERENCES transaction_category_assignment (id)
