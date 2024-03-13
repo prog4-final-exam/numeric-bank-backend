@@ -1,0 +1,342 @@
+openapi: 3.0.3
+info:
+  title: Numeric bank api specs
+  description: This document specify the endpoints we'll use for our numeric bank web application
+  version: 1.6.0
+
+servers:
+  - url: 'http://localhost:8080'
+tags:
+  - name: Account
+  - name: Withdrawal
+  - name: Balance
+  - name: Transaction_category
+  - name: Transaction_category_assignment
+  - name: Transfer
+
+paths:
+  /account:
+    get:
+      tags:
+        - Account
+      summary: get list of account
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/account"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /account/{id}:
+    get:
+      tags:
+        - Account
+      summary: get account by his id
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        200:
+          description: the corresponding account
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/account"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /account/new:
+    post:
+      tags:
+        - Account
+      summary: create new account
+      requestBody:
+        $ref: '#/components/requestBodies/AccountBody'
+      responses:
+        200:
+          description: the created account
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/account"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /account/edit/{id}:
+    put:
+      tags:
+        - Account
+      summary: update an account
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        $ref: '#/components/requestBodies/AccountBody'
+      responses:
+        200:
+          description: the updated account
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/account"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+  /account/delete/{id}:
+    delete:
+      tags:
+        - Account
+      summary: delete an account
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      requestBody:
+        $ref: '#/components/requestBodies/AccountBody'
+      responses:
+        200:
+          description: the deleted account
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ResponseBody'
+                properties:
+                  body:
+                    $ref: "#/components/schemas/account"
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+
+
+components:
+  ### requestBodies components
+  requestBodies:
+    AccountBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/crudAccount'
+
+
+  ### parameters components
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+
+  ### responses component
+  responses:
+    400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BadRequestException"
+    403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ForbiddenException"
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ResourceNotFoundException"
+    429:
+      description: Too many Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TooManyRequestsException"
+    500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InternalServerException"
+
+  ### schemas components
+  schemas:
+    crudAccount:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: User's firstname
+        last_name:
+          type: string
+          description: User's lastname
+        birth_date:
+          type: string
+          format: date
+          description: User's birthday
+        net_monthly_pay:
+          type: number
+          format: double
+          description: User's net month salary
+        account_number:
+          type: string
+          description: User's unique account number
+      required:
+        - first_name
+        - last_name
+        - birth_date
+        - net_monthly_pay
+        - account_number
+
+    account:
+      allOf:
+        - $ref: '#/components/schemas/crudAccount'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: User's unique ID
+        overdraft_allowed:
+          type: boolean
+          description: Indicates whether overdraft is authorized for the user.
+          example: false
+        overdraft_limit:
+          type: number
+          format: double
+          description: Overdraft limit for the user.
+      required:
+        - id
+        - crudAccount
+        - overdraft_allowed
+
+
+    ### RESPONSE MAIN LAYOUT
+    ResponseStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      example:
+        code: 200
+        message: OK
+
+    ResponseBody:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/ResponseStatus"
+        body:
+          type: object
+
+
+    ### EXCEPTIONS
+    BadRequestException:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBody'
+      example:
+        message: BadRequest
+        code: 400
+        body: { }
+
+    NotAuthorizedException:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBody'
+      example:
+        code: 401
+        message: Not authorized
+        body: { }
+
+    ForbiddenException:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBody'
+      example:
+        code: 403
+        message: Forbidden
+        body: { }
+
+    ResourceNotFoundException:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBody'
+      example:
+        code: 404
+        message: ResourceNotFound
+        body: { }
+
+    TooManyRequestsException:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBody'
+      example:
+        code: 429
+        message: TooManyRequests
+        body: { }
+
+    InternalServerException:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBody'
+      example:
+        code: 500
+        type: InternalServerError
+        body: { }
