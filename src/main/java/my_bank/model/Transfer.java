@@ -13,11 +13,12 @@ import java.time.LocalDateTime;
 @Data
 public class Transfer implements Serializable {
     private int id;
+    private int idAccountSource;
+    private int idAccountDestination;
     private String reason;
     private double amount;
-    private LocalDateTime registerDate;
+    private LocalDateTime registerDateTime;
     private LocalDateTime valueDateTime;
     private StatusType status;
-    private int idAccount;
-    private int idTransferCategory;
+    private String reference;
 }
