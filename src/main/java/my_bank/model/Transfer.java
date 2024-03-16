@@ -15,9 +15,10 @@ public class Transfer implements Serializable {
     private int id;
     private String reason;
     private double amount;
-    private LocalDateTime registerDate;
-    private LocalDateTime valueDateTime;
+    private LocalDateTime registerDatetime;
+    private LocalDateTime valueDatetime;
     private StatusType status;
-    private int idAccount;
-    private int idTransferCategory;
+    private int idAccountSource;
+    private int idAccountDestination;
+    private String reference;
 }

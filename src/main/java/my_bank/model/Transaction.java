@@ -6,13 +6,15 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import my_bank.model.Enum.TransactionType;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Withdrawal implements Serializable {
+public class Transaction implements Serializable {
     private int id;
     private double amount;
-    private LocalDateTime withdrawalDateTime;
+    private LocalDateTime transactionDatetime;
     private int idAccount;
+    private TransactionType transactionType;
 }

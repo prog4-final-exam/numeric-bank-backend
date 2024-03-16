@@ -12,11 +12,11 @@ import java.time.LocalDate;
 @Data
 public class Account implements Serializable {
     private int id;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private LocalDate birthdate;
     private String accountNumber;
-    private String bank;
-    private boolean isOverdraftAllowed;
+    private boolean overdraftAllowed;
     private double netMonthlyPay;
+    private String bankName;
 }

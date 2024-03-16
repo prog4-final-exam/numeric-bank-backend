@@ -15,6 +15,6 @@ public class Balance implements Serializable {
     private double mainBalance;
     private double loanInterest;
     private double loanAmount;
-    private LocalDateTime balanceDateTime;
+    private LocalDateTime balanceDatetime;
     private int idAccount;
 }
