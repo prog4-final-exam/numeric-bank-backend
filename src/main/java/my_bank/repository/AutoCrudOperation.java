@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
+@Getter
 public class AutoCrudOperation<T> implements CrudOperation<T> {
-    @Getter private final T model;
+    private final T model;
 
     @Override
     public T save(T toSave) {
