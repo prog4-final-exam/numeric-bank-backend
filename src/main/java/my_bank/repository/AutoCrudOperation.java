@@ -3,10 +3,14 @@ package my_bank.repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import my_bank.dbConnection.DbConnect;
+import static my_bank.repository.CaseConverter.convertToSnakeCase;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,17 +40,21 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
                     columns.append(", ");
                     values.append(", ");
                 }
-                columns.append(getSnakeCase(field.getName()));
+                columns.append(convertToSnakeCase(field.getName()));
                 fieldList.add(field);
                 values.append("?");
             }
             String insertQuery = String.format(
                     "INSERT INTO %s (" + columns + ") VALUES (" + values + ")",
-                    getSnakeCase(className));
+                    convertToSnakeCase(className));
             preparedStatement = connection.prepareStatement(insertQuery);
             int parameterIndex = 1;
             for (Field field : fieldList) {
-                preparedStatement.setObject(parameterIndex++, field.get(toSave));
+                if (field.getType().isEnum()) {
+                    preparedStatement.setObject(parameterIndex++, field.get(toSave).toString());
+                } else {
+                    preparedStatement.setObject(parameterIndex++, field.get(toSave));
+                }
             }
             preparedStatement.executeUpdate();
             returned = toSave;
@@ -89,7 +97,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             connection = dbConnect.createConnection();
             String query = String.format(
                     "DELETE FROM %s WHERE id = %s",
-                    getSnakeCase(className),
+                    convertToSnakeCase(className),
                     id
             );
             preparedStatement = connection.prepareStatement(query);
@@ -141,14 +149,14 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
                 dataUpdate.append(
                         String.format(
                                 "%s = ?",
-                                getSnakeCase(field.getName())
+                                convertToSnakeCase(field.getName())
                         )
                 );
                 fieldList.add(field);
             }
             String query = String.format(
                     "UPDATE %s SET %s WHERE id = %s",
-                    getSnakeCase(className),
+                    convertToSnakeCase(className),
                     dataUpdate,
                     getModelId(toUpdate)
             );
@@ -184,6 +192,140 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         return returned;
     }
 
+    @Override
+    public List<T> findAll() {
+        DbConnect dbConnect = new DbConnect();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        Class<?> clazz = model.getClass();
+        String className = clazz.getSimpleName();
+        Field[] fields = clazz.getDeclaredFields();
+        List<T> dataList = new ArrayList<>();
+
+        try {
+            connection = dbConnect.createConnection();
+            String query = "SELECT * FROM " + convertToSnakeCase(className);
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    if (field.getType() == LocalDate.class) {
+                        field.set(model,
+                                resultSet.getDate(convertToSnakeCase(field.getName())).toLocalDate()
+                        );
+                    } else if (field.getType() == LocalDateTime.class) {
+                        field.set(model,
+                                resultSet.getTimestamp(convertToSnakeCase(field.getName())).toLocalDateTime()
+                        );
+                    } else if (field.getType().isEnum()) {
+                        field.set(model,
+                                EnumConverter.convertStringToEnum((Class) field.getType(),
+                                        resultSet.getString(convertToSnakeCase(field.getName()))
+                                )
+                        );
+                    } else {
+                        field.set(model, resultSet.getObject(convertToSnakeCase(field.getName())));
+                    }
+                }
+                dataList.add(model);
+            }
+        } catch (Exception exception) {
+            System.err.println(
+                    String.format("Error occurred while finding all %ss :\n  > %s",
+                            className,
+                            exception.getMessage()
+                    )
+            );
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.err.println("Error while closing :\n  > "
+                        + e.getMessage()
+                );
+            }
+        }
+        return dataList;
+    }
+
+    @Override
+    public T findById(int id) {
+        DbConnect dbConnect = new DbConnect();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        Class<?> clazz = model.getClass();
+        String className = clazz.getSimpleName();
+        Field[] fields = clazz.getDeclaredFields();
+        T data = null;
+
+        try {
+            connection = dbConnect.createConnection();
+            String query = "SELECT * FROM " + convertToSnakeCase(className);
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    if (field.getType() == LocalDate.class) {
+                        field.set(model,
+                                resultSet.getDate(convertToSnakeCase(field.getName())).toLocalDate()
+                        );
+                    } else if (field.getType() == LocalDateTime.class) {
+                        field.set(model,
+                                resultSet.getTimestamp(convertToSnakeCase(field.getName())).toLocalDateTime()
+                        );
+                    } else if (field.getType().isEnum()) {
+                        field.set(model,
+                                EnumConverter.convertStringToEnum((Class) field.getType(),
+                                        resultSet.getString(convertToSnakeCase(field.getName()))
+                                )
+                        );
+                    } else {
+                        field.set(model, resultSet.getObject(convertToSnakeCase(field.getName())));
+                    }
+                }
+                data = model;
+            }
+        } catch (Exception exception) {
+            System.err.println(
+                    String.format("Error occurred while finding all %ss :\n  > %s",
+                            className,
+                            exception.getMessage()
+                    )
+            );
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                System.err.println("Error while closing :\n  > "
+                        + e.getMessage()
+                );
+            }
+        }
+        return data;
+    }
+
     private Integer getModelId(Object objectModel) throws Exception{
         Class<?> clazz = getModel().getClass();
         Field[] fields = clazz.getDeclaredFields();
@@ -195,19 +337,5 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             }
         }
         return id;
-    }
-
-    private static String getSnakeCase(String name) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Character c : name.toCharArray()) {
-            if (!stringBuilder.isEmpty()) {
-                if (c.toString().toUpperCase().equals(c.toString())) {
-                    stringBuilder.append("_").append(c);
-                    continue;
-                }
-            }
-            stringBuilder.append(c);
-        }
-        return stringBuilder.toString().toLowerCase();
     }
 }
