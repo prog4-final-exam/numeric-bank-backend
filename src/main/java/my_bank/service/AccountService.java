@@ -21,7 +21,7 @@ public class AccountService {
         return accountAutoCrudOperation.save(toSave);
     }
     public boolean deleteById(int id) {
-        return accountAutoCrudOperation.deleteById(id)
+        return accountAutoCrudOperation.deleteById(id);
     }
     public Account update(Account toUpdate) {
         return accountAutoCrudOperation.update(toUpdate);
