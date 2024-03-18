@@ -1,12 +1,13 @@
 package my_bank.service;
 
+import my_bank.model.TransferCategory;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TransferCategory {
+public class TransferCategoryService {
     AutoCrudOperation<TransferCategory> transferCategoryAutoCrudOperation = new AutoCrudOperation<>(new TransferCategory());
 
     public List<TransferCategory> findAll() {
