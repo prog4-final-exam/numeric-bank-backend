@@ -209,6 +209,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             String query = "SELECT * FROM " + convertToSnakeCase(className);
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()) {
                 for (Field field : fields) {
                     field.setAccessible(true);
