@@ -11,10 +11,10 @@ public class TransactionService {
     AutoCrudOperation<Transaction> transactionAutoCrudOperation = new AutoCrudOperation<>(new Transaction());
 
     public List<Transaction> findAll() {
-        return transactionAutoCrudOperation.findAll();
+        return transactionAutoCrudOperation.findAllOrById(null);
     }
     public Transaction findById(int id) {
-        return transactionAutoCrudOperation.findById(id);
+        return transactionAutoCrudOperation.findAllOrById(id).getFirst();
     }
     public Transaction save(Transaction toSave) {
         return transactionAutoCrudOperation.save(toSave);
