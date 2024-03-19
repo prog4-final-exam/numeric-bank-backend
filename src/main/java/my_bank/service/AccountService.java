@@ -6,16 +6,17 @@ import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
     AutoCrudOperation<Account> accountAutoCrudOperation = new AutoCrudOperation<>(new Account());
 
     public List<Account> findAll() {
-        return accountAutoCrudOperation.findAll();
+        return accountAutoCrudOperation.findAllOrById(null);
     }
     public Account findById(int id) {
-        return accountAutoCrudOperation.findById(id);
+        return accountAutoCrudOperation.findAllOrById(id).getFirst();
     }
     public Account save(Account toSave) {
         return accountAutoCrudOperation.save(toSave);
