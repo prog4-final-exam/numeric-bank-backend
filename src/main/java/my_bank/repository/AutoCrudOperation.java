@@ -3,6 +3,8 @@ package my_bank.repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import my_bank.dbConnection.DbConnect;
+import my_bank.model.GenericModel;
+
 import static my_bank.repository.CaseConverter.convertToSnakeCase;
 
 import java.lang.reflect.Field;
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class AutoCrudOperation<T> implements CrudOperation<T> {
@@ -193,7 +196,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
     }
 
     @Override
-    public List<T> findAll() {
+    public List<T> findAllOrById(Integer id) {
         DbConnect dbConnect = new DbConnect();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -206,32 +209,53 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
 
         try {
             connection = dbConnect.createConnection();
-            String query = "SELECT * FROM " + convertToSnakeCase(className);
+            String queryConstraint = "";
+
+            if (id != null) {
+                queryConstraint = " WHERE id =" + id;
+            }
+            String query = "SELECT * FROM " + convertToSnakeCase(className) + queryConstraint;
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
+            if (!resultSet.next() && id != null) {
+                dataList.add(null);
+            }
+
+            T data = null;
             while (resultSet.next()) {
+                GenericModel genericModel = new GenericModel();
+                Class<?> genericModelClass = genericModel.getClass();
+                Field[] modelGenericFields = genericModelClass.getDeclaredFields();
+
+                for (Field modelGenericField : modelGenericFields) {
+                    modelGenericField.setAccessible(true);
+                    if (modelGenericField.getType() == clazz) {
+                        data = (T) modelGenericField.get(genericModel);
+                    }
+                }
+
                 for (Field field : fields) {
                     field.setAccessible(true);
                     if (field.getType() == LocalDate.class) {
-                        field.set(model,
+                        field.set(data,
                                 resultSet.getDate(convertToSnakeCase(field.getName())).toLocalDate()
                         );
                     } else if (field.getType() == LocalDateTime.class) {
-                        field.set(model,
+                        field.set(data,
                                 resultSet.getTimestamp(convertToSnakeCase(field.getName())).toLocalDateTime()
                         );
                     } else if (field.getType().isEnum()) {
-                        field.set(model,
+                        field.set(data,
                                 EnumConverter.convertStringToEnum((Class) field.getType(),
                                         resultSet.getString(convertToSnakeCase(field.getName()))
                                 )
                         );
                     } else {
-                        field.set(model, resultSet.getObject(convertToSnakeCase(field.getName())));
+                        field.set(data, resultSet.getObject(convertToSnakeCase(field.getName())));
                     }
                 }
-                dataList.add(model);
+                dataList.add(data);
             }
         } catch (Exception exception) {
             System.err.println(
@@ -241,90 +265,27 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
                     )
             );
         } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (Exception e) {
-                System.err.println("Error while closing :\n  > "
-                        + e.getMessage()
-                );
-            }
+            closeSession(connection, preparedStatement, resultSet);
         }
         return dataList;
     }
 
-    @Override
-    public T findById(int id) {
-        DbConnect dbConnect = new DbConnect();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        Class<?> clazz = model.getClass();
-        String className = clazz.getSimpleName();
-        Field[] fields = clazz.getDeclaredFields();
-        T data = null;
-
+    private void closeSession(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
         try {
-            connection = dbConnect.createConnection();
-            String query = "SELECT * FROM " + convertToSnakeCase(className);
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                for (Field field : fields) {
-                    field.setAccessible(true);
-                    if (field.getType() == LocalDate.class) {
-                        field.set(model,
-                                resultSet.getDate(convertToSnakeCase(field.getName())).toLocalDate()
-                        );
-                    } else if (field.getType() == LocalDateTime.class) {
-                        field.set(model,
-                                resultSet.getTimestamp(convertToSnakeCase(field.getName())).toLocalDateTime()
-                        );
-                    } else if (field.getType().isEnum()) {
-                        field.set(model,
-                                EnumConverter.convertStringToEnum((Class) field.getType(),
-                                        resultSet.getString(convertToSnakeCase(field.getName()))
-                                )
-                        );
-                    } else {
-                        field.set(model, resultSet.getObject(convertToSnakeCase(field.getName())));
-                    }
-                }
-                data = model;
+            if (preparedStatement != null) {
+                preparedStatement.close();
             }
-        } catch (Exception exception) {
-            System.err.println(
-                    String.format("Error occurred while finding all %ss :\n  > %s",
-                            className,
-                            exception.getMessage()
-                    )
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (Exception e) {
+            System.err.println("Error while closing :\n  > "
+                    + e.getMessage()
             );
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (Exception e) {
-                System.err.println("Error while closing :\n  > "
-                        + e.getMessage()
-                );
-            }
         }
-        return data;
     }
 
     private Integer getModelId(Object objectModel) throws Exception{
