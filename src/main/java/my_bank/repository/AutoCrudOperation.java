@@ -206,6 +206,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         String className = clazz.getSimpleName();
         Field[] fields = clazz.getDeclaredFields();
         List<T> dataList = new ArrayList<>();
+        dataList.add(null);
 
         try {
             connection = dbConnect.createConnection();
@@ -218,12 +219,12 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
-            if (!resultSet.next() && id != null) {
-                dataList.add(null);
-            }
-
             T data = null;
+            int i = 0;
             while (resultSet.next()) {
+                if (i++ == 0) {
+                    dataList.clear();
+                }
                 GenericModel genericModel = new GenericModel();
                 Class<?> genericModelClass = genericModel.getClass();
                 Field[] modelGenericFields = genericModelClass.getDeclaredFields();
