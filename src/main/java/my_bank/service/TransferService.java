@@ -11,10 +11,10 @@ public class TransferService {
     AutoCrudOperation<Transfer> transferAutoCrudOperation = new AutoCrudOperation<>(new Transfer());
 
     public List<Transfer> findAll() {
-        return transferAutoCrudOperation.findAll();
+        return transferAutoCrudOperation.findAllOrById(null);
     }
     public Transfer findById (int id) {
-        return transferAutoCrudOperation.findById(id);
+        return transferAutoCrudOperation.findAllOrById(id).getFirst();
     }
     public Transfer save(Transfer toSave) {
         return transferAutoCrudOperation.save(toSave);
