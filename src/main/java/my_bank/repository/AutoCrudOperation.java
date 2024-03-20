@@ -219,10 +219,6 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
-            if (!resultSet.next() && id != null) {
-                dataList.add(null);
-            }
-
             T data = null;
             int i = 0;
             while (resultSet.next()) {
