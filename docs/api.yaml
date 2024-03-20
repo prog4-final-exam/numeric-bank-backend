@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 2.2.3
+  version: 2.2.6
 
 servers:
   - url: 'http://localhost:8080'
@@ -16,7 +16,7 @@ tags:
 
 paths:
   ### Account endpoint
-  /account:
+  /accounts:
     get:
       tags:
         - Account
@@ -45,7 +45,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /account/{id}:
+  /accounts/{id}:
     get:
       tags:
         - Account
@@ -74,13 +74,13 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /account/new:
+  /accounts/new:
     post:
       tags:
         - Account
       summary: create new account
       requestBody:
-        $ref: '#/components/requestBodies/AccountBody'
+        $ref: '#/components/requestBodies/PostAccountBody'
       responses:
         200:
           description: the created account
@@ -111,7 +111,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/AccountId'
       requestBody:
-        $ref: '#/components/requestBodies/AccountBody'
+        $ref: '#/components/requestBodies/UpdateAccountBody'
       responses:
         200:
           description: the updated account
@@ -134,7 +134,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
 
-  /account/delete/{id}:
+  /accounts/delete/{id}:
     delete:
       tags:
         - Account
@@ -346,12 +346,18 @@ paths:
 components:
   ### requestBodies components
   requestBodies:
-    AccountBody:
+    PostAccountBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/crudAccount'
+            $ref: '#/components/schemas/postAccount'
+    UpdateAccountBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/updateAccount'        
     BalanceBody:
       required: true
       content:
@@ -411,16 +417,16 @@ components:
 
   ### schemas components
   schemas:
-    crudAccount:
+    updateAccount:
       type: object
       properties:
-        first_name:
+        firstname:
           type: string
           description: User's firstname
-        last_name:
+        lastname:
           type: string
           description: User's lastname
-        birth_date:
+        birthdate:
           type: string
           format: date
           description: User's birthday
@@ -428,37 +434,47 @@ components:
           type: number
           format: double
           description: User's net month salary
+      required:
+        - firstname
+        - lastname
+        - birthdate
+        - net_monthly_pay
+
+    postAccount:
+      allOf:
+        - $ref: '#/components/schemas/updateAccount'
+      type: object
+      properties:
+        overdraft_allowed:
+          type: boolean
+          description: Indicates whether overdraft is authorized for the user.
+          example: false        
         account_number:
           type: string
-          description: User's unique account number
+          description: User's unique account number  
+        bank_name:
+          type: string
+          description: Bank's name of the user.
       required:
-        - first_name
-        - last_name
-        - birth_date
-        - net_monthly_pay
-        - account_number
+        - overdraft_allowed
+        - bank_name
+        - account_number    
+        
 
     account:
       allOf:
-        - $ref: '#/components/schemas/crudAccount'
+        - $ref: '#/components/schemas/updateAccount'
+        - $ref: '#/components/schemas/postAccount'
       type: object
       properties:
         id:
           type: integer
           format: int64
           description: User's unique ID
-        overdraft_allowed:
-          type: boolean
-          description: Indicates whether overdraft is authorized for the user.
-          example: false
-        overdraft_limit:
-          type: number
-          format: double
-          description: Overdraft limit for the user.
       required:
         - id
         - crudAccount
-        - overdraft_allowed
+        
 
     crudBalance:
       type: object
