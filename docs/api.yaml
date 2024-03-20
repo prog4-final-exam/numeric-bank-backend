@@ -2,16 +2,15 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 2.2.6
+  version: 2.7.1
 
 servers:
-  - url: 'http://localhost:8080'
+  - url: "http://localhost:8080"
 tags:
   - name: Account
-  - name: Withdrawal
+  - name: Transaction
   - name: Balance
-  - name: Transaction_category
-  - name: Transaction_category_assignment
+  - name: Transfer_category
   - name: Transfer
 
 paths:
@@ -22,28 +21,28 @@ paths:
         - Account
       summary: get list of account
       responses:
-        200:
+        '200':
           description: success
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     type: array
                     items:
                       $ref: "#/components/schemas/account"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /accounts/{id}:
     get:
@@ -51,7 +50,7 @@ paths:
         - Account
       summary: get account by his id
       parameters:
-        - $ref: '#/components/parameters/AccountId'
+        - $ref: "#/components/parameters/AccountId"
       responses:
         200:
           description: the corresponding account
@@ -59,20 +58,20 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/account"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /accounts/new:
     post:
@@ -80,7 +79,7 @@ paths:
         - Account
       summary: create new account
       requestBody:
-        $ref: '#/components/requestBodies/PostAccountBody'
+        $ref: "#/components/requestBodies/PostAccountBody"
       responses:
         200:
           description: the created account
@@ -88,20 +87,20 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/account"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /account/edit/{id}:
     put:
@@ -109,9 +108,9 @@ paths:
         - Account
       summary: update an account
       parameters:
-        - $ref: '#/components/parameters/AccountId'
+        - $ref: "#/components/parameters/AccountId"
       requestBody:
-        $ref: '#/components/requestBodies/UpdateAccountBody'
+        $ref: "#/components/requestBodies/UpdateAccountBody"
       responses:
         200:
           description: the updated account
@@ -119,20 +118,20 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/account"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /accounts/delete/{id}:
     delete:
@@ -140,7 +139,7 @@ paths:
         - Account
       summary: delete an account
       parameters:
-        - $ref: '#/components/parameters/AccountId'
+        - $ref: "#/components/parameters/AccountId"
       responses:
         200:
           description: the deleted account
@@ -148,21 +147,20 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/account"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
-
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   ### Balance endpoint
   /balance/all:
@@ -171,28 +169,28 @@ paths:
         - Balance
       summary: get list of balance associated with account
       responses:
-        '200':
+        "200":
           description: display the list of the balance
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     type: array
                     items:
                       $ref: "#/components/schemas/crudBalance"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /balance/account/{id}:
     get:
@@ -200,7 +198,7 @@ paths:
         - Balance
       summary: get balance by the account_id
       parameters:
-        - $ref: '#/components/parameters/AccountId'
+        - $ref: "#/components/parameters/AccountId"
       responses:
         200:
           description: the corresponding balance by the account_id
@@ -208,20 +206,20 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/crudBalance"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /balance/{id}:
     get:
@@ -229,7 +227,7 @@ paths:
         - Balance
       summary: get balance by his id
       parameters:
-        - $ref: '#/components/parameters/BalanceId'
+        - $ref: "#/components/parameters/BalanceId"
       responses:
         200:
           description: the corresponding balance
@@ -237,20 +235,20 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/Balance"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /balance/new:
     post:
@@ -258,7 +256,7 @@ paths:
         - Balance
       summary: create new balance
       requestBody:
-        $ref: '#/components/requestBodies/BalanceBody'
+        $ref: "#/components/requestBodies/BalanceBody"
       responses:
         200:
           description: the created account
@@ -266,20 +264,20 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/Balance"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /balance/account/edit/{id}:
     put:
@@ -287,30 +285,30 @@ paths:
         - Balance
       summary: update a balance by the account
       parameters:
-        - $ref: '#/components/parameters/AccountId'
+        - $ref: "#/components/parameters/AccountId"
       requestBody:
-        $ref: '#/components/requestBodies/BalanceBody'
+        $ref: "#/components/requestBodies/BalanceBody"
       responses:
-        '200':
+        "200":
           description: the updated balance
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/Balance"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
   /balance/delete/{id}:
     delete:
@@ -318,7 +316,7 @@ paths:
         - Balance
       summary: delete a balance
       parameters:
-        - $ref: '#/components/parameters/BalanceId'
+        - $ref: "#/components/parameters/BalanceId"
       responses:
         200:
           description: the deleted balance
@@ -326,22 +324,167 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/ResponseBody'
+                  - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
                     $ref: "#/components/schemas/Balance"
-        '400':
-          $ref: '#/components/responses/400'
-        '403':
-          $ref: '#/components/responses/403'
-        '404':
-          $ref: '#/components/responses/404'
-        '429':
-          $ref: '#/components/responses/429'
-        '500':
-          $ref: '#/components/responses/500'
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
+  /transfers/categories:
+    get:
+      tags:
+        - Transfer_category
+      summary: get list of transfer's category
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/category"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
+  /transfers/categories/{id}:
+    get:
+      tags:
+        - Transfer_category
+      summary: get transfer's category by his id
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      responses:
+        200:
+          description: the corresponding account
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/category"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+
+  /transfers/categories/new:
+    post:
+      tags:
+        - Transfer_category
+      summary: create new transfer's category
+      requestBody:
+        $ref: "#/components/requestBodies/TransferCategoryBody"
+      responses:
+        200:
+          description: the created transfer's category
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/category"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+
+  /transfers/categories/edit/{id}:
+    put:
+      tags:
+        - Transfer_category
+      summary: update an existent transfer's category
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      requestBody:
+        $ref: "#/components/requestBodies/TransferCategoryBody"
+      responses:
+        200:
+          description: the updated transfer's category
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/category"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+
+  /transfers/categories/delete/{id}:
+    delete:
+      tags:
+        - Transfer_category
+      summary: delete a transfer's category
+      parameters:
+        - $ref: "#/components/parameters/AccountId"
+      responses:
+        200:
+          description: the deleted account
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/category"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
 
 components:
   ### requestBodies components
@@ -351,20 +494,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/postAccount'
+            $ref: "#/components/schemas/postAccount"
     UpdateAccountBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/updateAccount'        
+            $ref: "#/components/schemas/updateAccount"
     BalanceBody:
       required: true
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/crudBalance"
-
+    TransferCategoryBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/crudCategory"
 
   ### parameters components
   parameters:
@@ -380,7 +528,6 @@ components:
       required: true
       schema:
         type: integer
-
 
   ### responses component
   responses:
@@ -442,29 +589,28 @@ components:
 
     postAccount:
       allOf:
-        - $ref: '#/components/schemas/updateAccount'
+        - $ref: "#/components/schemas/updateAccount"
       type: object
       properties:
         overdraft_allowed:
           type: boolean
           description: Indicates whether overdraft is authorized for the user.
-          example: false        
+          example: false
         account_number:
           type: string
-          description: User's unique account number  
+          description: User's unique account number
         bank_name:
           type: string
           description: Bank's name of the user.
       required:
         - overdraft_allowed
         - bank_name
-        - account_number    
-        
+        - account_number
 
     account:
       allOf:
-        - $ref: '#/components/schemas/updateAccount'
-        - $ref: '#/components/schemas/postAccount'
+        - $ref: "#/components/schemas/updateAccount"
+        - $ref: "#/components/schemas/postAccount"
       type: object
       properties:
         id:
@@ -474,7 +620,6 @@ components:
       required:
         - id
         - crudAccount
-        
 
     crudBalance:
       type: object
@@ -500,7 +645,7 @@ components:
         - main_balance
     Balance:
       allOf:
-        - $ref: '#/components/schemas/crudBalance'
+        - $ref: "#/components/schemas/crudBalance"
       properties:
         id:
           type: integer
@@ -511,7 +656,32 @@ components:
           format: date
           description: Date of balance entry
 
+    categoryType:
+      type: string
+      enum:
+        - EXPENSE
+        - INCOME
 
+    crudCategory:
+      type: object
+      properties:
+        name:
+          type: string
+        categoryType:
+          $ref: "#/components/schemas/categoryType"
+        comment:
+          type: string
+          format: text
+        idTransfer:
+          type: integer
+    category:
+      allOf:
+        - $ref: "#/components/schemas/crudCategory"
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
 
     ### RESPONSE MAIN LAYOUT
     ResponseStatus:
@@ -533,52 +703,51 @@ components:
         body:
           type: object
 
-
     ### EXCEPTIONS
     BadRequestException:
       allOf:
-        - $ref: '#/components/schemas/ResponseBody'
+        - $ref: "#/components/schemas/ResponseBody"
       example:
         message: BadRequest
         code: 400
-        body: { }
+        body: {}
 
     NotAuthorizedException:
       allOf:
-        - $ref: '#/components/schemas/ResponseBody'
+        - $ref: "#/components/schemas/ResponseBody"
       example:
         code: 401
         message: Not authorized
-        body: { }
+        body: {}
 
     ForbiddenException:
       allOf:
-        - $ref: '#/components/schemas/ResponseBody'
+        - $ref: "#/components/schemas/ResponseBody"
       example:
         code: 403
         message: Forbidden
-        body: { }
+        body: {}
 
     ResourceNotFoundException:
       allOf:
-        - $ref: '#/components/schemas/ResponseBody'
+        - $ref: "#/components/schemas/ResponseBody"
       example:
         code: 404
         message: ResourceNotFound
-        body: { }
+        body: {}
 
     TooManyRequestsException:
       allOf:
-        - $ref: '#/components/schemas/ResponseBody'
+        - $ref: "#/components/schemas/ResponseBody"
       example:
         code: 429
         message: TooManyRequests
-        body: { }
+        body: {}
 
     InternalServerException:
       allOf:
-        - $ref: '#/components/schemas/ResponseBody'
+        - $ref: "#/components/schemas/ResponseBody"
       example:
         code: 500
         type: InternalServerError
-        body: { }
+        body: {}
