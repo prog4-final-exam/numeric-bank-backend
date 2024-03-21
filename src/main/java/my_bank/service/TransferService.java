@@ -9,6 +9,7 @@ import java.util.List;
 @Service
 public class TransferService {
     AutoCrudOperation<Transfer> transferAutoCrudOperation = new AutoCrudOperation<>(new Transfer());
+    ReferenceGenerator referenceGenerator = new ReferenceGenerator();
 
     public List<Transfer> findAll() {
         return transferAutoCrudOperation.findAll();
@@ -17,6 +18,7 @@ public class TransferService {
         return transferAutoCrudOperation.findOneByKey("id", id.toString());
     }
     public Transfer save(Transfer toSave) {
+        toSave.setReference(referenceGenerator.generateReference());
         return transferAutoCrudOperation.save(toSave);
     }
     public Transfer update(Transfer toUpdate) {
