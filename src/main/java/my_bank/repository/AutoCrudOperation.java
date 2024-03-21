@@ -197,7 +197,11 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
 
     @Override
     public List<T> findAll() {
-        return find(null, null);
+        List<T> dataList = find(null, null);
+        if (dataList.getFirst() == null) {
+            dataList.clear();
+        }
+        return dataList;
     }
 
     public List<T> findManyByKey(String key, String value) {
