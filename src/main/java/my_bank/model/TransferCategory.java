@@ -11,7 +11,7 @@ import my_bank.model.Enum.CategoryType;
 public class TransferCategory {
     private int id;
     private String name;
-    private CategoryType type;
+    private CategoryType categoryType;
     private String comment;
     private int idTransfer;
 }
