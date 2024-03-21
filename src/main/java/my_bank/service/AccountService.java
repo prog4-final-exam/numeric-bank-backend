@@ -12,10 +12,10 @@ public class AccountService {
     AutoCrudOperation<Account> accountAutoCrudOperation = new AutoCrudOperation<>(new Account());
 
     public List<Account> findAll() {
-        return accountAutoCrudOperation.findAllOrById(null);
+        return accountAutoCrudOperation.findAll();
     }
-    public Account findById(int id) {
-        return accountAutoCrudOperation.findAllOrById(id).getFirst();
+    public Account findById(Integer id) {
+        return accountAutoCrudOperation.findOneByKey("id", id.toString());
     }
     public Account save(Account toSave) {
         return accountAutoCrudOperation.save(toSave);

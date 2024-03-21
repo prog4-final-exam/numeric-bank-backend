@@ -196,7 +196,20 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
     }
 
     @Override
-    public List<T> findAllOrById(Integer id) {
+    public List<T> findAll() {
+        return find(null, null);
+    }
+
+    public List<T> findManyByKey(String key, String value) {
+        return null;
+    }
+
+    @Override
+    public T findOneByKey(String key, String value) {
+        return find(key, value).getFirst();
+    }
+
+    private List<T> find(String key, String value) {
         DbConnect dbConnect = new DbConnect();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -207,16 +220,28 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         Field[] fields = clazz.getDeclaredFields();
         List<T> dataList = new ArrayList<>();
         dataList.add(null);
+        Integer id = null;
 
         try {
             connection = dbConnect.createConnection();
             String queryConstraint = "";
 
-            if (id != null) {
-                queryConstraint = " WHERE id =" + id;
+            if (key != null) {
+                key = convertToSnakeCase(key);
+                if (key.contains("id")) {
+                    id = Integer.valueOf(value);
+                    queryConstraint = " WHERE id = " + id;
+                } else {
+                    queryConstraint = " WHERE ? = ?";
+                }
             }
+
             String query = "SELECT * FROM " + convertToSnakeCase(className) + queryConstraint;
             preparedStatement = connection.prepareStatement(query);
+            if (id == null && key != null) {
+                preparedStatement.setObject(1, key);
+                preparedStatement.setObject(2, value);
+            }
             resultSet = preparedStatement.executeQuery();
 
             T data = null;

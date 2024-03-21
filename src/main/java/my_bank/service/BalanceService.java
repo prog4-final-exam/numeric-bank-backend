@@ -11,10 +11,10 @@ public class BalanceService {
     AutoCrudOperation<Balance> balanceAutoCrudOperation = new AutoCrudOperation<>(new Balance());
 
     public List<Balance> findAll() {
-        return balanceAutoCrudOperation.findAllOrById(null);
+        return balanceAutoCrudOperation.findAll();
     }
-    public Balance findById(int id) {
-        return balanceAutoCrudOperation.findAllOrById(id).getFirst();
+    public Balance findById(Integer id) {
+        return balanceAutoCrudOperation.findOneByKey("id", id.toString());
     }
     public Balance save(Balance toSave) {
         return balanceAutoCrudOperation.save(toSave);
