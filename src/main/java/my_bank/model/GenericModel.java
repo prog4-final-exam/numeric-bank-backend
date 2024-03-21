@@ -11,4 +11,5 @@ public class GenericModel {
     Transaction transaction = new Transaction();
     Transfer transfer = new Transfer();
     TransferCategory transferCategory = new TransferCategory();
+    AccountStatement accountStatement = new AccountStatement();
 }
