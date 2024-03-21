@@ -18,7 +18,8 @@ public class Transfer implements Serializable {
     private LocalDateTime registerDatetime;
     private LocalDateTime valueDatetime;
     private StatusType status;
-    private int idAccountSource;
-    private int idAccountDestination;
+    private String destinationAccountNumber;
     private String reference;
+    private boolean isExternalBank;
+    private int idAccountSource;
 }
