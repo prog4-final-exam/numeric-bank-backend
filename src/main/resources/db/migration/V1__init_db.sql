@@ -6,8 +6,7 @@ CREATE TABLE IF NOT EXISTS account
     birthdate        DATE CHECK (birthdate <= CURRENT_DATE - INTERVAL '21 YEAR'),
     net_monthly_pay   DOUBLE PRECISION    NOT NULL,
     account_number    VARCHAR(100) UNIQUE NOT NULL,
-    overdraft_allowed BOOLEAN DEFAULT false,
-    bank_name         VARCHAR(100) NOT NULL
+    overdraft_allowed BOOLEAN DEFAULT false
 );
 
 
@@ -46,6 +45,7 @@ CREATE TABLE IF NOT EXISTS transfer
     label                              varchar(200),
     status                             VARCHAR(200),
     reference                          VARCHAR(200) unique not null,
+    is_external_bank                   BOOLEAN  not null,
     FOREIGN KEY (id_account_source) REFERENCES account (id),
     FOREIGN KEY (id_account_destination) REFERENCES account (id)
 );
