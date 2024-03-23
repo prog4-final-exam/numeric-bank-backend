@@ -10,6 +10,7 @@ import java.util.List;
 public class TransferService {
     AutoCrudOperation<Transfer> transferAutoCrudOperation = new AutoCrudOperation<>(new Transfer());
     ReferenceGenerator referenceGenerator = new ReferenceGenerator();
+    BalanceUpdater balanceUpdater = new BalanceUpdater();
 
     public List<Transfer> findAll() {
         return transferAutoCrudOperation.findAll();
@@ -19,6 +20,9 @@ public class TransferService {
     }
     public Transfer save(Transfer toSave) {
         toSave.setReference(referenceGenerator.generateReference());
+        if (!balanceUpdater.updateBalance(toSave, null)) {
+            return null;
+        }
         return transferAutoCrudOperation.save(toSave);
     }
     public Transfer update(Transfer toUpdate) {
