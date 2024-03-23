@@ -25,4 +25,7 @@ public class BalanceService {
     public boolean deleteById(int id) {
         return balanceAutoCrudOperation.deleteById(id);
     }
+    public Balance findByIdAccount(Integer idAccount) {
+        return balanceAutoCrudOperation.findOneByKey("idAccount", idAccount.toString());
+    }
 }
