@@ -49,21 +49,19 @@ FROM (VALUES (1, 100, 'CREDIT'),
 WHERE NOT EXISTS (SELECT 1 FROM transaction WHERE transaction.id_account = new_transaction.id_account);
 
 
-INSERT INTO transfer (id_account_source, id_account_destination, value_datetime, amount, transaction_type, reference,
-                      is_external_bank)
-SELECT *
-FROM (VALUES (1, 2, '2024-03-19 00:00:00', 100, 'CREDIT', 'VIR_2024_03_19_1', false),
-             (2, 1, '2024-03-22 00:00:00', 200, 'DEBIT', 'VIR_2024_03_19_2', true),
-             (3, 4, '2024-03-19 00:00:00', 300, 'CREDIT', 'VIR_2024_03_19_3', false),
-             (4, 3, '2024-03-22 00:00:00', 400, 'DEBIT', 'VIR_2024_03_19_4', true),
-             (5, 6, '2024-03-19 00:00:00', 500, 'CREDIT', 'VIR_2024_03_19_5', false),
-             (6, 5, '2024-03-22 00:00:00', 600, 'DEBIT', 'VIR_2024_03_19_6', true),
-             (7, 8, '2024-03-19 00:00:00', 700, 'CREDIT', 'VIR_2024_03_19_7', false),
-             (8, 7, '2024-03-22 00:00:00', 800, 'DEBIT', 'VIR_2024_03_19_8', true),
-             (9, 10, '2024-03-19 00:00:00', 900, 'CREDIT', 'VIR_2024_03_19_9', false),
-             (10, 9, '2024-03-22 00:00:00', 1000, 'DEBIT', 'VIR_2024_03_19_10',
-              true)) AS new_transfer(id_account_source, id_account_destination, value_datetime, amount,
-                                     transaction_type, reference, is_external_bank)
+INSERT INTO transfer (id_account_source, destination_account_number, transfer_datetime, value_datetime, amount, reason, label, status, reference, is_external_bank)
+SELECT * FROM (VALUES
+                   (1, 'FR7630006000011234567890189', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 100, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_1', false),
+                   (2, 'FR7630007000021234567890123', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 200, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_2', true),
+                   (3, 'FR7630008000031234567890156', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 300, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_3', false),
+                   (4, 'FR7630009000041234567890187', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 400, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_4', true),
+                   (5, 'FR7630010000051234567890145', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 500, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_5', false),
+                   (6, 'FR7630011000061234567890178', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 600, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_6', true),
+                   (7, 'FR7630012000071234567890190', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 700, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_7', false),
+                   (8, 'FR7630013000081234567890122', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 800, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_8', true),
+                   (9, 'FR7630014000091234567890154', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 900, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_9', false),
+                   (10, 'FR7630004000031234567890143', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 1000, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_10', true)
+              ) AS new_transfer(id_account_source, destination_account_number, transfer_datetime, value_datetime, amount, reason, label, status, reference, is_external_bank)
 WHERE NOT EXISTS (SELECT 1 FROM transfer WHERE transfer.reference = new_transfer.reference);
 
 
