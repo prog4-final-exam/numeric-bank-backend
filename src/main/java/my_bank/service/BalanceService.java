@@ -28,4 +28,7 @@ public class BalanceService {
     public Balance findByIdAccount(Integer idAccount) {
         return balanceAutoCrudOperation.findOneByKey("idAccount", idAccount.toString());
     }
+    public List<Balance> findManyByIdAccount(Integer idAccount) {
+        return balanceAutoCrudOperation.findManyByKey("idAccount", idAccount.toString());
+    }
 }
