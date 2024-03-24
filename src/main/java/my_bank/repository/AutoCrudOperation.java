@@ -210,8 +210,12 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
     }
 
     @Override
-    public T findOneByKey(String key, String value) {
+    public T findFirstOneByKey(String key, String value) {
         return find(key, value).getFirst();
+    }
+    @Override
+    public T findLastOneByKey(String key, String value) {
+        return find(key, value).getLast();
     }
 
     private List<T> find(String key, String value) {
