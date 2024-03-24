@@ -14,7 +14,7 @@ public class TransferCategoryService {
         return transferCategoryAutoCrudOperation.findAll();
     }
     public TransferCategory findById(Integer id) {
-        return transferCategoryAutoCrudOperation.findOneByKey("id", id.toString());
+        return transferCategoryAutoCrudOperation.findFirstOneByKey("id", id.toString());
     }
     public TransferCategory save(TransferCategory toSave) {
         return transferCategoryAutoCrudOperation.save(toSave);

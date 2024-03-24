@@ -1,5 +1,6 @@
 package my_bank.service;
 
+import my_bank.model.Account;
 import my_bank.model.Balance;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class BalanceService {
         return balanceAutoCrudOperation.findAll();
     }
     public Balance findById(Integer id) {
-        return balanceAutoCrudOperation.findOneByKey("id", id.toString());
+        return balanceAutoCrudOperation.findFirstOneByKey("id", id.toString());
     }
     public Balance save(Balance toSave) {
         return balanceAutoCrudOperation.save(toSave);
@@ -25,10 +26,19 @@ public class BalanceService {
     public boolean deleteById(int id) {
         return balanceAutoCrudOperation.deleteById(id);
     }
-    public Balance findByIdAccount(Integer idAccount) {
-        return balanceAutoCrudOperation.findOneByKey("idAccount", idAccount.toString());
+    public Balance findLastOneByIdAccount(Integer idAccount) {
+        return balanceAutoCrudOperation.findLastOneByKey("idAccount", idAccount.toString());
+    }
+    public Balance findFirstOneByIdAccount(Integer idAccount) {
+        return balanceAutoCrudOperation.findFirstOneByKey("idAccount", idAccount.toString());
     }
     public List<Balance> findManyByIdAccount(Integer idAccount) {
         return balanceAutoCrudOperation.findManyByKey("idAccount", idAccount.toString());
+    }
+    public Balance findLastOneByAccountNumber(String accountNumber) {
+        return balanceAutoCrudOperation.findLastOneByKey("accountNumber", accountNumber);
+    }
+    public Balance findFirstOneByAccountNumber(String accountNumber) {
+        return balanceAutoCrudOperation.findFirstOneByKey("accountNumber", accountNumber);
     }
 }

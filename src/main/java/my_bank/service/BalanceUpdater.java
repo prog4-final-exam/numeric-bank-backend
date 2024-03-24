@@ -1,6 +1,5 @@
 package my_bank.service;
 
-import lombok.AllArgsConstructor;
 import my_bank.model.Account;
 import my_bank.model.Balance;
 import my_bank.model.Enum.TransactionType;
@@ -28,7 +27,7 @@ public class BalanceUpdater {
             idAccount = transferToSave.getIdAccountSource();
         }
 
-        Balance sourceCurrentBalance = balanceService.findByIdAccount(idAccount);
+        Balance sourceCurrentBalance = balanceService.findLastOneByIdAccount(idAccount);
         double sourceMainBalance = sourceCurrentBalance.getMainBalance();
 
         if (transactionToSave.getTransactionType() == TransactionType.CREDIT) {
@@ -55,7 +54,7 @@ public class BalanceUpdater {
                     } else if (accountService.findById(destinationAccountId) == null){
                         return false;
                     } else {
-                        Balance destinationCurrentBalance = balanceService.findByIdAccount(destinationAccountId);
+                        Balance destinationCurrentBalance = balanceService.findLastOneByIdAccount(destinationAccountId);
                         destinationCurrentBalance.setMainBalance(
                                 destinationCurrentBalance.getMainBalance() + amount
                         );

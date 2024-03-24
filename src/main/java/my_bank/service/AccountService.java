@@ -16,7 +16,7 @@ public class AccountService {
         return accountAutoCrudOperation.findAll();
     }
     public Account findById(Integer id) {
-        return accountAutoCrudOperation.findOneByKey("id", id.toString());
+        return accountAutoCrudOperation.findFirstOneByKey("id", id.toString());
     }
     public Account save(Account toSave) {
         toSave.setAccountNumber(
@@ -29,8 +29,5 @@ public class AccountService {
     }
     public Account update(Account toUpdate) {
         return accountAutoCrudOperation.update(toUpdate);
-    }
-    public Account findByAccountNumber(String accountNumber) {
-        return accountAutoCrudOperation.findOneByKey("accountNumber", accountNumber);
     }
 }

@@ -16,7 +16,7 @@ public class TransferService {
         return transferAutoCrudOperation.findAll();
     }
     public Transfer findById(Integer id) {
-        return transferAutoCrudOperation.findOneByKey("id", id.toString());
+        return transferAutoCrudOperation.findFirstOneByKey("id", id.toString());
     }
     public Transfer save(Transfer toSave) {
         toSave.setReference(referenceGenerator.generateReference());
@@ -31,7 +31,13 @@ public class TransferService {
     public boolean deleteById(int id) {
         return transferAutoCrudOperation.deleteById(id);
     }
-    public List<Transfer> findManyByIdAccount(Integer idAccount) {
-        return transferAutoCrudOperation.findManyByKey("idAccount", idAccount.toString());
+    public List<Transfer> findManyByIdAccountSource(Integer idAccountSource) {
+        return transferAutoCrudOperation.findManyByKey("idAccountSource", idAccountSource.toString());
+    }
+    public Transfer findFirstOneByIdAccountSource(Integer idAccountSource) {
+        return transferAutoCrudOperation.findFirstOneByKey("idAccountSource", idAccountSource.toString());
+    }
+    public Transfer findLastOneByIdAccountSource(Integer idAccountSource) {
+        return transferAutoCrudOperation.findLastOneByKey("idAccountSource", idAccountSource.toString());
     }
 }

@@ -21,7 +21,7 @@ public class TransactionService {
         return transactionAutoCrudOperation.findAll();
     }
     public Transaction findById(Integer id) {
-        return transactionAutoCrudOperation.findOneByKey("id", id.toString());
+        return transactionAutoCrudOperation.findFirstOneByKey("id", id.toString());
     }
     public Transaction save(Transaction toSave) {
         if (!balanceUpdater.updateBalance(null, toSave)) {
@@ -35,5 +35,11 @@ public class TransactionService {
     }
     public boolean deleteById(int id) {
         return transactionAutoCrudOperation.deleteById(id);
+    }
+    public Transaction findLastOneByIdAccount(Integer idAccount) {
+        return transactionAutoCrudOperation.findLastOneByKey("idAccount", idAccount.toString());
+    }
+    public Transaction findFirstOneByIdAccount(Integer idAccount) {
+        return transactionAutoCrudOperation.findFirstOneByKey("idAccount", idAccount.toString());
     }
 }
