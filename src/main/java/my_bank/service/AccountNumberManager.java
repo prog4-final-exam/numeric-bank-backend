@@ -16,7 +16,7 @@ public class AccountNumberManager {
         ;
     }
 
-    public Integer extractAccountNumber(String accountNumber) {
+    public Integer extractAccountId(String accountNumber) {
         try {
             String idAccountString = accountNumber
                     .replace(prefix, "")
@@ -28,10 +28,5 @@ public class AccountNumberManager {
             );
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        AccountNumberManager accountNumberManager = new AccountNumberManager();
-        System.out.println(accountNumberManager.extractAccountNumber("66546546654654654654"));
     }
 }
