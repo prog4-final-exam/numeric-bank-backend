@@ -8,6 +8,7 @@ public interface CrudOperation<T> {
     boolean deleteById(int id);
     T update(T toUpdate);
     List<T> findAll();
-    T findOneByKey(String key, String value);
+    T findFirstOneByKey(String key, String value);
+    T findLastOneByKey(String key, String value);
     List<T> findManyByKey(String key, String value);
 }
