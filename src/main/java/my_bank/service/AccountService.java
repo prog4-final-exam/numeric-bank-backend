@@ -26,4 +26,7 @@ public class AccountService {
     public Account update(Account toUpdate) {
         return accountAutoCrudOperation.update(toUpdate);
     }
+    public Account findByAccountNumber(String accountNumber) {
+        return accountAutoCrudOperation.findOneByKey("accountNumber", accountNumber);
+    }
 }
