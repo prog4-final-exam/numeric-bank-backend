@@ -15,7 +15,7 @@ public class TransferService {
     public List<Transfer> findAll() {
         return transferAutoCrudOperation.findAll();
     }
-    public Transfer findById (Integer id) {
+    public Transfer findById(Integer id) {
         return transferAutoCrudOperation.findOneByKey("id", id.toString());
     }
     public Transfer save(Transfer toSave) {
@@ -30,5 +30,8 @@ public class TransferService {
     }
     public boolean deleteById(int id) {
         return transferAutoCrudOperation.deleteById(id);
+    }
+    public List<Transfer> findManyByIdAccount(Integer idAccount) {
+        return transferAutoCrudOperation.findManyByKey("idAccount", idAccount.toString());
     }
 }
