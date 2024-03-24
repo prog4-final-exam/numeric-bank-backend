@@ -9,4 +9,5 @@ public interface CrudOperation<T> {
     T update(T toUpdate);
     List<T> findAll();
     T findOneByKey(String key, String value);
+    List<T> findManyByKey(String key, String value);
 }

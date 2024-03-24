@@ -204,8 +204,9 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         return dataList;
     }
 
+    @Override
     public List<T> findManyByKey(String key, String value) {
-        return null;
+        return find(key, value);
     }
 
     @Override
