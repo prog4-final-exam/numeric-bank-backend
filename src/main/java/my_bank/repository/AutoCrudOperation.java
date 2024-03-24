@@ -236,6 +236,8 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
                 if (key.contains("id")) {
                     id = Integer.valueOf(value);
                     queryConstraint = " WHERE id = " + id;
+                } else if (key.equals("lastUpdate")) {
+                    queryConstraint = " ORDER BY id DESC";
                 } else {
                     queryConstraint = " WHERE ? = ?";
                 }
