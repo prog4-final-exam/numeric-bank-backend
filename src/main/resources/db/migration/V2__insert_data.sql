@@ -1,21 +1,21 @@
 INSERT INTO account (id, firstname, lastname, birthdate, net_monthly_pay, account_number, overdraft_allowed)
 SELECT *
-FROM (VALUES (1, 'Jean', 'Dupont', '1980-01-01', 3500, 'FR7630004000031234567890143', false),
-             (2, 'Marie', 'Durand', '1982-02-02', 4500, 'FR7630006000011234567890189', true),
-             (3, 'Pierre', 'Martin', '1975-03-03', 3000, 'FR7630007000021234567890123', false),
-             (4, 'Julie', 'Lemoine', '1985-04-04', 4000, 'FR7630008000031234567890156', true),
-             (5, 'Luc', 'Bernard', '1978-05-05', 5000, 'FR7630009000041234567890187', false),
-             (6, 'Sophie', 'Petit', '1980-06-06', 3500, 'FR7630010000051234567890145', true),
-             (7, 'Nicolas', 'Roux', '1982-07-07', 4500, 'FR7630011000061234567890178', false),
-             (8, 'Camille', 'Moreau', '1979-08-08', 4000, 'FR7630012000071234567890190', true),
-             (9, 'Alexandre', 'Lefevre', '1981-09-09', 4500, 'FR7630013000081234567890122', false),
-             (10, 'Sarah', 'Garnier', '1983-10-10', 5000, 'FR7630014000091234567890154', true)) AS new_account(id,
-                                                                                                               firstname,
-                                                                                                               lastname,
-                                                                                                               birthdate,
-                                                                                                               net_monthly_pay,
-                                                                                                               account_number,
-                                                                                                               overdraft_allowed)
+FROM (VALUES (1, 'Jean', 'Dupont', DATE '1980-01-01', 3500, 'FR7630004000031234567890143', false),
+             (2, 'Marie', 'Durand', DATE '1982-02-02', 4500, 'FR7630006000011234567890189', true),
+             (3, 'Pierre', 'Martin', DATE '1975-03-03', 3000, 'FR7630007000021234567890123', false),
+             (4, 'Julie', 'Lemoine', DATE '1985-04-04', 4000, 'FR7630008000031234567890156', true),
+             (5, 'Luc', 'Bernard', DATE '1978-05-05', 5000, 'FR7630009000041234567890187', false),
+             (6, 'Sophie', 'Petit', DATE '1980-06-06', 3500, 'FR7630010000051234567890145', true),
+             (7, 'Nicolas', 'Roux', DATE '1982-07-07', 4500, 'FR7630011000061234567890178', false),
+             (8, 'Camille', 'Moreau', DATE '1979-08-08', 4000, 'FR7630012000071234567890190', true),
+             (9, 'Alexandre', 'Lefevre', DATE '1981-09-09', 4500, 'FR7630013000081234567890122', false),
+             (10, 'Sarah', 'Garnier', DATE '1983-10-10', 5000, 'FR7630014000091234567890154', true)) AS new_account(id,
+                                                                                                                    firstname,
+                                                                                                                    lastname,
+                                                                                                                    birthdate,
+                                                                                                                    net_monthly_pay,
+                                                                                                                    account_number,
+                                                                                                                    overdraft_allowed)
 WHERE NOT EXISTS (SELECT 1 FROM account WHERE account.account_number = new_account.account_number);
 
 
@@ -49,34 +49,46 @@ FROM (VALUES (1, 100, 'CREDIT'),
 WHERE NOT EXISTS (SELECT 1 FROM transaction WHERE transaction.id_account = new_transaction.id_account);
 
 
-INSERT INTO transfer (id_account_source, destination_account_number, transfer_datetime, value_datetime, amount, reason, label, status, reference, is_external_bank)
-SELECT * FROM (VALUES
-                   (1, 'FR7630006000011234567890189', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 100, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_1', false),
-                   (2, 'FR7630007000021234567890123', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 200, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_2', true),
-                   (3, 'FR7630008000031234567890156', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 300, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_3', false),
-                   (4, 'FR7630009000041234567890187', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 400, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_4', true),
-                   (5, 'FR7630010000051234567890145', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 500, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_5', false),
-                   (6, 'FR7630011000061234567890178', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 600, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_6', true),
-                   (7, 'FR7630012000071234567890190', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 700, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_7', false),
-                   (8, 'FR7630013000081234567890122', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 800, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_8', true),
-                   (9, 'FR7630014000091234567890154', '2024-03-19 00:00:00', '2024-03-19 00:00:00', 900, 'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_9', false),
-                   (10, 'FR7630004000031234567890143', '2024-03-19 00:00:00', '2024-03-22 00:00:00', 1000, 'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_10', true)
-              ) AS new_transfer(id_account_source, destination_account_number, transfer_datetime, value_datetime, amount, reason, label, status, reference, is_external_bank)
+INSERT INTO transfer (id_account_source, destination_account_number, transfer_datetime, value_datetime, amount, reason,
+                      label, status, reference, is_external_bank)
+SELECT *
+FROM (VALUES (1, 'FR7630006000011234567890189', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-19 00:00:00', 100,
+              'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_1', false),
+             (2, 'FR7630007000021234567890123', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-22 00:00:00', 200,
+              'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_2', true),
+             (3, 'FR7630008000031234567890156', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-19 00:00:00', 300,
+              'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_3', false),
+             (4, 'FR7630009000041234567890187', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-22 00:00:00', 400,
+              'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_4', true),
+             (5, 'FR7630010000051234567890145', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-19 00:00:00', 500,
+              'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_5', false),
+             (6, 'FR7630011000061234567890178', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-22 00:00:00', 600,
+              'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_6', true),
+             (7, 'FR7630012000071234567890190', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-19 00:00:00', 700,
+              'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_7', false),
+             (8, 'FR7630013000081234567890122', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-22 00:00:00', 800,
+              'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_8', true),
+             (9, 'FR7630014000091234567890154', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-19 00:00:00', 900,
+              'CREDIT', 'Transfer to internal account', 'COMPLETED', 'VIR_2024_03_19_9', false),
+             (10, 'FR7630004000031234567890143', TIMESTAMP '2024-03-19 00:00:00', TIMESTAMP '2024-03-22 00:00:00', 1000,
+              'DEBIT', 'Transfer to external account', 'PENDING', 'VIR_2024_03_19_10',
+              true)) AS new_transfer(id_account_source, destination_account_number, transfer_datetime, value_datetime,
+                                     amount, reason, label, status, reference, is_external_bank)
 WHERE NOT EXISTS (SELECT 1 FROM transfer WHERE transfer.reference = new_transfer.reference);
 
 
-INSERT INTO transfer_category (name, type, id_transfer)
+INSERT INTO transfer_category (name, type, id_transfer, comment)
 SELECT *
-FROM (VALUES ('Salary', 'INCOME', 1),
-             ('Rent', 'EXPENSES', 2),
-             ('Freelance', 'INCOME', 3),
-             ('Groceries', 'EXPENSES', 4),
-             ('Dividends', 'INCOME', 5),
-             ('Utilities', 'EXPENSES', 6),
-             ('Sale', 'INCOME', 7),
-             ('Transport', 'EXPENSES', 8),
+FROM (VALUES ('Salary', 'INCOME', 1, NULL),
+             ('Rent', 'EXPENSES', 2, NULL),
+             ('Freelance', 'INCOME', 3, NULL),
+             ('Groceries', 'EXPENSES', 4, NULL),
+             ('Dividends', 'INCOME', 5, NULL),
+             ('Utilities', 'EXPENSES', 6, NULL),
+             ('Sale', 'INCOME', 7, NULL),
+             ('Transport', 'EXPENSES', 8, NULL),
              ('Other', 'INCOME', 9, 'Other income sources'),
-             ('Other', 'EXPENSES', 10, 'Other expenses')) AS new_transfer_category(name, type, id_transfer)
+             ('Other', 'EXPENSES', 10, 'Other expenses')) AS new_transfer_category(name, type, id_transfer, comment)
 WHERE NOT EXISTS (SELECT 1
                   FROM transfer_category
                   WHERE transfer_category.id_transfer = new_transfer_category.id_transfer);
