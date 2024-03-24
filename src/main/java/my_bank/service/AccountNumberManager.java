@@ -1,5 +1,7 @@
 package my_bank.service;
 
+import my_bank.model.Account;
+
 public class AccountNumberManager {
     private String prefix = "00040003";
     private String suffix = "02";
@@ -14,10 +16,22 @@ public class AccountNumberManager {
         ;
     }
 
-    public int extractAccountNumber(String accountNumber) {
-        String idAccountString = accountNumber
-                .replace(prefix, "")
-                .replace(suffix, "");
-        return Integer.valueOf(idAccountString);
+    public Integer extractAccountNumber(String accountNumber) {
+        try {
+            String idAccountString = accountNumber
+                    .replace(prefix, "")
+                    .replace(suffix, "");
+            return Integer.valueOf(Integer.valueOf(idAccountString));
+        } catch (Exception exception) {
+            System.err.println("Error occurred while extracting the account number :\n  > "
+                + exception.getMessage()
+            );
+            return null;
+        }
+    }
+
+    public static void main(String[] args) {
+        AccountNumberManager accountNumberManager = new AccountNumberManager();
+        System.out.println(accountNumberManager.extractAccountNumber("66546546654654654654"));
     }
 }
