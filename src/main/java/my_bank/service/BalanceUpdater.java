@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class BalanceUpdater {
     private BalanceService balanceService = new BalanceService();
     private AccountService accountService = new AccountService();
+    private AccountNumberManager accountNumberManager = new AccountNumberManager();
 
     public boolean updateBalance(Transfer transferToSave, Transaction transactionToSave) {
         double amount;
@@ -27,27 +28,48 @@ public class BalanceUpdater {
             idAccount = transferToSave.getIdAccountSource();
         }
 
-        Balance currentBalance = balanceService.findByIdAccount(idAccount);
-        double mainBalance = currentBalance.getMainBalance();
+        Balance sourceCurrentBalance = balanceService.findByIdAccount(idAccount);
+        double sourceMainBalance = sourceCurrentBalance.getMainBalance();
 
         if (transactionToSave.getTransactionType() == TransactionType.CREDIT) {
-            currentBalance.setMainBalance(mainBalance + amount);
+            sourceCurrentBalance.setMainBalance(sourceMainBalance + amount);
         } else {
-            Account account = accountService.findById(idAccount);
-            if (amount > mainBalance) {
-                if (isTransaction && account.isOverdraftAllowed()) {
-                    currentBalance.setMainBalance(0);
-                    currentBalance.setLoanAmount((mainBalance - amount) * -1);
-                    currentBalance.setLoanInterest(0.01);
+            Account sourceAccount = accountService.findById(idAccount);
+            if (amount > sourceMainBalance) {
+                if (isTransaction && sourceAccount.isOverdraftAllowed()) {
+                    sourceCurrentBalance.setMainBalance(0);
+                    sourceCurrentBalance.setLoanAmount((sourceMainBalance - amount) * -1);
+                    sourceCurrentBalance.setLoanInterest(0.01);
                 } else {
                     return false;
                 }
             } else {
-                currentBalance.setMainBalance(mainBalance - amount);
+                sourceCurrentBalance.setMainBalance(sourceMainBalance - amount);
+
+                // update destination account balance
+
+                if (isTransaction == false && transferToSave.isExternalBank() == false) {
+                    Integer destinationAccountId = accountNumberManager.extractAccountId(transferToSave.getDestinationAccountNumber());
+                    if (destinationAccountId == null) {
+                        return false;
+                    } else if (accountService.findById(destinationAccountId) == null){
+                        return false;
+                    } else {
+                        Balance destinationCurrentBalance = balanceService.findByIdAccount(destinationAccountId);
+                        destinationCurrentBalance.setMainBalance(
+                                destinationCurrentBalance.getMainBalance() + amount
+                        );
+                        destinationCurrentBalance.setBalanceDatetime(LocalDateTime.now());
+                        if (balanceService.save(destinationCurrentBalance) == null) {
+                            return false;
+                        }
+                    }
+                }
+
             }
 
-            currentBalance.setBalanceDatetime(LocalDateTime.now());
-            if (balanceService.save(currentBalance) == null) {
+            sourceCurrentBalance.setBalanceDatetime(LocalDateTime.now());
+            if (balanceService.save(sourceCurrentBalance) == null) {
                 return false;
             }
         }
