@@ -42,4 +42,7 @@ public class TransactionService {
     public Transaction findFirstOneByIdAccount(Integer idAccount) {
         return transactionAutoCrudOperation.findFirstOneByKey("idAccount", idAccount.toString());
     }
+    public List<Transaction> findManyByIdAccount(Integer idAccount) {
+        return transactionAutoCrudOperation.findManyByKey("idAccount", idAccount.toString());
+    }
 }
