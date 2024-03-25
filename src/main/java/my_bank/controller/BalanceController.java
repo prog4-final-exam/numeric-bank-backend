@@ -35,4 +35,8 @@ public class BalanceController {
     public ResponseEntity<Boolean> delete(@PathVariable int id) {
         return ResponseEntity.ok(balanceService.deleteById(id));
     }
+    @GetMapping("/account/{idAccount}/balances")
+    public ResponseEntity<List<Balance>> findByIdAccount(@PathVariable int idAccount) {
+        return ResponseEntity.ok(balanceService.findManyByIdAccount(idAccount));
+    }
 }
