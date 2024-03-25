@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class Transfer implements Serializable {
     private int id;
     private String reason;
+    private String label;
     private double amount;
     private LocalDateTime registerDatetime;
     private LocalDateTime valueDatetime;
