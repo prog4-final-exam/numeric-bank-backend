@@ -36,4 +36,8 @@ public class TransferController {
     public ResponseEntity<Boolean> delete(@PathVariable int id) {
         return ResponseEntity.ok(transferService.deleteById(id));
     }
+    @GetMapping("/accounts/{idAccountSource}/transfers")
+    public ResponseEntity<List<Transfer>> findByIdAccountSource(@PathVariable int idAccountSource) {
+        return ResponseEntity.ok(transferService.findManyByIdAccountSource(idAccountSource));
+    }
 }
