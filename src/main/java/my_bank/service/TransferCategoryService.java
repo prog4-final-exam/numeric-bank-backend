@@ -25,4 +25,7 @@ public class TransferCategoryService {
     public boolean deleteById(int id) {
         return transferCategoryAutoCrudOperation.deleteById(id);
     }
+    public TransferCategory findOneByIdTransfer(Integer idTransfer) {
+        return transferCategoryAutoCrudOperation.findFirstOneByKey("idTransfer", idTransfer.toString());
+    }
 }
