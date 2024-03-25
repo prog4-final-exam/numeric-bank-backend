@@ -77,7 +77,7 @@ FROM (VALUES (1, 'FR7630006000011234567890189', TIMESTAMP '2024-03-19 00:00:00',
 WHERE NOT EXISTS (SELECT 1 FROM transfer WHERE transfer.reference = new_transfer.reference);
 
 
-INSERT INTO transfer_category (name, type, id_transfer, comment)
+INSERT INTO transfer_category (name, category_type, id_transfer, comment)
 SELECT *
 FROM (VALUES ('Salary', 'INCOME', 1, NULL),
              ('Rent', 'EXPENSES', 2, NULL),
