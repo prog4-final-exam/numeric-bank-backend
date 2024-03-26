@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS balance
 (
     id            serial PRIMARY KEY,
     id_account    INT,
-    balance_date  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    balance_datetime  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     main_balance  DOUBLE PRECISION,
     loan_amount   DOUBLE PRECISION DEFAULT 0,
     loan_interest DOUBLE PRECISION DEFAULT 0,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS transfer_category
 (
     id          serial PRIMARY KEY,
     name        VARCHAR(100) not null,
-    type        VARCHAR(200) NOT NULL,
+    category_type        VARCHAR(200) NOT NULL,
     comment     text default null,
     id_transfer INT,
     FOREIGN KEY (id_transfer) REFERENCES transfer (id)
