@@ -35,4 +35,8 @@ public class TransferCategoryController {
     public ResponseEntity<Boolean> delete(@PathVariable int id) {
         return ResponseEntity.ok(transferCategoryService.deleteById(id));
     }
+    @GetMapping("/transfers/{idTransfer}/category")
+    public ResponseEntity<TransferCategory> findByIdTransfer(@PathVariable int idTransfer) {
+        return ResponseEntity.ok(transferCategoryService.findOneByIdTransfer(idTransfer));
+    }
 }
