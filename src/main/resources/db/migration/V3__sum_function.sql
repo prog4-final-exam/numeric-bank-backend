@@ -2,7 +2,7 @@
 -- category in a given period, by default by month, but can be by day.
 CREATE OR REPLACE FUNCTION get_sum_amounts_by_category(
     account_id INT,
-    category_type VARCHAR,
+    type_category VARCHAR,
     start_date DATE,
     end_date DATE
 )
@@ -19,13 +19,13 @@ BEGIN
     IF end_date - start_date > 30 THEN
         RETURN QUERY
             SELECT tc.name                                 AS category,
-                   TO_CHAR(t.transfer_datetime, 'YYYY-MM') AS period,
+                   CAST(TO_CHAR(t.transfer_datetime, 'YYYY-MM') AS VARCHAR) AS period,
                    SUM(t.amount)                           AS total_amount
             FROM transfer t
                      JOIN
                  transfer_category tc ON t.id = tc.id_transfer
             WHERE t.id_account_source = account_id
-              AND tc.category_type = category_type
+              AND tc.category_type = type_category
               AND t.transfer_datetime BETWEEN start_date AND end_date
             GROUP BY tc.name, TO_CHAR(t.transfer_datetime, 'YYYY-MM');
     ELSE
@@ -37,7 +37,7 @@ BEGIN
                      JOIN
                  transfer_category tc ON t.id = tc.id_transfer
             WHERE t.id_account_source = account_id
-              AND tc.category_type = category_type
+              AND tc.category_type = type_category
               AND t.transfer_datetime BETWEEN start_date AND end_date
             GROUP BY tc.name, TO_CHAR(t.transfer_datetime, 'YYYY-MM-DD');
     END IF;
