@@ -2,6 +2,7 @@ package my_bank.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import my_bank.model.entity.*;
 
 @Data
 @NoArgsConstructor

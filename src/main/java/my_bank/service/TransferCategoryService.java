@@ -1,6 +1,6 @@
 package my_bank.service;
 
-import my_bank.model.TransferCategory;
+import my_bank.model.entity.TransferCategory;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
 

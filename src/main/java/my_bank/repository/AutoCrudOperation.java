@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import my_bank.dbConnection.DbConnect;
 import my_bank.model.GenericModel;
+import my_bank.model.KeyAndValue;
 
 import static my_bank.repository.CaseConverter.convertToSnakeCase;
 
@@ -197,7 +198,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
 
     @Override
     public List<T> findAll() {
-        List<T> dataList = find(null, null);
+        List<T> dataList = find(null);
         if (dataList.getFirst() == null) {
             dataList.clear();
         }
@@ -206,19 +207,25 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
 
     @Override
     public List<T> findManyByKey(String key, String value) {
-        return find(key, value);
+        return find(
+                List.of(new KeyAndValue(key, value))
+        );
     }
 
     @Override
     public T findFirstOneByKey(String key, String value) {
-        return find(key, value).getFirst();
+        return find(
+                List.of(new KeyAndValue(key, value))
+        ).getFirst();
     }
     @Override
     public T findLastOneByKey(String key, String value) {
-        return find(key, value).getLast();
+        return find(
+                List.of(new KeyAndValue(key, value))
+        ).getLast();
     }
 
-    private List<T> find(String key, String value) {
+    private List<T> find(List<KeyAndValue> keyAndValueList) {
         DbConnect dbConnect = new DbConnect();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -229,29 +236,50 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         Field[] fields = clazz.getDeclaredFields();
         List<T> dataList = new ArrayList<>();
         dataList.add(null);
-        Integer id = null;
 
         try {
             connection = dbConnect.createConnection();
             String queryConstraint = "";
+            String key = null;
+            String value = null;
+            Integer id = null;
+            int count = 0;
 
-            if (key != null) {
-                key = convertToSnakeCase(key);
-                if (key.contains("id")) {
-                    id = Integer.valueOf(value);
-                    queryConstraint = " WHERE id = " + id;
-                } else if (key.equals("lastUpdate")) {
-                    queryConstraint = " ORDER BY id DESC";
-                } else {
-                    queryConstraint = " WHERE ? = ?";
+            if (keyAndValueList != null) {
+                for (KeyAndValue keyAndValue : keyAndValueList) {
+                    key = keyAndValue.getKey();
+                    value = keyAndValue.getValue();
+
+                    if (key != null) {
+                        if (keyAndValueList.indexOf(keyAndValue) == 0) {
+                            queryConstraint += " WHERE ";
+                        } else {
+                            queryConstraint += " AND ";
+                        }
+
+                        key = convertToSnakeCase(key);
+                        if (key.contains("id")) {
+                            id = Integer.valueOf(value);
+                            queryConstraint += String.format(
+                                    " %s = %s ",
+                                    key, id
+                            );
+                        } else {
+                            queryConstraint += " ? = ? ";
+                            count += 2;
+                        }
+                    }
                 }
             }
 
             String query = "SELECT * FROM " + convertToSnakeCase(className) + queryConstraint;
             preparedStatement = connection.prepareStatement(query);
             if (id == null && key != null) {
-                preparedStatement.setObject(1, key);
-                preparedStatement.setObject(2, value);
+                for (int i = 1; i < count; i++) {
+                    preparedStatement.setObject(i, key);
+                    preparedStatement.setObject(i+1, value);
+                }
+
             }
             resultSet = preparedStatement.executeQuery();
 
@@ -296,7 +324,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             }
         } catch (Exception exception) {
             System.err.println(
-                    String.format("Error occurred while finding all %ss :\n  > %s",
+                    String.format("Error occurred while finding %s.s :\n  > %s",
                             className,
                             exception.getMessage()
                     )

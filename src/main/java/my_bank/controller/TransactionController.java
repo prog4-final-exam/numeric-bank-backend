@@ -1,8 +1,7 @@
 package my_bank.controller;
 
 import lombok.AllArgsConstructor;
-import my_bank.model.Transaction;
-import my_bank.repository.AutoCrudOperation;
+import my_bank.model.entity.Transaction;
 import my_bank.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,16 +1,10 @@
 package my_bank.service;
 
-import my_bank.model.Account;
-import my_bank.model.Balance;
-import my_bank.model.Enum.TransactionType;
-import my_bank.model.Transaction;
+import my_bank.model.entity.Transaction;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
-import my_bank.service.BalanceUpdater;
 
 @Service
 public class TransactionService {

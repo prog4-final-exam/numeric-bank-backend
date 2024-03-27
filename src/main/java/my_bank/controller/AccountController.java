@@ -1,7 +1,7 @@
 package my_bank.controller;
 
 import lombok.AllArgsConstructor;
-import my_bank.model.Account;
+import my_bank.model.entity.Account;
 import my_bank.service.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

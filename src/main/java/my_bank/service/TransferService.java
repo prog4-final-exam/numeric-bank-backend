@@ -1,6 +1,6 @@
 package my_bank.service;
 
-import my_bank.model.Transfer;
+import my_bank.model.entity.Transfer;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,10 @@
 package my_bank.service;
 
-import my_bank.model.Account;
+import my_bank.model.entity.Account;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountService {

@@ -1,7 +1,6 @@
 package my_bank.service;
 
-import my_bank.model.Account;
-import my_bank.model.Balance;
+import my_bank.model.entity.Balance;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package my_bank.model;
+package my_bank.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

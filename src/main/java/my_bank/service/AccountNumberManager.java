@@ -1,7 +1,5 @@
 package my_bank.service;
 
-import my_bank.model.Account;
-
 public class AccountNumberManager {
     private String prefix = "00040003";
     private String suffix = "02";

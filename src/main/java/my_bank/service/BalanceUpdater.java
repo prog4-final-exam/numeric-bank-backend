@@ -1,10 +1,10 @@
 package my_bank.service;
 
-import my_bank.model.Account;
-import my_bank.model.Balance;
+import my_bank.model.entity.Account;
+import my_bank.model.entity.Balance;
 import my_bank.model.Enum.TransactionType;
-import my_bank.model.Transaction;
-import my_bank.model.Transfer;
+import my_bank.model.entity.Transaction;
+import my_bank.model.entity.Transfer;
 
 import java.time.LocalDateTime;
 

@@ -1,7 +1,7 @@
 package my_bank.controller;
 
 import lombok.AllArgsConstructor;
-import my_bank.model.TransferCategory;
+import my_bank.model.entity.TransferCategory;
 import my_bank.service.TransferCategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +19,12 @@ public class TransferCategoryController {
         return ResponseEntity.ok(transferCategoryService.findAll());
     }
     @PostMapping("/transfers/categories")
-    public ResponseEntity<my_bank.model.TransferCategory> save(@RequestBody my_bank.model.TransferCategory toSave) {
+    public ResponseEntity<TransferCategory> save(@RequestBody TransferCategory toSave) {
         return ResponseEntity.ok(transferCategoryService.save(toSave));
     }
 
     @PutMapping("/transfers/categories")
-    public ResponseEntity<my_bank.model.TransferCategory> update(@RequestBody my_bank.model.TransferCategory toUpdate) {
+    public ResponseEntity<TransferCategory> update(@RequestBody TransferCategory toUpdate) {
         return ResponseEntity.ok(transferCategoryService.update(toUpdate));
     }
     @GetMapping("/transfers/categories/{id}")

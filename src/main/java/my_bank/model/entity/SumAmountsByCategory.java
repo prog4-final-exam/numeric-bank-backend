@@ -1,4 +1,4 @@
-package my_bank.model;
+package my_bank.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class SumReceiptsExpenses implements Serializable {
+public class SumAmountsByCategory implements Serializable {
+    private String category;
     private LocalDateTime period;
-    private double totalReceipts;
-    private double totalExpenses;
+    private double totalAmount;
 }
