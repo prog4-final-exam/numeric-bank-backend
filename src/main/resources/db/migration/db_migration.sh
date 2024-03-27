@@ -1,4 +1,5 @@
 #!/bin/bash
 
-psql -U postgres -f V0__create_db.sql
+
+psql -U prog_admin -h localhost -f V0__create_db.sql
 find . -name "V[1-4]__*.sql" -exec psql -U prog_admin -h localhost -d my_bank -f {} \;
