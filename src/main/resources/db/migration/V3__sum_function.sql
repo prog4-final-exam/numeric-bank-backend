@@ -51,7 +51,7 @@ $$
 CREATE OR REPLACE FUNCTION get_sum_receipts_expenses(start_date DATE, end_date DATE, interval_type VARCHAR DEFAULT 'month')
     RETURNS TABLE
             (
-                period         TEXT,
+                period         VARCHAR,
                 total_receipts DOUBLE PRECISION,
                 total_expenses DOUBLE PRECISION
             )
@@ -59,12 +59,12 @@ AS
 $$
 BEGIN
     RETURN QUERY
-        SELECT TO_CHAR(transaction_datetime,
+        SELECT CAST(TO_CHAR(transaction_datetime,
                        CASE
                            WHEN interval_type = 'month' THEN 'YYYY-MM'
                            WHEN interval_type = 'day' THEN 'YYYY-MM-DD'
                            ELSE 'YYYY-MM'
-                           END)                                  AS period,
+                           END) AS VARCHAR)                                 AS period,
                SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END)  AS total_receipts,
                SUM(CASE WHEN amount < 0 THEN -amount ELSE 0 END) AS total_expenses
         FROM transaction
