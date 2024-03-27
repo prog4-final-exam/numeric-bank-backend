@@ -25,7 +25,7 @@ BEGIN
                      JOIN
                  transfer_category tc ON t.id = tc.id_transfer
             WHERE t.id_account_source = account_id
-              AND tc.type = category_type
+              AND tc.category_type = category_type
               AND t.transfer_datetime BETWEEN start_date AND end_date
             GROUP BY tc.name, TO_CHAR(t.transfer_datetime, 'YYYY-MM');
     ELSE
@@ -37,7 +37,7 @@ BEGIN
                      JOIN
                  transfer_category tc ON t.id = tc.id_transfer
             WHERE t.id_account_source = account_id
-              AND tc.type = category_type
+              AND tc.category_type = category_type
               AND t.transfer_datetime BETWEEN start_date AND end_date
             GROUP BY tc.name, TO_CHAR(t.transfer_datetime, 'YYYY-MM-DD');
     END IF;
