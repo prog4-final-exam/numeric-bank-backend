@@ -1,5 +1,6 @@
 package my_bank.service;
 
+import my_bank.model.KeyAndValue;
 import my_bank.model.entity.Account;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,9 @@ public class AccountService {
         return accountAutoCrudOperation.findAll();
     }
     public Account findById(Integer id) {
-        return accountAutoCrudOperation.findFirstOneByKey("id", id.toString());
+        return accountAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("id", id.toString()))
+        );
     }
     public Account save(Account toSave) {
         toSave.setAccountNumber(

@@ -1,5 +1,6 @@
 package my_bank.service;
 
+import my_bank.model.KeyAndValue;
 import my_bank.model.entity.Transfer;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,9 @@ public class TransferService {
         return transferAutoCrudOperation.findAll();
     }
     public Transfer findById(Integer id) {
-        return transferAutoCrudOperation.findFirstOneByKey("id", id.toString());
+        return transferAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("id", id.toString()))
+        );
     }
     public Transfer save(Transfer toSave) {
         toSave.setReference(referenceGenerator.generateReference());
@@ -32,12 +35,18 @@ public class TransferService {
         return transferAutoCrudOperation.deleteById(id);
     }
     public List<Transfer> findManyByIdAccountSource(Integer idAccountSource) {
-        return transferAutoCrudOperation.findManyByKey("idAccountSource", idAccountSource.toString());
+        return transferAutoCrudOperation.findManyByKey(
+                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString()))
+        );
     }
     public Transfer findFirstOneByIdAccountSource(Integer idAccountSource) {
-        return transferAutoCrudOperation.findFirstOneByKey("idAccountSource", idAccountSource.toString());
+        return transferAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString()))
+        );
     }
     public Transfer findLastOneByIdAccountSource(Integer idAccountSource) {
-        return transferAutoCrudOperation.findLastOneByKey("idAccountSource", idAccountSource.toString());
+        return transferAutoCrudOperation.findLastOneByKey(
+                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString()))
+        );
     }
 }

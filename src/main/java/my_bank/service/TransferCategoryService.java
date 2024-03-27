@@ -1,5 +1,6 @@
 package my_bank.service;
 
+import my_bank.model.KeyAndValue;
 import my_bank.model.entity.TransferCategory;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,9 @@ public class TransferCategoryService {
         return transferCategoryAutoCrudOperation.findAll();
     }
     public TransferCategory findById(Integer id) {
-        return transferCategoryAutoCrudOperation.findFirstOneByKey("id", id.toString());
+        return transferCategoryAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("id", id.toString()))
+        );
     }
     public TransferCategory save(TransferCategory toSave) {
         return transferCategoryAutoCrudOperation.save(toSave);
@@ -26,6 +29,8 @@ public class TransferCategoryService {
         return transferCategoryAutoCrudOperation.deleteById(id);
     }
     public TransferCategory findOneByIdTransfer(Integer idTransfer) {
-        return transferCategoryAutoCrudOperation.findFirstOneByKey("idTransfer", idTransfer.toString());
+        return transferCategoryAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("idTransfer", idTransfer.toString()))
+        );
     }
 }

@@ -206,23 +206,17 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
     }
 
     @Override
-    public List<T> findManyByKey(String key, String value) {
-        return find(
-                List.of(new KeyAndValue(key, value))
-        );
+    public List<T> findManyByKey(List<KeyAndValue> keyAndValueList) {
+        return find(keyAndValueList);
     }
 
     @Override
-    public T findFirstOneByKey(String key, String value) {
-        return find(
-                List.of(new KeyAndValue(key, value))
-        ).getFirst();
+    public T findFirstOneByKey(List<KeyAndValue> keyAndValueList) {
+        return find(keyAndValueList).getFirst();
     }
     @Override
-    public T findLastOneByKey(String key, String value) {
-        return find(
-                List.of(new KeyAndValue(key, value))
-        ).getLast();
+    public T findLastOneByKey(List<KeyAndValue> keyAndValueList) {
+        return find(keyAndValueList).getLast();
     }
 
     private List<T> find(List<KeyAndValue> keyAndValueList) {
