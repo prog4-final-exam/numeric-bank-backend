@@ -38,18 +38,7 @@ public class BalanceService {
                 List.of(new KeyAndValue("idAccount", idAccount.toString()))
         );
     }
-    public List<Balance> findManyByIdAccount(Integer idAccount) {
-        return balanceAutoCrudOperation.findManyByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString()))
-        );
+    public List<Balance> findManyByIdAccount(List<KeyAndValue> keyAndValueList) {
+        return balanceAutoCrudOperation.findManyByKey(keyAndValueList);
     }
-
-    /*
-    public Balance findLastOneByAccountNumber(String accountNumber) {
-        return balanceAutoCrudOperation.findLastOneByKey("accountNumber", accountNumber);
-    }
-    public Balance findFirstOneByAccountNumber(String accountNumber) {
-        return balanceAutoCrudOperation.findFirstOneByKey("accountNumber", accountNumber);
-    }
-    */
 }

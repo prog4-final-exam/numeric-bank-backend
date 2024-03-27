@@ -34,10 +34,8 @@ public class TransferService {
     public boolean deleteById(int id) {
         return transferAutoCrudOperation.deleteById(id);
     }
-    public List<Transfer> findManyByIdAccountSource(Integer idAccountSource) {
-        return transferAutoCrudOperation.findManyByKey(
-                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString()))
-        );
+    public List<Transfer> findManyByIdAccountSource(List<KeyAndValue> keyAndValueList) {
+        return transferAutoCrudOperation.findManyByKey(keyAndValueList);
     }
     public Transfer findFirstOneByIdAccountSource(Integer idAccountSource) {
         return transferAutoCrudOperation.findFirstOneByKey(

@@ -1,11 +1,14 @@
 package my_bank.controller;
 
 import lombok.AllArgsConstructor;
+import my_bank.model.KeyAndValue;
 import my_bank.model.entity.Transfer;
 import my_bank.service.TransferService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,7 +39,22 @@ public class TransferController {
         return ResponseEntity.ok(transferService.deleteById(id));
     }
     @GetMapping("/accounts/{idAccountSource}/transfers")
-    public ResponseEntity<List<Transfer>> findByIdAccountSource(@PathVariable int idAccountSource) {
-        return ResponseEntity.ok(transferService.findManyByIdAccountSource(idAccountSource));
+    public ResponseEntity<List<Transfer>> findByIdAccountSource(
+            @PathVariable Integer idAccountSource,
+            @RequestParam(required = false) String label,
+            @RequestParam(required = false) LocalDateTime transferDatetime,
+            @RequestParam(required = false) String reference,
+            @RequestParam(required = false) String destinationAccountNumber,
+            @RequestParam(required = false) Integer idTransfer
+    ) {
+        List<KeyAndValue> keyAndValueList = new ArrayList<>();
+        keyAndValueList.add(new KeyAndValue("idAccountSource", idAccountSource.toString()));
+        keyAndValueList.add(new KeyAndValue("label", label));
+        keyAndValueList.add(new KeyAndValue("transferDatetime", transferDatetime.toString()));
+        keyAndValueList.add(new KeyAndValue("reference", reference));
+        keyAndValueList.add(new KeyAndValue("destinationAccountNumber", destinationAccountNumber));
+        keyAndValueList.add(new KeyAndValue("id", idTransfer.toString()));
+
+        return ResponseEntity.ok(transferService.findManyByIdAccountSource(keyAndValueList));
     }
 }

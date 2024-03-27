@@ -1,11 +1,14 @@
 package my_bank.controller;
 
 import lombok.AllArgsConstructor;
+import my_bank.model.KeyAndValue;
 import my_bank.model.entity.Balance;
 import my_bank.service.BalanceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -36,7 +39,19 @@ public class BalanceController {
         return ResponseEntity.ok(balanceService.deleteById(id));
     }
     @GetMapping("/account/{idAccount}/balances")
-    public ResponseEntity<List<Balance>> findByIdAccount(@PathVariable int idAccount) {
-        return ResponseEntity.ok(balanceService.findManyByIdAccount(idAccount));
+    public ResponseEntity<List<Balance>> findByIdAccount(
+            @PathVariable Integer idAccount,
+            @RequestParam(required = false) Integer idBalance,
+            @RequestParam(required = false) LocalDateTime balanceDatetime
+            ) {
+        List<KeyAndValue> keyAndValueList = new ArrayList<>();
+        keyAndValueList.add(new KeyAndValue("idAccount", idAccount.toString()));
+        if (idBalance != null) {
+            keyAndValueList.add(new KeyAndValue("id", idBalance.toString()));
+        }
+        if (balanceDatetime != null) {
+            keyAndValueList.add(new KeyAndValue("balanceDatetime", balanceDatetime.toString()));
+        }
+        return ResponseEntity.ok(balanceService.findManyByIdAccount(keyAndValueList));
     }
 }
