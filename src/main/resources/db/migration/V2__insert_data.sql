@@ -80,15 +80,15 @@ WHERE NOT EXISTS (SELECT 1 FROM transfer WHERE transfer.reference = new_transfer
 INSERT INTO transfer_category (name, category_type, id_transfer, comment)
 SELECT *
 FROM (VALUES ('Salary', 'INCOME', 1, NULL),
-             ('Rent', 'EXPENSES', 2, NULL),
+             ('Rent', 'EXPENSE', 2, NULL),
              ('Freelance', 'INCOME', 3, NULL),
-             ('Groceries', 'EXPENSES', 4, NULL),
+             ('Groceries', 'EXPENSE', 4, NULL),
              ('Dividends', 'INCOME', 5, NULL),
-             ('Utilities', 'EXPENSES', 6, NULL),
+             ('Utilities', 'EXPENSE', 6, NULL),
              ('Sale', 'INCOME', 7, NULL),
-             ('Transport', 'EXPENSES', 8, NULL),
+             ('Transport', 'EXPENSE', 8, NULL),
              ('Other', 'INCOME', 9, 'Other income sources'),
-             ('Other', 'EXPENSES', 10, 'Other expenses')) AS new_transfer_category(name, type, id_transfer, comment)
+             ('Other', 'EXPENSE', 10, 'Other expenses')) AS new_transfer_category(name, type, id_transfer, comment)
 WHERE NOT EXISTS (SELECT 1
                   FROM transfer_category
                   WHERE transfer_category.id_transfer = new_transfer_category.id_transfer);
