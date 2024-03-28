@@ -234,10 +234,9 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         try {
             connection = dbConnect.createConnection();
             String queryConstraint = "";
-            String key = null;
-            String value = null;
-            Integer id = null;
-            int count = 0;
+            String key;
+            String value;
+            Integer id;
 
             if (keyAndValueList != null) {
                 for (KeyAndValue keyAndValue : keyAndValueList) {
@@ -259,8 +258,9 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
                                     key, id
                             );
                         } else {
-                            queryConstraint += " ? = ? ";
-                            count += 2;
+                            queryConstraint += String.format(
+                                    " %s = '%s' ",
+                                    key, value);
                         }
                     }
                 }
@@ -268,13 +268,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
 
             String query = "SELECT * FROM " + convertToSnakeCase(className) + queryConstraint;
             preparedStatement = connection.prepareStatement(query);
-            if (id == null && key != null) {
-                for (int i = 1; i < count; i++) {
-                    preparedStatement.setObject(i, key);
-                    preparedStatement.setObject(i+1, value);
-                }
 
-            }
             resultSet = preparedStatement.executeQuery();
 
             T data = null;

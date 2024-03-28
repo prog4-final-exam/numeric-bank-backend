@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static my_bank.repository.EnumConverter.convertStringToEnum;
+
 @RestController
 @CrossOrigin
 @AllArgsConstructor
@@ -44,7 +46,7 @@ public class TransactionController {
             @PathVariable Integer idAccount,
             @RequestParam(required = false) LocalDateTime transactionDatetime,
             @RequestParam(required = false) Integer idTransaction,
-            @RequestParam(required = false) TransactionType transactionType
+            @RequestParam(required = false) String transactionType
             ) {
        List<KeyAndValue> keyAndValueList = new ArrayList<>();
        keyAndValueList.add(new KeyAndValue("idAccount", idAccount.toString()));
@@ -55,7 +57,7 @@ public class TransactionController {
            keyAndValueList.add(new KeyAndValue("transactionDatetime", transactionDatetime.toString()));
        }
        if (transactionType != null) {
-           keyAndValueList.add(new KeyAndValue("transactionType", transactionType.toString()));
+           keyAndValueList.add(new KeyAndValue("transactionType", transactionType));
        }
        return ResponseEntity.ok(transactionService.findManyByKey(keyAndValueList));
     }
