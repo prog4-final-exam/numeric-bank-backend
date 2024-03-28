@@ -14,7 +14,7 @@ import my_bank.model.Enum.TransactionType;
 public class Transaction implements Serializable {
     private int id;
     private double amount;
-    private LocalDateTime transactionDateTime;
+    private LocalDateTime transactionDatetime;
     private int idAccount;
     private TransactionType transactionType;
 }

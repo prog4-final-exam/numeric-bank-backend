@@ -48,4 +48,7 @@ public class TransactionService {
                 List.of(new KeyAndValue("idAccount", idAccount.toString()))
         );
     }
+    public List<Transaction> findManyByKey(List<KeyAndValue> keyAndValueList) {
+        return transactionAutoCrudOperation.findManyByKey(keyAndValueList);
+    }
 }
