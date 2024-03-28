@@ -48,10 +48,15 @@ public class TransactionController {
             ) {
        List<KeyAndValue> keyAndValueList = new ArrayList<>();
        keyAndValueList.add(new KeyAndValue("idAccount", idAccount.toString()));
-       keyAndValueList.add(new KeyAndValue("id", idTransaction.toString()));
-       keyAndValueList.add(new KeyAndValue("transactionDatetime", transactionDatetime.toString()));
-       keyAndValueList.add(new KeyAndValue("transactionType", transactionType.toString()));
-
+       if (idTransaction != null) {
+           keyAndValueList.add(new KeyAndValue("id", idTransaction.toString()));
+       }
+       if (transactionDatetime != null) {
+           keyAndValueList.add(new KeyAndValue("transactionDatetime", transactionDatetime.toString()));
+       }
+       if (transactionType != null) {
+           keyAndValueList.add(new KeyAndValue("transactionType", transactionType.toString()));
+       }
        return ResponseEntity.ok(transactionService.findManyByKey(keyAndValueList));
     }
 }

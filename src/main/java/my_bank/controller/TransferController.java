@@ -49,12 +49,21 @@ public class TransferController {
     ) {
         List<KeyAndValue> keyAndValueList = new ArrayList<>();
         keyAndValueList.add(new KeyAndValue("idAccountSource", idAccountSource.toString()));
-        keyAndValueList.add(new KeyAndValue("label", label));
-        keyAndValueList.add(new KeyAndValue("transferDatetime", transferDatetime.toString()));
-        keyAndValueList.add(new KeyAndValue("reference", reference));
-        keyAndValueList.add(new KeyAndValue("destinationAccountNumber", destinationAccountNumber));
-        keyAndValueList.add(new KeyAndValue("id", idTransfer.toString()));
-
+        if (label != null) {
+            keyAndValueList.add(new KeyAndValue("label", label));
+        }
+        if (transferDatetime != null) {
+            keyAndValueList.add(new KeyAndValue("transferDatetime", transferDatetime.toString()));
+        }
+        if (reference != null) {
+            keyAndValueList.add(new KeyAndValue("reference", reference));
+        }
+        if (destinationAccountNumber != null) {
+            keyAndValueList.add(new KeyAndValue("destinationAccountNumber", destinationAccountNumber));
+        }
+        if (idTransfer != null) {
+            keyAndValueList.add(new KeyAndValue("id", idTransfer.toString()));
+        }
         return ResponseEntity.ok(transferService.findManyByIdAccountSource(keyAndValueList));
     }
 }
