@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static my_bank.model.Enum.FindSourceType.TABLE;
+
 @Service
 public class AccountService {
     AutoCrudOperation<Account> accountAutoCrudOperation = new AutoCrudOperation<>(new Account());
@@ -17,7 +19,7 @@ public class AccountService {
     }
     public Account findById(Integer id) {
         return accountAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString()))
+                List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
     public Account save(Account toSave) {

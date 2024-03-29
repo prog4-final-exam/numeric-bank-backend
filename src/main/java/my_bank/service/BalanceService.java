@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static my_bank.model.Enum.FindSourceType.TABLE;
+
 @Service
 public class BalanceService {
     AutoCrudOperation<Balance> balanceAutoCrudOperation = new AutoCrudOperation<>(new Balance());
@@ -16,7 +18,7 @@ public class BalanceService {
     }
     public Balance findById(Integer id) {
         return balanceAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString()))
+                List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
     public Balance save(Balance toSave) {
@@ -30,15 +32,15 @@ public class BalanceService {
     }
     public Balance findLastOneByIdAccount(Integer idAccount) {
         return balanceAutoCrudOperation.findLastOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString()))
+                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
         );
     }
     public Balance findFirstOneByIdAccount(Integer idAccount) {
         return balanceAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString()))
+                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
         );
     }
     public List<Balance> findManyByIdAccount(List<KeyAndValue> keyAndValueList) {
-        return balanceAutoCrudOperation.findManyByKey(keyAndValueList);
+        return balanceAutoCrudOperation.findManyByKey(keyAndValueList, TABLE, null);
     }
 }

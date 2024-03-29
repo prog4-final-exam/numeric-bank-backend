@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static my_bank.model.Enum.FindSourceType.TABLE;
+
 @Service
 public class TransferService {
     AutoCrudOperation<Transfer> transferAutoCrudOperation = new AutoCrudOperation<>(new Transfer());
@@ -18,7 +20,7 @@ public class TransferService {
     }
     public Transfer findById(Integer id) {
         return transferAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString()))
+                List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
     public Transfer save(Transfer toSave) {
@@ -35,16 +37,16 @@ public class TransferService {
         return transferAutoCrudOperation.deleteById(id);
     }
     public List<Transfer> findManyByIdAccountSource(List<KeyAndValue> keyAndValueList) {
-        return transferAutoCrudOperation.findManyByKey(keyAndValueList);
+        return transferAutoCrudOperation.findManyByKey(keyAndValueList, TABLE, null);
     }
     public Transfer findFirstOneByIdAccountSource(Integer idAccountSource) {
         return transferAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString()))
+                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString())), TABLE, null
         );
     }
     public Transfer findLastOneByIdAccountSource(Integer idAccountSource) {
         return transferAutoCrudOperation.findLastOneByKey(
-                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString()))
+                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString())), TABLE, null
         );
     }
 }

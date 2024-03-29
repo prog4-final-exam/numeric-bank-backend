@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static my_bank.model.Enum.FindSourceType.TABLE;
+
 @Service
 public class TransactionService {
     AutoCrudOperation<Transaction> transactionAutoCrudOperation = new AutoCrudOperation<>(new Transaction());
@@ -17,7 +19,7 @@ public class TransactionService {
     }
     public Transaction findById(Integer id) {
         return transactionAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString()))
+                List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
     public Transaction save(Transaction toSave) {
@@ -35,20 +37,20 @@ public class TransactionService {
     }
     public Transaction findLastOneByIdAccount(Integer idAccount) {
         return transactionAutoCrudOperation.findLastOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString()))
+                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
         );
     }
     public Transaction findFirstOneByIdAccount(Integer idAccount) {
         return transactionAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString()))
+                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
         );
     }
     public List<Transaction> findManyByIdAccount(Integer idAccount) {
         return transactionAutoCrudOperation.findManyByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString()))
+                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
         );
     }
     public List<Transaction> findManyByKey(List<KeyAndValue> keyAndValueList) {
-        return transactionAutoCrudOperation.findManyByKey(keyAndValueList);
+        return transactionAutoCrudOperation.findManyByKey(keyAndValueList, TABLE, null);
     }
 }

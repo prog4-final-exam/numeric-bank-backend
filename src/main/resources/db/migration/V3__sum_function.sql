@@ -27,11 +27,11 @@ BEGIN
             WHERE t.id_account_source = account_id
               AND tc.category_type = type_category
               AND t.transfer_datetime BETWEEN start_date AND end_date
-            GROUP BY tc.name, TO_CHAR(t.transfer_datetime, 'YYYY-MM');
+            GROUP BY tc.name, CAST(TO_CHAR(t.transfer_datetime, 'YYYY-MM') AS VARCHAR);
     ELSE
         RETURN QUERY
             SELECT tc.name                                    AS category,
-                   TO_CHAR(t.transfer_datetime, 'YYYY-MM-DD') AS period,
+                   CAST(TO_CHAR(t.transfer_datetime, 'YYYY-MM-DD') AS VARCHAR) AS period,
                    SUM(t.amount)                              AS total_amount
             FROM transfer t
                      JOIN
@@ -39,7 +39,7 @@ BEGIN
             WHERE t.id_account_source = account_id
               AND tc.category_type = type_category
               AND t.transfer_datetime BETWEEN start_date AND end_date
-            GROUP BY tc.name, TO_CHAR(t.transfer_datetime, 'YYYY-MM-DD');
+            GROUP BY tc.name, CAST(TO_CHAR(t.transfer_datetime, 'YYYY-MM-DD') AS VARCHAR);
     END IF;
 END;
 $$

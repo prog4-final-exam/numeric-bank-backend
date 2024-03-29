@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static my_bank.model.Enum.FindSourceType.TABLE;
+
 @Service
 public class TransferCategoryService {
     AutoCrudOperation<TransferCategory> transferCategoryAutoCrudOperation = new AutoCrudOperation<>(new TransferCategory());
@@ -16,7 +18,7 @@ public class TransferCategoryService {
     }
     public TransferCategory findById(Integer id) {
         return transferCategoryAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString()))
+                List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
     public TransferCategory save(TransferCategory toSave) {
@@ -30,7 +32,7 @@ public class TransferCategoryService {
     }
     public TransferCategory findOneByIdTransfer(Integer idTransfer) {
         return transferCategoryAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idTransfer", idTransfer.toString()))
+                List.of(new KeyAndValue("idTransfer", idTransfer.toString())), TABLE, null
         );
     }
 }
