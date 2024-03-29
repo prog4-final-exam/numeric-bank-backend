@@ -3,13 +3,17 @@ package my_bank.repository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import my_bank.dbConnection.DbConnect;
+import my_bank.model.Enum.FindSourceType;
 import my_bank.model.GenericModel;
 import my_bank.model.KeyAndValue;
 
+import static my_bank.model.Enum.FindSourceType.FUNCTION;
+import static my_bank.model.Enum.FindSourceType.TABLE;
 import static my_bank.repository.CaseConverter.convertToSnakeCase;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -198,7 +202,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
 
     @Override
     public List<T> findAll() {
-        List<T> dataList = find(null);
+        List<T> dataList = find(null, null, null);
         if (dataList.getFirst() == null) {
             dataList.clear();
         }
@@ -206,20 +210,20 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
     }
 
     @Override
-    public List<T> findManyByKey(List<KeyAndValue> keyAndValueList) {
-        return find(keyAndValueList);
+    public List<T> findManyByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object params) {
+        return find(keyAndValueList, findSourceType, params);
     }
 
     @Override
-    public T findFirstOneByKey(List<KeyAndValue> keyAndValueList) {
-        return find(keyAndValueList).getFirst();
+    public T findFirstOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj) {
+        return find(keyAndValueList, findSourceType, null).getFirst();
     }
     @Override
-    public T findLastOneByKey(List<KeyAndValue> keyAndValueList) {
-        return find(keyAndValueList).getLast();
+    public T findLastOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj) {
+        return find(keyAndValueList, findSourceType, paramsObj).getLast();
     }
 
-    private List<T> find(List<KeyAndValue> keyAndValueList) {
+    private List<T> find(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj) {
         DbConnect dbConnect = new DbConnect();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -231,12 +235,26 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         List<T> dataList = new ArrayList<>();
         dataList.add(null);
 
+        Class<?> paramsClazz = paramsObj.getClass();
+        Field[] paramsFields = paramsClazz.getDeclaredFields();
+
         try {
             connection = dbConnect.createConnection();
             String queryConstraint = "";
             String key;
-            String value;
+            String value = "";
             Integer id;
+            String sourceName = convertToSnakeCase(className);
+            String params = "";
+            //int statementCount = 0;
+
+            if (findSourceType == FUNCTION && paramsObj != null) {
+                //int paramsCount = ;
+                //statementCount = paramsCount;
+                params += ",? ".repeat(paramsFields.length).substring(1);
+                sourceName = "get_" + sourceName
+                        + String.format("(%s)", params);
+            }
 
             if (keyAndValueList != null) {
                 for (KeyAndValue keyAndValue : keyAndValueList) {
@@ -266,8 +284,17 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
                 }
             }
 
-            String query = "SELECT * FROM " + convertToSnakeCase(className) + queryConstraint;
+            String query = "SELECT * FROM " + sourceName + queryConstraint;
             preparedStatement = connection.prepareStatement(query);
+
+            if (findSourceType == FUNCTION && paramsObj != null) {
+                int i = 1;
+                for (Field field : paramsFields) {
+                    field.setAccessible(true);
+                    preparedStatement.setObject(i, field.get(paramsObj));
+                    i++;
+                }
+            }
 
             resultSet = preparedStatement.executeQuery();
 
