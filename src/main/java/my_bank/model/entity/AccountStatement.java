@@ -11,12 +11,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class AccountStatement implements Serializable {
-    private int id;
     private LocalDate date;
     private String reference;
     private String reason;
     private double creditAmount;
     private double debitAmount;
     private double balance;
-    private int idAccount;
 }

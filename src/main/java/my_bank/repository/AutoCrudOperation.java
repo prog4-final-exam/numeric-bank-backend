@@ -245,21 +245,24 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             connection = dbConnect.createConnection();
             String queryConstraint = "";
             String key;
-            String value = "";
+            String value;
             Integer id;
             String sourceName = convertToSnakeCase(className);
             String params = "";
-            //int statementCount = 0;
+            int paramsCount = 0;
 
-            if (findSourceType == FUNCTION && paramsObj != null) {
-                //int paramsCount = ;
-                //statementCount = parapmsCount;
-                params += ",? ".repeat(paramsFields.length).substring(1);
+            if (findSourceType == FUNCTION) {
+                if (paramsObj != null) {
+                    paramsCount = paramsFields.length;
+                } else if (keyAndValueList != null) {
+                    paramsCount = keyAndValueList.size();
+                }
+                params += ",? ".repeat(paramsCount).substring(1);
                 sourceName = "get_" + sourceName
                         + String.format("(%s)", params);
             }
 
-            if (keyAndValueList != null) {
+            if (keyAndValueList != null && findSourceType == TABLE) {
                 for (KeyAndValue keyAndValue : keyAndValueList) {
                     key = keyAndValue.getKey();
                     value = keyAndValue.getValue();
@@ -290,12 +293,24 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             String query = "SELECT * FROM " + sourceName + queryConstraint;
             preparedStatement = connection.prepareStatement(query);
 
-            if (findSourceType == FUNCTION && paramsObj != null) {
-                int i = 1;
-                for (Field field : paramsFields) {
-                    field.setAccessible(true);
-                    preparedStatement.setObject(i, field.get(paramsObj));
-                    i++;
+            if (findSourceType == FUNCTION) {
+                if (paramsObj != null) {
+                    int i = 1;
+                    for (Field field : paramsFields) {
+                        field.setAccessible(true);
+                        preparedStatement.setObject(i, field.get(paramsObj));
+                        i++;
+                    }
+                } else if (keyAndValueList != null) {
+                    for (int j = 0; j < paramsCount; j++) {
+                        key = convertToSnakeCase(keyAndValueList.get(j).getKey());
+                        value = keyAndValueList.get(j).getValue();
+                        if (key.contains("id")) {
+                            preparedStatement.setObject(j + 1, Integer.valueOf(value));
+                        } else {
+                            preparedStatement.setObject(j + 1, value);
+                        }
+                    }
                 }
             }
 
