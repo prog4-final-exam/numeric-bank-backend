@@ -234,9 +234,12 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         Field[] fields = clazz.getDeclaredFields();
         List<T> dataList = new ArrayList<>();
         dataList.add(null);
+        Field[] paramsFields = null;
 
-        Class<?> paramsClazz = paramsObj.getClass();
-        Field[] paramsFields = paramsClazz.getDeclaredFields();
+        if (paramsObj != null) {
+            Class<?> paramsClazz = paramsObj.getClass();
+            paramsFields = paramsClazz.getDeclaredFields();
+        }
 
         try {
             connection = dbConnect.createConnection();
@@ -250,7 +253,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
 
             if (findSourceType == FUNCTION && paramsObj != null) {
                 //int paramsCount = ;
-                //statementCount = paramsCount;
+                //statementCount = parapmsCount;
                 params += ",? ".repeat(paramsFields.length).substring(1);
                 sourceName = "get_" + sourceName
                         + String.format("(%s)", params);
