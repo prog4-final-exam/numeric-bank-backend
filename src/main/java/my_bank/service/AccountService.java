@@ -12,7 +12,7 @@ import static my_bank.model.Enum.FindSourceType.TABLE;
 @Service
 public class AccountService {
     AutoCrudOperation<Account> accountAutoCrudOperation = new AutoCrudOperation<>(new Account());
-    AccountNumberManager accountNumberManager = new AccountNumberManager();
+    //AccountNumberManager accountNumberManager = new AccountNumberManager();
 
     public List<Account> findAll() {
         return accountAutoCrudOperation.findAll();
@@ -23,9 +23,6 @@ public class AccountService {
         );
     }
     public Account save(Account toSave) {
-        toSave.setAccountNumber(
-                accountNumberManager.generateAccountNumber(toSave.getId())
-        );
         return accountAutoCrudOperation.save(toSave);
     }
     public boolean deleteById(int id) {
