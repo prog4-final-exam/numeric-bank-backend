@@ -43,6 +43,9 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         try {
             connection = dbConnect.createConnection();
             for (Field field : fields) {
+                if (field.getName().toLowerCase() == "id") {
+                    continue;
+                }
                 field.setAccessible(true);
                 if (!columns.isEmpty()) {
                     columns.append(", ");
