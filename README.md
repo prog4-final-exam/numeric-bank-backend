@@ -16,6 +16,10 @@ Well, the next step is running the script:
 $ db_migration.bat
 ```
 - for Linux OS or macOS, you have to give execution permissions to your script before running it:
+ - First of all, if you didn't have create the `prog_admin` user for postgres, run the next command:
+   ```sh
+     $ sudo -u postgres psql -c "CREATE USER prog_admin WITH PASSWORD 'your_password';"
+    ```
  - give the permission:
    ```sh
      $ sudo chmod +x db_migration.sh
@@ -25,5 +29,16 @@ $ db_migration.bat
     $ db_migration.sh
     ```
 > We use directly the **postgres** as username in the database  
+
+# Project configuration
+After doing the database migration, you have to set the env variables with the values:
+- **DB_URL**: jdbc:postgresql://localhost:5432/my_bank
+- **DB_USERNAME**: {USERNAME}
+- **DB_PASSWORD**: {YOUR PASSWORD}
+
+Now, you can run your application
 # Openapi specification
 You can see the **api specification** in the following link: [API Specification](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/prog4-final-exam/numeric-bank-backend/main/docs/api.yaml)
+
+# Postman Api Collection
+You can see the **postman collection** by the next link: [postman collection](https://cloudy-space-468286.postman.co/workspace/Team-Workspace~347dd70c-9202-4392-80ca-15f276bfe525/collection/28557576-0b888708-1be4-4ced-baf3-c7da89f31780?action=share&creator=28557576)
