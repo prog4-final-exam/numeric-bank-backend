@@ -154,16 +154,21 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             connection = dbConnect.createConnection();
             for (Field field : fields) {
                 field.setAccessible(true);
-                if (!dataUpdate.isEmpty()) {
-                    dataUpdate.append(", ");
+                if (field.getName().toLowerCase() == "id") {
+                    continue;
                 }
-                dataUpdate.append(
-                        String.format(
-                                "%s = ?",
-                                convertToSnakeCase(field.getName())
-                        )
-                );
-                fieldList.add(field);
+                if (field.get(toUpdate) != null) {
+                    if (!dataUpdate.isEmpty()) {
+                        dataUpdate.append(", ");
+                    }
+                    dataUpdate.append(
+                            String.format(
+                                    "%s = ?",
+                                    convertToSnakeCase(field.getName())
+                            )
+                    );
+                    fieldList.add(field);
+                }
             }
             String query = String.format(
                     "UPDATE %s SET %s WHERE id = %s",
