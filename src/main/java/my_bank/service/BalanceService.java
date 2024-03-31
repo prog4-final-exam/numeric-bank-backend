@@ -21,11 +21,13 @@ public class BalanceService {
                 List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
-    public Balance save(Balance toSave) {
-        return balanceAutoCrudOperation.save(toSave);
-    }
-    public Balance update(Balance toUpdate) {
-        return balanceAutoCrudOperation.update(toUpdate);
+    public Balance saveOrUpdate(Balance toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            return balanceAutoCrudOperation.save(toSaveOrUpdate);
+        } else if (findById(toSaveOrUpdate.getId()) != null) {
+            return balanceAutoCrudOperation.update(toSaveOrUpdate);
+        }
+        return null;
     }
     public boolean deleteById(int id) {
         return balanceAutoCrudOperation.deleteById(id);

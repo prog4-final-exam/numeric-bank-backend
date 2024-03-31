@@ -20,12 +20,7 @@ public class AccountController {
     }
     @PutMapping("/accounts")
     public ResponseEntity<Account> saveOrUpdate(@RequestBody Account toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
-            return ResponseEntity.ok(accountService.save(toSaveOrUpdate));
-        } else if (accountService.findById(toSaveOrUpdate.getId()) != null){
-            return ResponseEntity.ok(accountService.update(toSaveOrUpdate));
-        }
-        return null;
+       return ResponseEntity.ok(accountService.saveOrUpdate(toSaveOrUpdate));
     }
 
     @GetMapping("/accounts/{id}")

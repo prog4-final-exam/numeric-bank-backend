@@ -23,12 +23,7 @@ public class TransferController {
     }
     @PutMapping("/transfers")
     public ResponseEntity<Transfer> saveOrUpdate(@RequestBody Transfer toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
-            return ResponseEntity.ok(transferService.save(toSaveOrUpdate));
-        } else if (transferService.findById(toSaveOrUpdate.getId()) != null) {
-            return ResponseEntity.ok(transferService.update(toSaveOrUpdate));
-        }
-        return null;
+        return ResponseEntity.ok(transferService.saveOrUpdate(toSaveOrUpdate));
     }
 
     @GetMapping("/transfers/{id}")

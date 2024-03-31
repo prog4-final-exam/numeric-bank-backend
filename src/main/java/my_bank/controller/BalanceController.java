@@ -23,12 +23,7 @@ public class BalanceController {
     }
     @PutMapping("/balances")
     public ResponseEntity<Balance> saveOrUpdate(@RequestBody Balance toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
-            return ResponseEntity.ok(balanceService.save(toSaveOrUpdate));
-        } else if (balanceService.findById(toSaveOrUpdate.getId()) != null) {
-            return ResponseEntity.ok(balanceService.update(toSaveOrUpdate));
-        }
-        return null;
+        return ResponseEntity.ok(balanceService.saveOrUpdate(toSaveOrUpdate));
     }
 
     @GetMapping("/balances/{id}")

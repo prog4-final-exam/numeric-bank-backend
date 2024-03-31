@@ -1,7 +1,6 @@
 package my_bank.controller;
 
 import lombok.AllArgsConstructor;
-import my_bank.model.Enum.CategoryType;
 import my_bank.model.entity.TransferCategory;
 import my_bank.service.TransferCategoryService;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +20,7 @@ public class TransferCategoryController {
     }
     @PutMapping("/transfers/categories")
     public ResponseEntity<TransferCategory> saveOrUpdate(@RequestBody TransferCategory toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
-            return ResponseEntity.ok(transferCategoryService.save(toSaveOrUpdate));
-        } else if (transferCategoryService.findById(toSaveOrUpdate.getId()) != null) {
-            return ResponseEntity.ok(transferCategoryService.update(toSaveOrUpdate));
-        }
-        return null;
+        return ResponseEntity.ok(transferCategoryService.saveOrUpdate(toSaveOrUpdate));
     }
 
     @GetMapping("/transfers/categories/{id}")

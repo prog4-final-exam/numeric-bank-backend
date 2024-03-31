@@ -59,7 +59,7 @@ public class BalanceUpdater {
                                 destinationCurrentBalance.getMainBalance() + amount
                         );
                         destinationCurrentBalance.setBalanceDatetime(LocalDateTime.now());
-                        if (balanceService.save(destinationCurrentBalance) == null) {
+                        if (balanceService.saveOrUpdate(destinationCurrentBalance) == null) {
                             return false;
                         }
                     }
@@ -68,7 +68,7 @@ public class BalanceUpdater {
             }
 
             sourceCurrentBalance.setBalanceDatetime(LocalDateTime.now());
-            if (balanceService.save(sourceCurrentBalance) == null) {
+            if (balanceService.saveOrUpdate(sourceCurrentBalance) == null) {
                 return false;
             }
         }
