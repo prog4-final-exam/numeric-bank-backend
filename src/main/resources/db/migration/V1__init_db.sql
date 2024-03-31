@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS transfer
 (
     id                         serial PRIMARY KEY,
     id_account_source          INT,
-    destination_account_number VARCHAR(200) UNIQUE,
+    destination_account_number VARCHAR(200) NOT NULL,
     transfer_datetime          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     value_datetime             TIMESTAMP,
     amount                     double precision    not null,
