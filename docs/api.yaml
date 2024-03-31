@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 3.2.8
+  version: 3.3.0
 
 servers:
   - url: "http://localhost:8080"
@@ -175,7 +175,7 @@ paths:
                   body:
                     type: array
                     items:
-                      $ref: "#/components/schemas/crudBalance"
+                      $ref: "#/components/schemas/Balance"
         "400":
           $ref: "#/components/responses/400"
         "403":
@@ -191,7 +191,7 @@ paths:
         - Balance
       summary: create new balance
       requestBody:
-        $ref: "#/components/requestBodies/BalanceBody"
+        $ref: "#/components/requestBodies/PostBalanceBody"
       responses:
         200:
           description: the created account
@@ -219,7 +219,7 @@ paths:
         - Balance
       summary: update a balance
       requestBody:
-        $ref: "#/components/requestBodies/BalanceBody"
+        $ref: "#/components/requestBodies/UpdateBalanceBody"
       responses:
         "200":
           description: the updated balance
@@ -259,7 +259,7 @@ paths:
                   - $ref: "#/components/schemas/ResponseBody"
                 properties:
                   body:
-                    $ref: "#/components/schemas/crudBalance"
+                    $ref: "#/components/schemas/Balance"
         "400":
           $ref: "#/components/responses/400"
         "403":
@@ -390,7 +390,7 @@ paths:
         - Transfer_category
       summary: update an existent transfer's category
       requestBody:
-        $ref: "#/components/requestBodies/TransferCategoryBody"
+        $ref: "#/components/requestBodies/UpdateTransferCategoryBody"
       responses:
         200:
           description: the updated transfer's category
@@ -525,7 +525,34 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500"      
+          $ref: "#/components/responses/500"     
+    put:
+      tags:
+        - Transaction
+      summary: update an existent transaction
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateTransactionBody"
+      responses:
+        200:
+          description: the updated transaction
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"       
 
   /transactions/{id}:
     get:
@@ -555,35 +582,6 @@ paths:
           $ref: "#/components/responses/429"
         "500":
           $ref: "#/components/responses/500" 
-    put:
-      tags:
-        - Transaction
-      summary: update an existent transaction
-      parameters:
-        - $ref: "#/components/parameters/TransactionId"
-      requestBody:
-        $ref: "#/components/requestBodies/TransactionBody"
-      responses:
-        200:
-          description: the updated transaction
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/ResponseBody"
-                properties:
-                  body:
-                    $ref: "#/components/schemas/Transaction"
-        "400":
-          $ref: "#/components/responses/400"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          $ref: "#/components/responses/404"
-        "429":
-          $ref: "#/components/responses/429"
-        "500":
-          $ref: "#/components/responses/500"
     delete:
       tags:
         - Transaction
@@ -667,7 +665,34 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500"      
+          $ref: "#/components/responses/500" 
+    put:
+      tags:
+        - Transfer
+      summary: update an existent transfer
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateTransferBody"
+      responses:
+        200:
+          description: the updated transfer
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/Transfer"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"           
 
   /transfers/{id}:
     get:
@@ -696,36 +721,7 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500" 
-    put:
-      tags:
-        - Transfer
-      summary: update an existent transfer
-      parameters:
-        - $ref: "#/components/parameters/TransferId"
-      requestBody:
-        $ref: "#/components/requestBodies/TransferBody"
-      responses:
-        200:
-          description: the updated transaction
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/ResponseBody"
-                properties:
-                  body:
-                    $ref: "#/components/schemas/Transfer"
-        "400":
-          $ref: "#/components/responses/400"
-        "403":
-          $ref: "#/components/responses/403"
-        "404":
-          $ref: "#/components/responses/404"
-        "429":
-          $ref: "#/components/responses/429"
-        "500":
-          $ref: "#/components/responses/500"
+          $ref: "#/components/responses/500"     
     delete:
       tags:
         - Transfer
@@ -769,18 +765,30 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/updateAccount"
-    BalanceBody:
+    PostBalanceBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/crudBalance"
+            $ref: "#/components/schemas/postBalance"
+    UpdateBalanceBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/updateBalance"        
     TransferCategoryBody:
       required: true
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/crudCategory"
+    UpdateTransferCategoryBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/updateCategory"        
 
     TransactionBody:
       required: true
@@ -788,13 +796,25 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/crudTransaction" 
+    UpdateTransactionBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Transaction"        
 
     TransferBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/crudTransfer"               
+            $ref: "#/components/schemas/crudTransfer"
+    UpdateTransferBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/updateTransfer"                       
 
   ### parameters components
   parameters:
@@ -860,7 +880,13 @@ components:
 
   ### schemas components
   schemas:
-    updateAccount:
+    CommonId:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    accountUtils:
       type: object
       properties:
         firstname:
@@ -868,59 +894,49 @@ components:
           description: User's firstname
         lastname:
           type: string
-          description: User's lastname
+          description: User's lastname  
+        net_monthly_pay:
+          type: number
+          format: double
+          description: User's net month salary        
+    updateAccount:    
+      allOf:
+        - $ref: '#/components/schemas/CommonId'
+        - $ref: '#/components/schemas/accountUtils'
+
+    postAccount:
+      allOf:
+        - $ref: '#/components/schemas/accountUtils'
+      type: object
+      properties:        
         birthdate:
           type: string
           format: date
           description: User's birthday
-        net_monthly_pay:
-          type: number
-          format: double
-          description: User's net month salary
       required:
-        - firstname
-        - lastname
         - birthdate
-        - net_monthly_pay
 
-    postAccount:
+    account:
       allOf:
-        - $ref: "#/components/schemas/updateAccount"
+        - $ref: "#/components/schemas/CommonId"
+        - $ref: "#/components/schemas/accountUtils"
       type: object
       properties:
+        birthdate:
+          type: string
+          format: date
+          description: User's birthday
         overdraft_allowed:
           type: boolean
           description: Indicates whether overdraft is authorized for the user.
           example: false
         account_number:
           type: string
-          description: User's unique account number
-      required:
-        - overdraft_allowed
-        - bank_name
-        - account_number
+          description: User's unique account number  
 
-    account:
-      allOf:
-        - $ref: "#/components/schemas/updateAccount"
-        - $ref: "#/components/schemas/postAccount"
+    balanceUtils:
       type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: User's unique ID
-      required:
-        - id
-        - crudAccount
-
-    crudBalance:
-      type: object
-      properties:
-        id_account:
-          type: integer
-          format: int64
-          description: Account ID associated with this balance entry
+      properties:        
         main_balance:
           type: number
           format: double
@@ -933,17 +949,33 @@ components:
           type: number
           format: double
           description: Interest on the loan associated with the account at the balance date.
-      required:
-        - id_account
-        - main_balance
-    Balance:
+
+    updateBalance:
       allOf:
-        - $ref: "#/components/schemas/crudBalance"
+        - $ref: "#/components/schemas/CommonId"
+        - $ref: "#/components/schemas/balanceUtils"
+
+    postBalance:
+      allOf:
+        - $ref: "#/components/schemas/balanceUtils"
+      type: object
       properties:
-        id:
+        id_account:
           type: integer
           format: int64
-          description: Unique ID of the balance entry
+          description: Account ID associated with this balance entry
+      required:
+        - id_account
+    Balance:
+      allOf:
+        - $ref: "#/components/schemas/CommonId"
+        - $ref: "#/components/schemas/balanceUtils"
+      type: object  
+      properties:
+        id_account:
+          type: integer
+          format: int64
+          description: Account ID associated with this balance entry
         balance_date:
           type: string
           format: date
@@ -954,6 +986,14 @@ components:
       enum:
         - EXPENSE
         - INCOME
+    updateCategory:
+      allOf:
+        - $ref: "#/components/schemas/CommonId"
+      type: object
+      properties:
+        comment:
+          type: string
+          format: text      
 
     crudCategory:
       type: object
@@ -969,12 +1009,8 @@ components:
           type: integer
     category:
       allOf:
+        - $ref: "#/components/schemas/CommonId"
         - $ref: "#/components/schemas/crudCategory"
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
 
     transactionType:
       type: string
@@ -998,12 +1034,8 @@ components:
 
     Transaction:
       allOf:
+        - $ref: '#/components/schemas/CommonId'
         - $ref: '#/components/schemas/crudTransaction'
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
 
     transferStatus:
       type: string 
@@ -1011,7 +1043,14 @@ components:
         - CANCELLED
         - PENDING
         - COMPLETED      
-
+    updateTransfer:
+      allOf:
+        - $ref: '#/components/schemas/CommonId'
+      type: object  
+      properties: 
+        status:
+          $ref: '#/components/schemas/transferStatus'
+        
     crudTransfer:
       type: object
       properties:
@@ -1029,20 +1068,18 @@ components:
         amount:
           type: integer
           format: double
-        status:
-          $ref: '#/components/schemas/transferStatus' 
         reference:
           type: string
         is_external_bank:
           type: boolean
     Transfer:
       allOf:
-        - $ref: '#/components/schemas/crudTransfer'
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64                                           
+        - $ref: '#/components/schemas/CommonId'
+        - $ref: '#/components/schemas/crudTransfer'  
+      type: object  
+      properties: 
+        status:
+          $ref: '#/components/schemas/transferStatus'                                       
 
     ### RESPONSE MAIN LAYOUT
     ResponseStatus:
