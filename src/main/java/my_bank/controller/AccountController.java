@@ -18,16 +18,15 @@ public class AccountController {
     public ResponseEntity<List<Account>> findAll() {
         return ResponseEntity.ok(accountService.findAll());
     }
-    @PostMapping("/accounts")
-    public ResponseEntity<Account> save(@RequestBody Account toSave) {
-        return ResponseEntity.ok(accountService.save(toSave));
-    }
-
     @PutMapping("/accounts")
-    public ResponseEntity<Account> update(@RequestBody Account toUpdate) {
-        return ResponseEntity.ok(accountService.update(toUpdate));
+    public ResponseEntity<Account> saveOrUpdate(@RequestBody Account toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            return ResponseEntity.ok(accountService.save(toSaveOrUpdate));
+        } else if (accountService.findById(toSaveOrUpdate.getId()) != null){
+            return ResponseEntity.ok(accountService.update(toSaveOrUpdate));
+        }
+        return null;
     }
-
 
     @GetMapping("/accounts/{id}")
     public ResponseEntity<Account> findById(@PathVariable int id) {

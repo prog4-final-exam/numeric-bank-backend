@@ -19,15 +19,16 @@ public class TransferCategoryController {
     public ResponseEntity<List<TransferCategory>> findAll() {
         return ResponseEntity.ok(transferCategoryService.findAll());
     }
-    @PostMapping("/transfers/categories")
-    public ResponseEntity<TransferCategory> save(@RequestBody TransferCategory toSave) {
-        return ResponseEntity.ok(transferCategoryService.save(toSave));
+    @PutMapping("/transfers/categories")
+    public ResponseEntity<TransferCategory> saveOrUpdate(@RequestBody TransferCategory toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            return ResponseEntity.ok(transferCategoryService.save(toSaveOrUpdate));
+        } else if (transferCategoryService.findById(toSaveOrUpdate.getId()) != null) {
+            return ResponseEntity.ok(transferCategoryService.update(toSaveOrUpdate));
+        }
+        return null;
     }
 
-    @PutMapping("/transfers/categories")
-    public ResponseEntity<TransferCategory> update(@RequestBody TransferCategory toUpdate) {
-        return ResponseEntity.ok(transferCategoryService.update(toUpdate));
-    }
     @GetMapping("/transfers/categories/{id}")
     public ResponseEntity<TransferCategory> findById(@PathVariable int id) {
         return ResponseEntity.ok(transferCategoryService.findById(id));

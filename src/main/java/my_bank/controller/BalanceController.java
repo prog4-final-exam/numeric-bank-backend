@@ -21,15 +21,16 @@ public class BalanceController {
     public ResponseEntity<List<Balance>> findAll() {
         return ResponseEntity.ok(balanceService.findAll());
     }
-    @PostMapping("/balances")
-    public ResponseEntity<Balance> save(@RequestBody Balance toSave) {
-        return ResponseEntity.ok(balanceService.save(toSave));
+    @PutMapping("/balances")
+    public ResponseEntity<Balance> saveOrUpdate(@RequestBody Balance toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            return ResponseEntity.ok(balanceService.save(toSaveOrUpdate));
+        } else if (balanceService.findById(toSaveOrUpdate.getId()) != null) {
+            return ResponseEntity.ok(balanceService.update(toSaveOrUpdate));
+        }
+        return null;
     }
 
-    @PutMapping("/balances")
-    public ResponseEntity<Balance> update(@RequestBody Balance toUpdate) {
-        return ResponseEntity.ok(balanceService.update(toUpdate));
-    }
     @GetMapping("/balances/{id}")
     public ResponseEntity<Balance> findById(@PathVariable int id) {
         return ResponseEntity.ok(balanceService.findById(id));

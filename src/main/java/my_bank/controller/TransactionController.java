@@ -24,15 +24,16 @@ public class TransactionController {
     public ResponseEntity<List<Transaction>> findAll() {
         return ResponseEntity.ok(transactionService.findAll());
     }
-    @PostMapping("/transactions")
-    public ResponseEntity<Transaction> save(@RequestBody Transaction toSave) {
-        return ResponseEntity.ok(transactionService.save(toSave));
+    @PutMapping("/transactions")
+    public ResponseEntity<Transaction> saveOrUpdate(@RequestBody Transaction toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            return ResponseEntity.ok(transactionService.save(toSaveOrUpdate));
+        } else if (transactionService.findById(toSaveOrUpdate.getId()) != null) {
+            return ResponseEntity.ok(transactionService.update(toSaveOrUpdate));
+        }
+        return null;
     }
 
-    @PutMapping("/transactions")
-    public ResponseEntity<Transaction> update(@RequestBody Transaction toUpdate) {
-        return ResponseEntity.ok(transactionService.update(toUpdate));
-    }
     @GetMapping("/transactions/{id}")
     public ResponseEntity<Transaction> findById(@PathVariable int id) {
         return ResponseEntity.ok(transactionService.findById(id));
