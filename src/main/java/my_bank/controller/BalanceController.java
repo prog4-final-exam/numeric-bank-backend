@@ -21,15 +21,12 @@ public class BalanceController {
     public ResponseEntity<List<Balance>> findAll() {
         return ResponseEntity.ok(balanceService.findAll());
     }
-    @PostMapping("/balances")
-    public ResponseEntity<Balance> save(@RequestBody Balance toSave) {
-        return ResponseEntity.ok(balanceService.save(toSave));
+    @PutMapping("/balances")
+    public ResponseEntity<Balance> saveOrUpdate(@RequestBody Balance toSaveOrUpdate) {
+        return ResponseEntity.ok(balanceService.saveOrUpdate(toSaveOrUpdate));
+
     }
 
-    @PutMapping("/balances")
-    public ResponseEntity<Balance> update(@RequestBody Balance toUpdate) {
-        return ResponseEntity.ok(balanceService.update(toUpdate));
-    }
     @GetMapping("/balances/{id}")
     public ResponseEntity<Balance> findById(@PathVariable int id) {
         return ResponseEntity.ok(balanceService.findById(id));

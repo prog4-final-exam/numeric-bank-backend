@@ -12,7 +12,7 @@ import my_bank.model.Enum.TransactionType;
 @NoArgsConstructor
 @Data
 public class Transaction implements Serializable {
-    private int id;
+    private Integer id;
     private double amount;
     private LocalDateTime transactionDatetime;
     private int idAccount;

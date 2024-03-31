@@ -21,11 +21,13 @@ public class TransferCategoryService {
                 List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
-    public TransferCategory save(TransferCategory toSave) {
-        return transferCategoryAutoCrudOperation.save(toSave);
-    }
-    public TransferCategory update(TransferCategory toUpdate) {
-        return transferCategoryAutoCrudOperation.update(toUpdate);
+    public TransferCategory saveOrUpdate(TransferCategory toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            return transferCategoryAutoCrudOperation.save(toSaveOrUpdate);
+        } else if (findById(toSaveOrUpdate.getId()) != null) {
+            return transferCategoryAutoCrudOperation.update(toSaveOrUpdate);
+        }
+        return null;
     }
     public boolean deleteById(int id) {
         return transferCategoryAutoCrudOperation.deleteById(id);

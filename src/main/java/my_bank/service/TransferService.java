@@ -23,15 +23,17 @@ public class TransferService {
                 List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
-    public Transfer save(Transfer toSave) {
-        toSave.setReference(referenceGenerator.generateReference());
-        if (!balanceUpdater.updateBalance(toSave, null)) {
-            return null;
+    public Transfer saveOrUpdate(Transfer toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            toSaveOrUpdate.setReference(referenceGenerator.generateReference());
+            if (!balanceUpdater.updateBalance(toSaveOrUpdate, null)) {
+                return null;
+            }
+            return transferAutoCrudOperation.save(toSaveOrUpdate);
+        } else if (findById(toSaveOrUpdate.getId()) != null) {
+            return transferAutoCrudOperation.update(toSaveOrUpdate);
         }
-        return transferAutoCrudOperation.save(toSave);
-    }
-    public Transfer update(Transfer toUpdate) {
-        return transferAutoCrudOperation.update(toUpdate);
+        return null;
     }
     public boolean deleteById(int id) {
         return transferAutoCrudOperation.deleteById(id);

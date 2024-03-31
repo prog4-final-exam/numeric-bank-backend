@@ -22,15 +22,16 @@ public class TransactionService {
                 List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
-    public Transaction save(Transaction toSave) {
-        if (!balanceUpdater.updateBalance(null, toSave)) {
-            return null;
+    public Transaction saveOrUpdate(Transaction toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            if (!balanceUpdater.updateBalance(null, toSaveOrUpdate)) {
+                return null;
+            }
+            return transactionAutoCrudOperation.save(toSaveOrUpdate);
+        } else if (findById(toSaveOrUpdate.getId()) != null) {
+            return transactionAutoCrudOperation.update(toSaveOrUpdate);
         }
-
-        return transactionAutoCrudOperation.save(toSave);
-    }
-    public Transaction update(Transaction toUpdate) {
-        return transactionAutoCrudOperation.update(toUpdate);
+        return null;
     }
     public boolean deleteById(int id) {
         return transactionAutoCrudOperation.deleteById(id);

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class Balance implements Serializable {
-    private int id;
+    private Integer id;
     private double mainBalance;
     private double loanInterest;
     private double loanAmount;
