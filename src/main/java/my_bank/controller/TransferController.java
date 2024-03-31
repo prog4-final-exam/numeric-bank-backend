@@ -21,15 +21,11 @@ public class TransferController {
     public ResponseEntity<List<Transfer>> findAll() {
         return ResponseEntity.ok(transferService.findAll());
     }
-    @PostMapping("/transfers")
-    public ResponseEntity<Transfer> save(@RequestBody Transfer toSave) {
-        return ResponseEntity.ok(transferService.save(toSave));
+    @PutMapping("/transfers")
+    public ResponseEntity<Transfer> saveOrUpdate(@RequestBody Transfer toSaveOrUpdate) {
+        return ResponseEntity.ok(transferService.saveOrUpdate(toSaveOrUpdate));
     }
 
-    @PutMapping("/transfers")
-    public ResponseEntity<Transfer> update(@RequestBody Transfer toUpdate) {
-        return ResponseEntity.ok(transferService.update(toUpdate));
-    }
     @GetMapping("/transfers/{id}")
     public ResponseEntity<Transfer>  findById(@PathVariable int id) {
         return ResponseEntity.ok(transferService.findById(id));

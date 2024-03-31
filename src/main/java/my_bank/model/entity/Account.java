@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class Account implements Serializable {
-    private int id;
+    private Integer id;
     private String firstname;
     private String lastname;
     private LocalDate birthdate;

@@ -22,13 +22,15 @@ public class AccountService {
                 List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
-    public Account save(Account toSave) {
-        return accountAutoCrudOperation.save(toSave);
+    public Account saveOrUpdate(Account toSaveOrUpdate) {
+        if (toSaveOrUpdate.getId() == null) {
+            return accountAutoCrudOperation.save(toSaveOrUpdate);
+        } else if (findById(toSaveOrUpdate.getId()) != null) {
+            return accountAutoCrudOperation.update(toSaveOrUpdate);
+        }
+        return null;
     }
     public boolean deleteById(int id) {
         return accountAutoCrudOperation.deleteById(id);
-    }
-    public Account update(Account toUpdate) {
-        return accountAutoCrudOperation.update(toUpdate);
     }
 }
