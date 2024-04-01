@@ -15,12 +15,12 @@ public class Transfer implements Serializable {
     private Integer id;
     private String reason;
     private String label;
-    private double amount;
+    private Double amount;
     private LocalDateTime transferDatetime;
     private LocalDateTime valueDatetime;
     private StatusType status;
     private String destinationAccountNumber;
     private String reference;
-    private boolean isExternalBank;
-    private int idAccountSource;
+    private Boolean isExternalBank;
+    private Integer idAccountSource;
 }

@@ -13,5 +13,5 @@ import java.time.LocalDateTime;
 public class SumAmountsByCategory implements Serializable {
     private String category;
     private LocalDateTime period;
-    private double totalAmount;
+    private Double totalAmount;
 }
