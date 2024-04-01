@@ -35,7 +35,7 @@ public class BalanceUpdater {
         } else {
             Account sourceAccount = accountService.findById(idAccount);
             if (amount > sourceMainBalance) {
-                if (isTransaction && sourceAccount.isOverdraftAllowed()) {
+                if (isTransaction && sourceAccount.getOverdraftAllowed()) {
                     sourceCurrentBalance.setMainBalance(0);
                     sourceCurrentBalance.setLoanAmount((sourceMainBalance - amount) * -1);
                     sourceCurrentBalance.setLoanInterest(0.01);

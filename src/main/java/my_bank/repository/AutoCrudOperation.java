@@ -43,10 +43,13 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         try {
             connection = dbConnect.createConnection();
             for (Field field : fields) {
+                field.setAccessible(true);
                 if (field.getName().toLowerCase() == "id") {
                     continue;
                 }
-                field.setAccessible(true);
+                if (field.get(toSave) == null) {
+                    continue;
+                }
                 if (!columns.isEmpty()) {
                     columns.append(", ");
                     values.append(", ");
@@ -57,7 +60,8 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             }
             String insertQuery = String.format(
                     "INSERT INTO %s (" + columns + ") VALUES (" + values + ")",
-                    convertToSnakeCase(className));
+                    convertToSnakeCase(className)
+            );
             preparedStatement = connection.prepareStatement(insertQuery);
             int parameterIndex = 1;
             for (Field field : fieldList) {
