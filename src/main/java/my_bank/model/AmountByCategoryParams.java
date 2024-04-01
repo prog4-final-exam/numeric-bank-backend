@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class AmountByCategoryParams implements Serializable {
-    private int accountId;
+    private Integer accountId;
     private String typeCategory;
     private LocalDate startDate;
     private LocalDate endDate;

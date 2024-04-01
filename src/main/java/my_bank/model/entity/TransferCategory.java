@@ -13,5 +13,5 @@ public class TransferCategory {
     private String name;
     private CategoryType categoryType;
     private String comment;
-    private int idTransfer;
+    private Integer idTransfer;
 }

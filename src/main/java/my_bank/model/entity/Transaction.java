@@ -13,8 +13,8 @@ import my_bank.model.Enum.TransactionType;
 @Data
 public class Transaction implements Serializable {
     private Integer id;
-    private double amount;
+    private Double amount;
     private LocalDateTime transactionDatetime;
-    private int idAccount;
+    private Integer idAccount;
     private TransactionType transactionType;
 }

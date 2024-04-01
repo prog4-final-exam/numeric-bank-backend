@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @Data
 public class Balance implements Serializable {
     private Integer id;
-    private double mainBalance;
-    private double loanInterest;
-    private double loanAmount;
+    private Double mainBalance;
+    private Double loanInterest;
+    private Double loanAmount;
     private LocalDateTime balanceDatetime;
-    private int idAccount;
+    private Integer idAccount;
 }

@@ -14,7 +14,7 @@ public class AccountStatement implements Serializable {
     private LocalDate date;
     private String reference;
     private String reason;
-    private double creditAmount;
-    private double debitAmount;
-    private double balance;
+    private Double creditAmount;
+    private Double debitAmount;
+    private Double balance;
 }

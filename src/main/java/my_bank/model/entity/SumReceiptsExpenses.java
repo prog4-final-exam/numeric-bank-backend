@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 @Data
 public class SumReceiptsExpenses implements Serializable {
     private LocalDateTime period;
-    private double totalReceipts;
-    private double totalExpenses;
+    private Double totalReceipts;
+    private Double totalExpenses;
 }
