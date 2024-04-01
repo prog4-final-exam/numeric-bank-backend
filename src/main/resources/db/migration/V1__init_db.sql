@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS account
     lastname          VARCHAR(100)        NOT NULL,
     birthdate         DATE CHECK (birthdate <= CURRENT_DATE - INTERVAL '21 YEAR'),
     net_monthly_pay   DOUBLE PRECISION    NOT NULL,
-    account_number    VARCHAR(100) UNIQUE NOT NULL,
+    account_number    VARCHAR(100) DEFAULT '',
     overdraft_allowed BOOLEAN DEFAULT false
 );
 

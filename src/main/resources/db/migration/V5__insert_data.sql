@@ -1,23 +1,14 @@
-INSERT INTO account (id, firstname, lastname, birthdate, net_monthly_pay, account_number, overdraft_allowed)
-SELECT *
-FROM (VALUES (1, 'Jean', 'Dupont', DATE '1980-01-01', 3500, 'FR7630004000031234567890143', false),
-             (2, 'Marie', 'Durand', DATE '1982-02-02', 4500, 'FR7630006000011234567890189', true),
-             (3, 'Pierre', 'Martin', DATE '1975-03-03', 3000, 'FR7630007000021234567890123', false),
-             (4, 'Julie', 'Lemoine', DATE '1985-04-04', 4000, 'FR7630008000031234567890156', true),
-             (5, 'Luc', 'Bernard', DATE '1978-05-05', 5000, 'FR7630009000041234567890187', false),
-             (6, 'Sophie', 'Petit', DATE '1980-06-06', 3500, 'FR7630010000051234567890145', true),
-             (7, 'Nicolas', 'Roux', DATE '1982-07-07', 4500, 'FR7630011000061234567890178', false),
-             (8, 'Camille', 'Moreau', DATE '1979-08-08', 4000, 'FR7630012000071234567890190', true),
-             (9, 'Alexandre', 'Lefevre', DATE '1981-09-09', 4500, 'FR7630013000081234567890122', false),
-             (10, 'Sarah', 'Garnier', DATE '1983-10-10', 5000, 'FR7630014000091234567890154', true)) AS new_account(id,
-                                                                                                                    firstname,
-                                                                                                                    lastname,
-                                                                                                                    birthdate,
-                                                                                                                    net_monthly_pay,
-                                                                                                                    account_number,
-                                                                                                                    overdraft_allowed)
-WHERE NOT EXISTS (SELECT 1 FROM account WHERE account.account_number = new_account.account_number);
-
+INSERT INTO account (firstname, lastname, birthdate, net_monthly_pay, overdraft_allowed)
+VALUES ('Jean', 'Dupont', DATE '1980-01-01', 3500, false),
+     ('Marie', 'Durand', DATE '1982-02-02', 4500, true),
+     ('Pierre', 'Martin', DATE '1975-03-03', 3000, false),
+     ('Julie', 'Lemoine', DATE '1985-04-04', 4000, true),
+     ('Luc', 'Bernard', DATE '1978-05-05', 5000, false),
+     ('Sophie', 'Petit', DATE '1980-06-06', 3500, true),
+     ('Nicolas', 'Roux', DATE '1982-07-07', 4500, false),
+     ('Camille', 'Moreau', DATE '1979-08-08', 4000, true),
+     ('Alexandre', 'Lefevre', DATE '1981-09-09', 4500, false),
+     ('Sarah', 'Garnier', DATE '1983-10-10', 5000, true);
 
 INSERT INTO balance (id_account, main_balance, loan_amount, loan_interest)
 SELECT *

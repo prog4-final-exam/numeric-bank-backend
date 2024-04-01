@@ -16,6 +16,6 @@ public class Account implements Serializable {
     private String lastname;
     private LocalDate birthdate;
     private String accountNumber;
-    private boolean overdraftAllowed;
+    private Boolean overdraftAllowed;
     private double netMonthlyPay;
 }
