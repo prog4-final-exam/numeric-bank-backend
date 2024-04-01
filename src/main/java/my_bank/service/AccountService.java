@@ -12,7 +12,6 @@ import static my_bank.model.Enum.FindSourceType.TABLE;
 @Service
 public class AccountService {
     AutoCrudOperation<Account> accountAutoCrudOperation = new AutoCrudOperation<>(new Account());
-    //AccountNumberManager accountNumberManager = new AccountNumberManager();
 
     public List<Account> findAll() {
         return accountAutoCrudOperation.findAll();

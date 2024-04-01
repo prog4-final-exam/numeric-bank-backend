@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS balance
     id            serial PRIMARY KEY,
     id_account    INT,
     balance_datetime  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
-    main_balance  DOUBLE PRECISION,
+    main_balance  DOUBLE PRECISION DEFAULT 0,
     loan_amount   DOUBLE PRECISION DEFAULT 0,
     loan_interest DOUBLE PRECISION DEFAULT 0,
     FOREIGN KEY (id_account) REFERENCES account (id)
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS transaction
     id                   serial PRIMARY KEY,
     id_account           INT,
     transaction_datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    amount               DOUBLE PRECISION,
+    amount               DOUBLE PRECISION NOT NULL,
     transaction_type     VARCHAR(200) NOT NULL,
     FOREIGN KEY (id_account) REFERENCES account (id)
 );
@@ -39,13 +39,13 @@ CREATE TABLE IF NOT EXISTS transfer
     id_account_source          INT,
     destination_account_number VARCHAR(200) NOT NULL,
     transfer_datetime          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    value_datetime             TIMESTAMP,
-    amount                     double precision    not null,
+    value_datetime             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    amount                     double precision    not null default 0,
     reason                     VARCHAR(200)        not null,
     label                      varchar(200),
     status                     VARCHAR(200),
-    reference                  VARCHAR(200) unique not null,
-    is_external_bank           BOOLEAN             not null,
+    reference                  VARCHAR(200) DEFAULT '',
+    is_external_bank           BOOLEAN             not null DEFAULT false,
     FOREIGN KEY (id_account_source) REFERENCES account (id)
 );
 

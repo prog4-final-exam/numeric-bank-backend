@@ -30,13 +30,13 @@ public class BalanceUpdater {
         Balance sourceCurrentBalance = balanceService.findLastOneByIdAccount(idAccount);
         double sourceMainBalance = sourceCurrentBalance.getMainBalance();
 
-        if (transactionToSave.getTransactionType() == TransactionType.CREDIT) {
+        if (transactionToSave != null && transactionToSave.getTransactionType() == TransactionType.CREDIT) {
             sourceCurrentBalance.setMainBalance(sourceMainBalance + amount);
         } else {
             Account sourceAccount = accountService.findById(idAccount);
             if (amount > sourceMainBalance) {
                 if (isTransaction && sourceAccount.getOverdraftAllowed()) {
-                    sourceCurrentBalance.setMainBalance(0);
+                    sourceCurrentBalance.setMainBalance(Double.valueOf(0));
                     sourceCurrentBalance.setLoanAmount((sourceMainBalance - amount) * -1);
                     sourceCurrentBalance.setLoanInterest(0.01);
                 } else {
@@ -47,7 +47,7 @@ public class BalanceUpdater {
 
                 // update destination account balance
 
-                if (isTransaction == false && transferToSave.isExternalBank() == false) {
+                if (isTransaction == false && transferToSave.getIsExternalBank() == false) {
                     Integer destinationAccountId = accountNumberManager.extractAccountId(transferToSave.getDestinationAccountNumber());
                     if (destinationAccountId == null) {
                         return false;

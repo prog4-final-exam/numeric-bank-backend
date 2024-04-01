@@ -25,7 +25,6 @@ public class TransferService {
     }
     public Transfer saveOrUpdate(Transfer toSaveOrUpdate) {
         if (toSaveOrUpdate.getId() == null) {
-            toSaveOrUpdate.setReference(referenceGenerator.generateReference());
             if (!balanceUpdater.updateBalance(toSaveOrUpdate, null)) {
                 return null;
             }
