@@ -1,7 +1,6 @@
 package my_bank.controller;
 
 import lombok.AllArgsConstructor;
-import my_bank.model.Enum.TransactionType;
 import my_bank.model.KeyAndValue;
 import my_bank.model.entity.Transaction;
 import my_bank.service.TransactionService;
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static my_bank.repository.EnumConverter.convertStringToEnum;
 
 @RestController
 @CrossOrigin

@@ -1,7 +1,6 @@
 package my_bank.controller;
 
 import lombok.AllArgsConstructor;
-import my_bank.model.Enum.CategoryType;
 import my_bank.model.entity.TransferCategory;
 import my_bank.service.TransferCategoryService;
 import org.springframework.http.ResponseEntity;
