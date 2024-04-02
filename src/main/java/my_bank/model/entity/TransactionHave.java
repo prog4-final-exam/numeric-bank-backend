@@ -11,4 +11,5 @@ public class TransactionHave {
     private Integer idTransactionHave;
     private Integer idTransaction;
     private Integer idCategory;
+    private String Comment;
 }

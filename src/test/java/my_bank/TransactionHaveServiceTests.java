@@ -16,7 +16,8 @@ public class TransactionHaveServiceTests {
     static TransactionHave transferHave = new TransactionHave(
             null,
             2,
-            3
+            3,
+            null
     );
     @Test
     void crudTest() {

@@ -12,5 +12,4 @@ public class Category {
     private Integer idCategory;
     private String name;
     private CategoryType categoryType;
-    private String comment;
 }

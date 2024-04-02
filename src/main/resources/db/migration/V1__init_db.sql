@@ -54,20 +54,21 @@ CREATE TABLE IF NOT EXISTS category
 (
     id_category          serial PRIMARY KEY,
     name        VARCHAR(100) not null,
-    category_type        VARCHAR(200) NOT NULL,
-    comment     text default null
+    category_type        VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS transfer_have
 (
     id_transfer_have serial PRIMARY KEY ,
     id_transfer int REFERENCES transfer(id_transfer),
-    id_category int REFERENCES category(id_category)
+    id_category int REFERENCES category(id_category),
+    comment     text default null
 );
 
 CREATE TABLE IF NOT EXISTS transaction_have
 (
-    id serial PRIMARY KEY ,
+    id_transaction_have serial PRIMARY KEY ,
     id_transaction int REFERENCES transaction(id_transaction),
-    id_category int REFERENCES category(id_category)
+    id_category int REFERENCES category(id_category),
+    comment     text default null
 );

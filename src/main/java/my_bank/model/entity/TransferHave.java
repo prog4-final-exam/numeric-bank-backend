@@ -11,4 +11,5 @@ public class TransferHave {
     private Integer idTransferHave;
     private Integer idTransfer;
     private Integer idCategory;
+    private String Comment;
 }

@@ -84,25 +84,24 @@ VALUES (
 );
 
 INSERT INTO
-category (
-    name, category_type, comment
+    category (
+    category_name, category_type
 )
-VALUES (
-    'Salary', 'INCOME', NULL
-),(
-   'Rent', 'EXPENSE', NULL
-), (
-    'Freelance', 'INCOME', NULL
-), (
-    'Groceries', 'EXPENSE', NULL
-), (
-    'Dividends', 'INCOME', NULL
-), (
-    'Utilities', 'EXPENSE', NULL
-), ('Sale', 'INCOME', NULL), (
-    'Transport', 'EXPENSE', NULL
-), (
-    'Other', 'INCOME', 'Other income sources'
-), (
-    'Other', 'EXPENSE', 'Other expenses'
-);
+VALUES
+('Others', 'EITHER'),
+('Food & Drinks', 'EXPENSE'),
+('Shopping', 'EXPENSE'),
+('Housing', 'EITHER'),
+('Transportation', 'EXPENSE'),
+('Vehicle', 'EITHER'),
+('Communication, PC', 'EITHER'),
+('Financial expenses', 'EXPENSE'),
+('Investments', 'INCOME'),
+('Salary', 'INCOME');
+
+INSERT INTO transaction_have(id_transaction, id_category, comment)
+VALUES
+(2, 1, 'Entertainment'),
+(7, 10, null),
+(5, 4, null),
+(12, 2, null);
