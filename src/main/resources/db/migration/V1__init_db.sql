@@ -50,12 +50,24 @@ CREATE TABLE IF NOT EXISTS transfer
 );
 
 
-CREATE TABLE IF NOT EXISTS transfer_category
+CREATE TABLE IF NOT EXISTS category
 (
     id          serial PRIMARY KEY,
     name        VARCHAR(100) not null,
     category_type        VARCHAR(200) NOT NULL,
-    comment     text default null,
-    id_transfer INT,
-    FOREIGN KEY (id_transfer) REFERENCES transfer (id)
+    comment     text default null
+);
+
+CREATE TABLE IF NOT EXISTS transfer_have
+(
+    id serial PRIMARY KEY ,
+    id_transfer int REFERENCES transfer(id),
+    id_category int REFERENCES category(id)
+);
+
+CREATE TABLE IF NOT EXISTS transaction_have
+(
+    id serial PRIMARY KEY ,
+    id_transaction int REFERENCES transaction(id),
+    id_category int REFERENCES category(id)
 );

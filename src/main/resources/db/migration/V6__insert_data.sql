@@ -11,42 +11,36 @@ VALUES ('Jean', 'Dupont', DATE '1980-01-01', 3500, false),
      ('Sarah', 'Garnier', DATE '1983-10-10', 5000, true);
 
 INSERT INTO balance (id_account, main_balance, loan_amount, loan_interest)
-SELECT *
-FROM (
-        VALUES (1, 3500, 0, 0), (2, 4500, 500, 5), (3, 3000, 0, 0), (4, 4000, 400, 4), (5, 5000, 0, 0), (6, 3500, 350, 3.5), (7, 4500, 0, 0), (8, 4000, 400, 4), (9, 4500, 0, 0), (10, 5000, 500, 5)
-    ) AS new_balance (
-        id_account, main_balance, loan_amount, loan_interest
-    )
-WHERE
-    NOT EXISTS (
-        SELECT 1
-        FROM balance
-        WHERE
-            balance.id_account = new_balance.id_account
-    );
+VALUES
+(1, 3500, 0, 0), (2, 4500, 500, 5), (3, 3000, 0, 0),
+(4, 4000, 400, 4), (5, 5000, 0, 0), (6, 3500, 350, 3.5),
+(7, 4500, 0, 0), (8, 4000, 400, 4), (9, 4500, 0, 0),
+(10, 5000, 500, 5);
 
-INSERT INTO
-    transaction (
-        id_account, amount, transaction_type
-    )
-SELECT *
-FROM (
-        VALUES (1, 100, 'CREDIT'), (2, 500, 'DEBIT'), (3, 200, 'CREDIT'), (4, 400, 'DEBIT'), (5, 300, 'CREDIT'), (6, 350, 'DEBIT'), (7, 400, 'CREDIT'), (8, 400, 'DEBIT'), (9, 450, 'CREDIT'), (10, 500, 'DEBIT'), (1, 150, 'CREDIT'), (1, 500, 'DEBIT'), (2, 200, 'CREDIT'), (2, 400, 'DEBIT'), (3, 300, 'CREDIT'), (3, 350, 'DEBIT'), (4, 400, 'CREDIT'), (4, 400, 'DEBIT'), (5, 450, 'CREDIT'), (5, 500, 'DEBIT'), (6, 100, 'CREDIT'), (6, 500, 'DEBIT'), (7, 200, 'CREDIT'), (7, 400, 'DEBIT'), (8, 300, 'CREDIT'), (8, 350, 'DEBIT'), (9, 400, 'CREDIT'), (9, 400, 'DEBIT'), (10, 450, 'CREDIT'), (10, 500, 'DEBIT')
-    ) AS new_transaction (
-        id_account, amount, transaction_type
-    )
-WHERE
-    NOT EXISTS (
-        SELECT 1
-        FROM transaction
-        WHERE
-            transaction.id_account = new_transaction.id_account
-    );
+INSERT INTO transaction (
+    id_account, amount, transaction_type
+)
+VALUES
+(1, 100, 'CREDIT'), (2, 500, 'DEBIT'), (3, 200, 'CREDIT'),
+(4, 400, 'DEBIT'), (5, 300, 'CREDIT'), (6, 350, 'DEBIT'),
+(7, 400, 'CREDIT'), (8, 400, 'DEBIT'), (9, 450, 'CREDIT'),
+(10, 500, 'DEBIT'),
+(1, 150, 'CREDIT'),(1, 500, 'DEBIT'),
+(2, 200, 'CREDIT'), (2, 400, 'DEBIT'),
+(3, 300, 'CREDIT'), (3, 350, 'DEBIT'),
+(4, 400, 'CREDIT'), (4, 400, 'DEBIT'),
+(5, 450, 'CREDIT'), (5, 500, 'DEBIT'),
+(6, 100, 'CREDIT'), (6, 500, 'DEBIT'),
+(7, 200, 'CREDIT'), (7, 400, 'DEBIT'),
+(8, 300, 'CREDIT'), (8, 350, 'DEBIT'),
+(9, 400, 'CREDIT'), (9, 400, 'DEBIT'),
+(10, 450, 'CREDIT'), (10, 500, 'DEBIT')
 
-INSERT INTO
-    transfer (
-        id_account_source, destination_account_number, amount, reason, label, status, is_external_bank
-    )
+;
+
+INSERT INTO transfer (
+    id_account_source, destination_account_number, amount, reason, label, status, is_external_bank
+)
 VALUES (
     1, 'FR7630006000011234567890189', 100, 'CREDIT', 'Transfer to internal account', 'COMPLETED', false
 ), (
@@ -90,33 +84,25 @@ VALUES (
 );
 
 INSERT INTO
-    transfer_category (
-        name, category_type, id_transfer, comment
-    )
-SELECT *
-FROM (
-        VALUES ('Salary', 'INCOME', 1, NULL), ('Rent', 'EXPENSE', 2, NULL), (
-                'Freelance', 'INCOME', 3, NULL
-            ), (
-                'Groceries', 'EXPENSE', 4, NULL
-            ), (
-                'Dividends', 'INCOME', 5, NULL
-            ), (
-                'Utilities', 'EXPENSE', 6, NULL
-            ), ('Sale', 'INCOME', 7, NULL), (
-                'Transport', 'EXPENSE', 8, NULL
-            ), (
-                'Other', 'INCOME', 9, 'Other income sources'
-            ), (
-                'Other', 'EXPENSE', 10, 'Other expenses'
-            )
-    ) AS new_transfer_category (
-        name, type, id_transfer, comment
-    )
-WHERE
-    NOT EXISTS (
-        SELECT 1
-        FROM transfer_category
-        WHERE
-            transfer_category.id_transfer = new_transfer_category.id_transfer
-    );
+category (
+    name, category_type, comment
+)
+VALUES (
+    'Salary', 'INCOME', NULL
+),(
+   'Rent', 'EXPENSE', NULL
+), (
+    'Freelance', 'INCOME', NULL
+), (
+    'Groceries', 'EXPENSE', NULL
+), (
+    'Dividends', 'INCOME', NULL
+), (
+    'Utilities', 'EXPENSE', NULL
+), ('Sale', 'INCOME', NULL), (
+    'Transport', 'EXPENSE', NULL
+), (
+    'Other', 'INCOME', 'Other income sources'
+), (
+    'Other', 'EXPENSE', 'Other expenses'
+);

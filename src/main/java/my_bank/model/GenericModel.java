@@ -11,7 +11,9 @@ public class GenericModel {
     Balance balance = new Balance();
     Transaction transaction = new Transaction();
     Transfer transfer = new Transfer();
-    TransferCategory transferCategory = new TransferCategory();
+    Category category = new Category();
+    TransactionHave transactionHave = new TransactionHave();
+    TransferHave transferHave = new TransferHave();
     AccountStatement accountStatement = new AccountStatement();
     SumAmountsByCategory sumAmountsByCategory = new SumAmountsByCategory();
     SumReceiptsExpenses sumReceiptsExpenses = new SumReceiptsExpenses();

@@ -1,7 +1,7 @@
 package my_bank.service;
 
 import my_bank.model.KeyAndValue;
-import my_bank.model.entity.TransferCategory;
+import my_bank.model.entity.Category;
 import my_bank.repository.AutoCrudOperation;
 import org.springframework.stereotype.Service;
 
@@ -10,18 +10,18 @@ import java.util.List;
 import static my_bank.model.Enum.FindSourceType.TABLE;
 
 @Service
-public class TransferCategoryService {
-    AutoCrudOperation<TransferCategory> transferCategoryAutoCrudOperation = new AutoCrudOperation<>(new TransferCategory());
+public class CategoryService {
+    AutoCrudOperation<Category> transferCategoryAutoCrudOperation = new AutoCrudOperation<>(new Category());
 
-    public List<TransferCategory> findAll() {
+    public List<Category> findAll() {
         return transferCategoryAutoCrudOperation.findAll();
     }
-    public TransferCategory findById(Integer id) {
+    public Category findById(Integer id) {
         return transferCategoryAutoCrudOperation.findFirstOneByKey(
                 List.of(new KeyAndValue("id", id.toString())), TABLE, null
         );
     }
-    public TransferCategory saveOrUpdate(TransferCategory toSaveOrUpdate) {
+    public Category saveOrUpdate(Category toSaveOrUpdate) {
         if (toSaveOrUpdate.getId() == null) {
             return transferCategoryAutoCrudOperation.save(toSaveOrUpdate);
         } else if (findById(toSaveOrUpdate.getId()) != null) {
@@ -32,9 +32,16 @@ public class TransferCategoryService {
     public boolean deleteById(int id) {
         return transferCategoryAutoCrudOperation.deleteById(id);
     }
-    public TransferCategory findOneByIdTransfer(Integer idTransfer) {
+    public Category findOneByIdTransfer(Integer idTransfer) {
         return transferCategoryAutoCrudOperation.findFirstOneByKey(
                 List.of(new KeyAndValue("idTransfer", idTransfer.toString())), TABLE, null
+        );
+    }
+    public Category findOneByIdTransaction(Integer idTransaction) {
+        return transferCategoryAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("idTransaction", idTransaction.toString())),
+                TABLE,
+                null
         );
     }
 }

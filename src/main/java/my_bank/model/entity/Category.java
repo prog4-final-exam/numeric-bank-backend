@@ -8,7 +8,7 @@ import my_bank.model.Enum.CategoryType;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TransferCategory {
+public class Category {
     private Integer id;
     private String name;
     private CategoryType categoryType;
