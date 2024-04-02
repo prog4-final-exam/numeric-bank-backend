@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 3.6.0
+  version: 3.8.0
 
 servers:
   - url: "http://localhost:8080"
@@ -446,6 +446,34 @@ paths:
           $ref: "#/components/responses/429"
         "500":
           $ref: "#/components/responses/500"
+  /transfers/{idTransfer}/category:
+    get:
+      tags:
+        - Transfer_category
+      summary: get transfer's category by the id_transfer
+      parameters:
+        - $ref: "#/components/parameters/IdTransferPath"
+      responses:
+        200:
+          description: the corresponding category
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/category"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"        
   /transfers/categories/{id}:
     get:
       tags:
@@ -473,8 +501,7 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500"
-
+          $ref: "#/components/responses/500"        
     delete:
       tags:
         - Transfer_category
@@ -761,7 +788,43 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500"           
+          $ref: "#/components/responses/500" 
+
+  /accounts/{idAccountSource}/transfers:
+    get:
+      tags:
+        - Transfer
+      summary: get list of Transfer by the id_account_source
+      description: you can filter with the label, reference, transfer_datetime, destination_account_number, or the id of the transfer
+      parameters:
+        - $ref: '#/components/parameters/IdAccountSource'
+        - $ref: '#/components/parameters/Label'
+        - $ref: '#/components/parameters/TransferDatetime'
+        - $ref: '#/components/parameters/Reference'
+        - $ref: '#/components/parameters/DestinationAccountNumber'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transfer"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"                  
 
   /transfers/{id}:
     get:
@@ -906,6 +969,12 @@ components:
       schema:
         type: string
         format: datetime  
+    IdTransferPath:
+      name: idTransfer
+      in: path
+      required: true
+      schema:
+        type: integer    
     IdTransaction:
       name: idTransaction
       in: query
@@ -949,7 +1018,44 @@ components:
       in: path
       required: true
       schema:
+        type: integer    
+    IdAccountSource:
+      name: idAccountSource
+      in: path
+      required: true
+      schema:
         type: integer        
+    IdTransferQuery:
+      name: idTransfer
+      in: query
+      required: false
+      schema:
+        type: integer 
+    Label:
+      name: label
+      in: query
+      required: false
+      schema:
+        type: string 
+    TransferDatetime:
+      name: transferDatetime
+      in: query
+      required: false
+      schema:
+        type: string
+        format: datetime  
+    Reference:
+      name: reference
+      in: query
+      required: false
+      schema:
+        type: string 
+    DestinationAccountNumber:
+      name: destinationAccountNumber
+      in: query
+      required: false
+      schema:
+        type: string                  
 
 
   ### responses component
