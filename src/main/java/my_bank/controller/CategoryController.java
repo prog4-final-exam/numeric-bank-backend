@@ -31,16 +31,4 @@ public class CategoryController {
     public ResponseEntity<Boolean> delete(@PathVariable int idCategory) {
         return ResponseEntity.ok(categoryService.deleteById(idCategory));
     }
-    @GetMapping("/transfers/{idTransfer}/category")
-    public ResponseEntity<Category> findByIdTransfer(
-            @PathVariable Integer idTransfer
-            ) {
-        return ResponseEntity.ok(categoryService.findOneByIdTransfer(idTransfer));
-    }
-    @GetMapping("/transactions/{idTransaction}/category")
-    public ResponseEntity<Category> findByIdTransaction(
-            @PathVariable Integer idTransaction
-    ) {
-        return ResponseEntity.ok(categoryService.findOneByIdTransaction(idTransaction));
-    }
 }
