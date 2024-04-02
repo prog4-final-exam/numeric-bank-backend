@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import my_bank.model.Enum.TransactionType;
+import my_bank.model.Enum.OperationType;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,5 +16,5 @@ public class Transaction implements Serializable {
     private Double amount;
     private LocalDateTime transactionDatetime;
     private Integer idAccount;
-    private TransactionType transactionType;
+    private OperationType operationType;
 }

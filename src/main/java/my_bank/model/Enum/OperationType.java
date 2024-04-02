@@ -1,6 +1,6 @@
 package my_bank.model.Enum;
 
-public enum TransactionType{
+public enum OperationType {
     CREDIT,
     DEBIT
 }

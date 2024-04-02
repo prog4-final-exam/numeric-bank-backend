@@ -2,7 +2,7 @@ package my_bank.service;
 
 import my_bank.model.entity.Account;
 import my_bank.model.entity.Balance;
-import my_bank.model.Enum.TransactionType;
+import my_bank.model.Enum.OperationType;
 import my_bank.model.entity.Transaction;
 import my_bank.model.entity.Transfer;
 
@@ -30,7 +30,7 @@ public class BalanceUpdater {
         Balance sourceCurrentBalance = balanceService.findLastOneByIdAccount(idAccount);
         double sourceMainBalance = sourceCurrentBalance.getMainBalance();
 
-        if (transactionToSave != null && transactionToSave.getTransactionType() == TransactionType.CREDIT) {
+        if (transactionToSave != null && transactionToSave.getOperationType() == OperationType.CREDIT) {
             sourceCurrentBalance.setMainBalance(sourceMainBalance + amount);
         } else {
             Account sourceAccount = accountService.findById(idAccount);

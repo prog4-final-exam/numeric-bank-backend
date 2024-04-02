@@ -18,7 +18,7 @@ VALUES
 (10, 5000, 500, 5);
 
 INSERT INTO transaction (
-    id_account, amount, transaction_type
+    id_account, amount, operation_type
 )
 VALUES
 (1, 100, 'CREDIT'), (2, 500, 'DEBIT'), (3, 200, 'CREDIT'),
@@ -39,7 +39,7 @@ VALUES
 ;
 
 INSERT INTO transfer (
-    id_account_source, destination_account_number, amount, reason, label, status, is_external_bank
+    id_account_source, destination_account_number, amount, operation_type, reason, status, is_external_bank
 )
 VALUES (
     1, 'FR7630006000011234567890189', 100, 'CREDIT', 'Transfer to internal account', 'COMPLETED', false
@@ -84,7 +84,7 @@ VALUES (
 );
 
 INSERT INTO
-    category (
+category (
     category_name, category_type
 )
 VALUES

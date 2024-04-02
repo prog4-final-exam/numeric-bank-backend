@@ -1,5 +1,6 @@
 package my_bank;
 
+import my_bank.model.Enum.OperationType;
 import my_bank.model.Enum.StatusType;
 import my_bank.model.entity.Balance;
 import my_bank.model.entity.Transfer;
@@ -31,6 +32,7 @@ public class TransferServiceTests {
             StatusType.COMPLETED,
             null,
             null,
+            OperationType.CREDIT,
             null,
             idAccountSource
     );

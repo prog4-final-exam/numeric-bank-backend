@@ -1,6 +1,6 @@
 package my_bank;
 
-import my_bank.model.Enum.TransactionType;
+import my_bank.model.Enum.OperationType;
 import my_bank.model.entity.Balance;
 import my_bank.model.entity.Transaction;
 import my_bank.service.BalanceService;
@@ -24,7 +24,7 @@ public class TransactionServiceTests {
             null,
             LocalDateTime.now(),
             idAccount,
-            TransactionType.DEBIT
+            OperationType.DEBIT
     );
 
     @Test

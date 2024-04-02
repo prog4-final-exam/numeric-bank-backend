@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import my_bank.model.Enum.StatusType;
+import my_bank.model.Enum.OperationType;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ public class Transfer implements Serializable {
     private StatusType status;
     private String destinationAccountNumber;
     private String reference;
+    private OperationType operationType;
     private Boolean isExternalBank;
     private Integer idAccountSource;
 }

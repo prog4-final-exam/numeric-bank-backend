@@ -10,6 +10,6 @@ import my_bank.model.Enum.CategoryType;
 @Data
 public class Category {
     private Integer idCategory;
-    private String name;
+    private String categoryName;
     private CategoryType categoryType;
 }
