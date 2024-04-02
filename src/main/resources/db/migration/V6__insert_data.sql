@@ -39,7 +39,7 @@ VALUES
 ;
 
 INSERT INTO transfer (
-    id_account_source, destination_account_number, amount, operation_type, reason, status, is_external_bank
+    id_account_owner, correspondant_account_number, amount, operation_type, reason, status, is_external_bank
 )
 VALUES (
     1, 'FR7630006000011234567890189', 100, 'CREDIT', 'Transfer to internal account', 'COMPLETED', false

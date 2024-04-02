@@ -5,7 +5,7 @@ DECLARE
     new_ref VARCHAR(50);
 BEGIN
     today_date := CURRENT_DATE;
-    SELECT COUNT(*) INTO ref_count FROM transfer t WHERE DATE(t.transfer_datetime) = today_date AND t.id_account_source = account_id;
+    SELECT COUNT(*) INTO ref_count FROM transfer t WHERE DATE(t.transfer_datetime) = today_date AND t.id_account_owner = account_id;
     ref_count := ref_count + 1;
     new_ref := 'VIR_' || TO_CHAR(today_date, 'YYYY_MM_DD') || '_' || LPAD(ref_count::text, 2, '0');
 
@@ -15,7 +15,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION before_insert_transfer() RETURNS TRIGGER AS $$
 BEGIN
-    NEW.reference := generate_transfer_ref(NEW.id_account_source);
+    NEW.reference := generate_transfer_ref(NEW.id_account_owner);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS transaction
 CREATE TABLE IF NOT EXISTS transfer
 (
     id_transfer                      serial PRIMARY KEY,
-    id_account_source          INT,
-    destination_account_number VARCHAR(200) NOT NULL,
+    id_account_owner          INT,
+    correspondant_account_number VARCHAR(200) NOT NULL,
     transfer_datetime          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     value_datetime             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     amount                     double precision    not null default 0,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS transfer
     reference                  VARCHAR(200) DEFAULT '',
     operation_type VARCHAR(200) NOT NULL,
     is_external_bank           BOOLEAN             not null DEFAULT false,
-    FOREIGN KEY (id_account_source) REFERENCES account (id_account)
+    FOREIGN KEY (id_account_owner) REFERENCES account (id_account)
 );
 
 

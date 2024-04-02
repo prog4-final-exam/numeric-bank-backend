@@ -34,9 +34,9 @@ public class TransferController {
     public ResponseEntity<Boolean> delete(@PathVariable int idTransfer) {
         return ResponseEntity.ok(transferService.deleteById(idTransfer));
     }
-    @GetMapping("/accounts/{idAccountSource}/transfers")
-    public ResponseEntity<List<Transfer>> findByIdAccountSource(
-            @PathVariable Integer idAccountSource,
+    @GetMapping("/accounts/{idAccountOwner}/transfers")
+    public ResponseEntity<List<Transfer>> findByIdAccountOwner(
+            @PathVariable Integer idAccountOwner,
             @RequestParam(required = false) String label,
             @RequestParam(required = false) LocalDateTime transferDatetime,
             @RequestParam(required = false) String reference,
@@ -44,7 +44,7 @@ public class TransferController {
             @RequestParam(required = false) Integer idTransfer
     ) {
         List<KeyAndValue> keyAndValueList = new ArrayList<>();
-        keyAndValueList.add(new KeyAndValue("idAccountSource", idAccountSource.toString()));
+        keyAndValueList.add(new KeyAndValue("idAccountOwner", idAccountOwner.toString()));
         if (label != null) {
             keyAndValueList.add(new KeyAndValue("label", label));
         }
@@ -60,6 +60,6 @@ public class TransferController {
         if (idTransfer != null) {
             keyAndValueList.add(new KeyAndValue("idTransfer", idTransfer.toString()));
         }
-        return ResponseEntity.ok(transferService.findManyByIdAccountSource(keyAndValueList));
+        return ResponseEntity.ok(transferService.findManyByIdAccountOwner(keyAndValueList));
     }
 }

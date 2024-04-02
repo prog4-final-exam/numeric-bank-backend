@@ -24,7 +24,7 @@ public class BalanceUpdater {
             isTransaction = true;
         } else {
             amount = transferToSave.getAmount();
-            idAccount = transferToSave.getIdAccountSource();
+            idAccount = transferToSave.getIdAccountOwner();
         }
 
         Balance sourceCurrentBalance = balanceService.findLastOneByIdAccount(idAccount);
@@ -48,7 +48,7 @@ public class BalanceUpdater {
                 // update destination account balance
 
                 if (isTransaction == false && transferToSave.getIsExternalBank() == false) {
-                    Integer destinationAccountId = accountNumberManager.extractAccountId(transferToSave.getDestinationAccountNumber());
+                    Integer destinationAccountId = accountNumberManager.extractAccountId(transferToSave.getCorrespondantAccountNumber());
                     if (destinationAccountId == null) {
                         return false;
                     } else if (accountService.findById(destinationAccountId) == null){

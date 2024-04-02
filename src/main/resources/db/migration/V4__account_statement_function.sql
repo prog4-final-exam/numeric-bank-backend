@@ -10,17 +10,17 @@ BEGIN
 	    t.reference,
 	    t.reason,
 	    CASE
-	        WHEN t.id_account_source = a.id_account THEN 0
+	        WHEN t.id_account_owner = a.id_account THEN 0
 	        ELSE t.amount
 	    END AS credit_amount,
 	    CASE
-	        WHEN t.id_account_source = a.id_account THEN t.amount
+	        WHEN t.id_account_owner = a.id_account THEN t.amount
 	        ELSE 0
 	    END AS debit_amount,
 	    b.main_balance AS balance
 	FROM
 	    account a
-	    JOIN transfer t ON a.id_account = t.id_account_source
+	    JOIN transfer t ON a.id_account = t.id_account_owner
 	    JOIN balance b ON a.id_account = b.id_account
 	WHERE
 	    a.id_account = account_id

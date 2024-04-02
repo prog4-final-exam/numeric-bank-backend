@@ -24,7 +24,7 @@ BEGIN
             FROM transfer t
                      JOIN
                  transfer_category tc ON t.id_transfer = tc.id_transfer
-            WHERE t.id_account_source = account_id
+            WHERE t.id_account_owner = account_id
               AND tc.category_type = type_category
               AND t.transfer_datetime BETWEEN start_date AND end_date
             GROUP BY tc.name, CAST(TO_CHAR(t.transfer_datetime, 'YYYY-MM') AS VARCHAR);
@@ -36,7 +36,7 @@ BEGIN
             FROM transfer t
                      JOIN
                  transfer_category tc ON t.id_transfer = tc.id_transfer
-            WHERE t.id_account_source = account_id
+            WHERE t.id_account_owner = account_id
               AND tc.category_type = type_category
               AND t.transfer_datetime BETWEEN start_date AND end_date
             GROUP BY tc.name, CAST(TO_CHAR(t.transfer_datetime, 'YYYY-MM-DD') AS VARCHAR);

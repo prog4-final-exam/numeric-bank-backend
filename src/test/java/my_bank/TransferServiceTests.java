@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class TransferServiceTests {
     TransferService transferService = new TransferService();
     BalanceService balanceService = new BalanceService();
-    static int idAccountSource = 05;
-    static int getIdAccountDestination = 8;
+    static int idAccountOwner = 05;
+    static int idAccountCorrespondant = 8;
     static Transfer toInsert;
     static Transfer inserted;
     static String wrongAccountNumber = "546545422454564";
@@ -34,11 +34,11 @@ public class TransferServiceTests {
             null,
             OperationType.CREDIT,
             null,
-            idAccountSource
+            idAccountCorrespondant
     );
     @Test
     void wrongAccountNumberTest() {
-        transfer.setDestinationAccountNumber(wrongAccountNumber);
+        transfer.setCorrespondantAccountNumber(wrongAccountNumber);
         transfer.setIsExternalBank(false);
         Transfer toInsert = transferService.saveOrUpdate(transfer);
         Assertions.assertEquals(toInsert, null);
@@ -47,15 +47,15 @@ public class TransferServiceTests {
 
     @Test
     void lowerTransferTest() {
-        Balance balance = balanceService.findLastOneByIdAccount(idAccountSource);
-        Balance balanceDestination = balanceService.findLastOneByIdAccount(getIdAccountDestination);
+        Balance balance = balanceService.findLastOneByIdAccount(idAccountOwner);
+        Balance balanceCorrespondant = balanceService.findLastOneByIdAccount(idAccountCorrespondant);
 
         transfer.setAmount(Double.valueOf(balance.getMainBalance() - 500));
-        transfer.setDestinationAccountNumber(accountNumber);
+        transfer.setCorrespondantAccountNumber(accountNumber);
         transfer.setIsExternalBank(false);
 
         toInsert = transferService.saveOrUpdate(transfer);
-        inserted = transferService.findLastOneByIdAccountSource(idAccountSource);
+        inserted = transferService.findLastOneByIdAccountOwner(idAccountOwner);
 
         toInsert.setIdTransfer(inserted.getIdTransfer());
         toInsert.setTransferDatetime(inserted.getTransferDatetime());
@@ -64,7 +64,7 @@ public class TransferServiceTests {
 
         transferService.deleteById(inserted.getIdTransfer());
         balanceService.deleteById(balance.getIdBalance());
-        balanceService.deleteById(balanceDestination.getIdBalance());
+        balanceService.deleteById(balanceCorrespondant.getIdBalance());
 
         Assertions.assertEquals(inserted, toInsert);
         System.out.println("lowerTransferTest --> OK");
@@ -72,10 +72,10 @@ public class TransferServiceTests {
 
     @Test
     void greaterTransferTest() {
-        Balance balance = balanceService.findLastOneByIdAccount(idAccountSource);
+        Balance balance = balanceService.findLastOneByIdAccount(idAccountOwner);
 
         transfer.setAmount(Double.valueOf(balance.getMainBalance() + 500));
-        transfer.setDestinationAccountNumber(accountNumber);
+        transfer.setCorrespondantAccountNumber(accountNumber);
         transfer.setIsExternalBank(false);
         toInsert = transferService.saveOrUpdate(transfer);
 
