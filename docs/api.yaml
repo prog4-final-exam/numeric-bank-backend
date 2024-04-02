@@ -2,11 +2,12 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 3.6.0
+  version: 4.1.0
 
 servers:
   - url: "http://localhost:8080"
 tags:
+  - name: Dashboard
   - name: Account
   - name: Transaction
   - name: Balance
@@ -14,6 +15,68 @@ tags:
   - name: Transfer
 
 paths:
+  ### Dashboard endpoint
+  /dashboard/receipt-and-expense:
+    get:
+      tags:
+        - Dashboard
+      summary: get total of receipts and expenses
+      requestBody:
+        $ref: "#/components/requestBodies/SumAndReceiptsBody"
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SumReceiptsExpenses"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+  /dashboard/amount-per-category:
+    get:
+      tags:
+        - Dashboard
+      summary: get total of income and expense transfer by category
+      requestBody:
+        $ref: "#/components/requestBodies/SumAmountByCategoryBody"
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SumAmountByCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"        
+    
   ### Account endpoint
   /accounts:
     get:
@@ -99,6 +162,40 @@ paths:
           $ref: "#/components/responses/429"
         "500":
           $ref: "#/components/responses/500"
+  /accounts/{accounId}/statements:
+    get:
+      tags:
+        - Account
+      summary: get statement of an given account
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AccountStatement"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"        
 
   /accounts/{id}:
     get:
@@ -446,6 +543,34 @@ paths:
           $ref: "#/components/responses/429"
         "500":
           $ref: "#/components/responses/500"
+  /transfers/{idTransfer}/category:
+    get:
+      tags:
+        - Transfer_category
+      summary: get transfer's category by the id_transfer
+      parameters:
+        - $ref: "#/components/parameters/IdTransferPath"
+      responses:
+        200:
+          description: the corresponding category
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/category"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"        
   /transfers/categories/{id}:
     get:
       tags:
@@ -473,8 +598,7 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500"
-
+          $ref: "#/components/responses/500"        
     delete:
       tags:
         - Transfer_category
@@ -761,7 +885,43 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500"           
+          $ref: "#/components/responses/500" 
+
+  /accounts/{idAccountSource}/transfers:
+    get:
+      tags:
+        - Transfer
+      summary: get list of Transfer by the id_account_source
+      description: you can filter with the label, reference, transfer_datetime, destination_account_number, or the id of the transfer
+      parameters:
+        - $ref: '#/components/parameters/IdAccountSource'
+        - $ref: '#/components/parameters/Label'
+        - $ref: '#/components/parameters/TransferDatetime'
+        - $ref: '#/components/parameters/Reference'
+        - $ref: '#/components/parameters/DestinationAccountNumber'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transfer"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"                  
 
   /transfers/{id}:
     get:
@@ -870,7 +1030,19 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Transaction"        
+            $ref: "#/components/schemas/Transaction"  
+    SumAndReceiptsBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ReceiptsAndExpensesParams" 
+    SumAmountByCategoryBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AmountByCategoryParams"                     
 
     TransferBody:
       required: true
@@ -906,6 +1078,12 @@ components:
       schema:
         type: string
         format: datetime  
+    IdTransferPath:
+      name: idTransfer
+      in: path
+      required: true
+      schema:
+        type: integer    
     IdTransaction:
       name: idTransaction
       in: query
@@ -949,7 +1127,44 @@ components:
       in: path
       required: true
       schema:
+        type: integer    
+    IdAccountSource:
+      name: idAccountSource
+      in: path
+      required: true
+      schema:
         type: integer        
+    IdTransferQuery:
+      name: idTransfer
+      in: query
+      required: false
+      schema:
+        type: integer 
+    Label:
+      name: label
+      in: query
+      required: false
+      schema:
+        type: string 
+    TransferDatetime:
+      name: transferDatetime
+      in: query
+      required: false
+      schema:
+        type: string
+        format: datetime  
+    Reference:
+      name: reference
+      in: query
+      required: false
+      schema:
+        type: string 
+    DestinationAccountNumber:
+      name: destinationAccountNumber
+      in: query
+      required: false
+      schema:
+        type: string                  
 
 
   ### responses component
@@ -1186,7 +1401,79 @@ components:
       type: object  
       properties: 
         status:
-          $ref: '#/components/schemas/transferStatus'                                       
+          $ref: '#/components/schemas/transferStatus'
+    AccountStatement:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        reference:
+          type: string   
+        reason:
+          type: string
+        credit_amount:
+          type: number
+          format: double
+        debit_amount:
+          type: number
+          format: double
+        balance:
+          type: number
+          format: double  
+    StartAndEndDate:
+     type: object
+     properties:
+       start_date:
+         type: string
+         format: date      
+       end_date:
+         type: string
+         format: date  
+    SumReceiptsExpenses:
+      type: object
+      properties:
+       period:
+         type: string
+         format: datetime
+       total_receipts:
+        type: number
+        format: double
+       total_expenses:
+        type: number
+        format: double  
+    SumAmountByCategory:
+      type: object
+      properties:
+        category:
+          type: string    
+        period:
+          type: string
+          format: datetime
+        total_amount:
+          type: number
+          format: double    
+    AmountByCategoryParams:
+      allOf:
+          - $ref: '#/components/schemas/StartAndEndDate'  
+      type: object
+      properties:
+        type_category:
+          $ref: '#/components/schemas/categoryType' 
+    ReceiptsAndExpensesParams:
+      allOf:
+          - $ref: '#/components/schemas/StartAndEndDate'
+      type: object
+      properties:
+        interval_type:
+          type: string
+          enum:
+            - month
+            - day    
+          default: month  
+             
+               
+
 
     ### RESPONSE MAIN LAYOUT
     ResponseStatus:
