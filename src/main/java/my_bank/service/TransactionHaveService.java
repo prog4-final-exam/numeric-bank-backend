@@ -15,20 +15,20 @@ public class TransactionHaveService {
     public List<TransactionHave> findAll() {
         return transactionHaveAutoCrudOperation.findAll();
     }
-    public TransactionHave findById(Integer id) {
+    public TransactionHave findById(Integer idTransactionHave) {
         return transactionHaveAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString())),
+                List.of(new KeyAndValue("idTransactionHave", idTransactionHave.toString())),
                 FindSourceType.TABLE,
                 null
         );
     }
-    public boolean deleteById(int id) {
-        return transactionHaveAutoCrudOperation.deleteById(id);
+    public boolean deleteById(int idTransactionHave) {
+        return transactionHaveAutoCrudOperation.deleteById(idTransactionHave);
     }
     public TransactionHave saveOrUpdate(TransactionHave toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
+        if (toSaveOrUpdate.getIdTransactionHave() == null) {
             return transactionHaveAutoCrudOperation.save(toSaveOrUpdate);
-        } else if (findById(toSaveOrUpdate.getId()) != null) {
+        } else if (findById(toSaveOrUpdate.getIdTransactionHave()) != null) {
             return transactionHaveAutoCrudOperation.update(toSaveOrUpdate);
         }
         return null;

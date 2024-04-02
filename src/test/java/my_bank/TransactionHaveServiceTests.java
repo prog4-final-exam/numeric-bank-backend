@@ -12,7 +12,7 @@ public class TransactionHaveServiceTests {
     static TransactionHave toInsert;
     static TransactionHave inserted;
     static TransactionHave updated;
-    static int id;
+    static int idTransactionHave;
     static TransactionHave transferHave = new TransactionHave(
             null,
             2,
@@ -22,26 +22,26 @@ public class TransactionHaveServiceTests {
     void crudTest() {
         toInsert = transactionHaveService.saveOrUpdate(transferHave);
         inserted = transactionHaveService.findAll().getLast();
-        id = inserted.getId();
-        toInsert.setId(id);
+        idTransactionHave = inserted.getIdTransactionHave();
+        toInsert.setIdTransactionHave(idTransactionHave);
 
 
         System.out.println("Insert");
         Assertions.assertEquals(inserted, toInsert);
 
         System.out.println("Find by id");
-        Assertions.assertEquals(transactionHaveService.findById(id), inserted);
+        Assertions.assertEquals(transactionHaveService.findById(idTransactionHave), inserted);
 
         System.out.println("Update");
         updated = transferHave;
-        updated.setId(id);
+        updated.setIdTransactionHave(idTransactionHave);
         updated.setIdTransaction(5);
         updated.setIdCategory(2);
 
-        Assertions.assertEquals(transactionHaveService.saveOrUpdate(updated), transactionHaveService.findById(id));
+        Assertions.assertEquals(transactionHaveService.saveOrUpdate(updated), transactionHaveService.findById(idTransactionHave));
 
         System.out.println("Delete");
-        Assertions.assertEquals(transactionHaveService.deleteById(id), true);
+        Assertions.assertEquals(transactionHaveService.deleteById(idTransactionHave), true);
 
     }
 }

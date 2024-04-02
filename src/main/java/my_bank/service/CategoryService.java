@@ -16,21 +16,21 @@ public class CategoryService {
     public List<Category> findAll() {
         return transferCategoryAutoCrudOperation.findAll();
     }
-    public Category findById(Integer id) {
+    public Category findById(Integer idCategory) {
         return transferCategoryAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString())), TABLE, null
+                List.of(new KeyAndValue("idCategory", idCategory.toString())), TABLE, null
         );
     }
     public Category saveOrUpdate(Category toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
+        if (toSaveOrUpdate.getIdCategory() == null) {
             return transferCategoryAutoCrudOperation.save(toSaveOrUpdate);
-        } else if (findById(toSaveOrUpdate.getId()) != null) {
+        } else if (findById(toSaveOrUpdate.getIdCategory()) != null) {
             return transferCategoryAutoCrudOperation.update(toSaveOrUpdate);
         }
         return null;
     }
-    public boolean deleteById(int id) {
-        return transferCategoryAutoCrudOperation.deleteById(id);
+    public boolean deleteById(int idCategory) {
+        return transferCategoryAutoCrudOperation.deleteById(idCategory);
     }
     public Category findOneByIdTransfer(Integer idTransfer) {
         return transferCategoryAutoCrudOperation.findFirstOneByKey(

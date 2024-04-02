@@ -26,13 +26,13 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.saveOrUpdate(toSaveOrUpdate));
     }
 
-    @GetMapping("/transactions/{id}")
-    public ResponseEntity<Transaction> findById(@PathVariable int id) {
-        return ResponseEntity.ok(transactionService.findById(id));
+    @GetMapping("/transactions/{idTransaction}")
+    public ResponseEntity<Transaction> findById(@PathVariable int idTransaction) {
+        return ResponseEntity.ok(transactionService.findById(idTransaction));
     }
-    @DeleteMapping("/transactions/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) {
-        return ResponseEntity.ok(transactionService.deleteById(id));
+    @DeleteMapping("/transactions/{idTransaction}")
+    public ResponseEntity<Boolean> delete(@PathVariable int idTransaction) {
+        return ResponseEntity.ok(transactionService.deleteById(idTransaction));
     }
     @GetMapping("/accounts/{idAccount}/transactions")
     public ResponseEntity<List<Transaction>> findByIdAccount(
@@ -44,7 +44,7 @@ public class TransactionController {
        List<KeyAndValue> keyAndValueList = new ArrayList<>();
        keyAndValueList.add(new KeyAndValue("idAccount", idAccount.toString()));
        if (idTransaction != null) {
-           keyAndValueList.add(new KeyAndValue("id", idTransaction.toString()));
+           keyAndValueList.add(new KeyAndValue("idTransaction", idTransaction.toString()));
        }
        if (transactionDatetime != null) {
            keyAndValueList.add(new KeyAndValue("transactionDatetime", transactionDatetime.toString()));

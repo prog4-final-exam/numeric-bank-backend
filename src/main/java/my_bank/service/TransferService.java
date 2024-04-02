@@ -12,30 +12,29 @@ import static my_bank.model.Enum.FindSourceType.TABLE;
 @Service
 public class TransferService {
     AutoCrudOperation<Transfer> transferAutoCrudOperation = new AutoCrudOperation<>(new Transfer());
-    ReferenceGenerator referenceGenerator = new ReferenceGenerator();
     BalanceUpdater balanceUpdater = new BalanceUpdater();
 
     public List<Transfer> findAll() {
         return transferAutoCrudOperation.findAll();
     }
-    public Transfer findById(Integer id) {
+    public Transfer findById(Integer idTransfer) {
         return transferAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString())), TABLE, null
+                List.of(new KeyAndValue("idTransfer", idTransfer.toString())), TABLE, null
         );
     }
     public Transfer saveOrUpdate(Transfer toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
+        if (toSaveOrUpdate.getIdTransfer() == null) {
             if (!balanceUpdater.updateBalance(toSaveOrUpdate, null)) {
                 return null;
             }
             return transferAutoCrudOperation.save(toSaveOrUpdate);
-        } else if (findById(toSaveOrUpdate.getId()) != null) {
+        } else if (findById(toSaveOrUpdate.getIdTransfer()) != null) {
             return transferAutoCrudOperation.update(toSaveOrUpdate);
         }
         return null;
     }
-    public boolean deleteById(int id) {
-        return transferAutoCrudOperation.deleteById(id);
+    public boolean deleteById(int idTransfer) {
+        return transferAutoCrudOperation.deleteById(idTransfer);
     }
     public List<Transfer> findManyByIdAccountSource(List<KeyAndValue> keyAndValueList) {
         return transferAutoCrudOperation.findManyByKey(keyAndValueList, TABLE, null);

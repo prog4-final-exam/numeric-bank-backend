@@ -26,13 +26,13 @@ public class TransferController {
         return ResponseEntity.ok(transferService.saveOrUpdate(toSaveOrUpdate));
     }
 
-    @GetMapping("/transfers/{id}")
-    public ResponseEntity<Transfer>  findById(@PathVariable int id) {
-        return ResponseEntity.ok(transferService.findById(id));
+    @GetMapping("/transfers/{idTransfer}")
+    public ResponseEntity<Transfer>  findById(@PathVariable int idTransfer) {
+        return ResponseEntity.ok(transferService.findById(idTransfer));
     }
-    @DeleteMapping("/transfers/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) {
-        return ResponseEntity.ok(transferService.deleteById(id));
+    @DeleteMapping("/transfers/{idTransfer}")
+    public ResponseEntity<Boolean> delete(@PathVariable int idTransfer) {
+        return ResponseEntity.ok(transferService.deleteById(idTransfer));
     }
     @GetMapping("/accounts/{idAccountSource}/transfers")
     public ResponseEntity<List<Transfer>> findByIdAccountSource(
@@ -58,7 +58,7 @@ public class TransferController {
             keyAndValueList.add(new KeyAndValue("destinationAccountNumber", destinationAccountNumber));
         }
         if (idTransfer != null) {
-            keyAndValueList.add(new KeyAndValue("id", idTransfer.toString()));
+            keyAndValueList.add(new KeyAndValue("idTransfer", idTransfer.toString()));
         }
         return ResponseEntity.ok(transferService.findManyByIdAccountSource(keyAndValueList));
     }

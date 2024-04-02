@@ -23,7 +23,7 @@ BEGIN
                    SUM(t.amount)                           AS total_amount
             FROM transfer t
                      JOIN
-                 transfer_category tc ON t.id = tc.id_transfer
+                 transfer_category tc ON t.id_transfer = tc.id_transfer
             WHERE t.id_account_source = account_id
               AND tc.category_type = type_category
               AND t.transfer_datetime BETWEEN start_date AND end_date
@@ -35,7 +35,7 @@ BEGIN
                    SUM(t.amount)                              AS total_amount
             FROM transfer t
                      JOIN
-                 transfer_category tc ON t.id = tc.id_transfer
+                 transfer_category tc ON t.id_transfer = tc.id_transfer
             WHERE t.id_account_source = account_id
               AND tc.category_type = type_category
               AND t.transfer_datetime BETWEEN start_date AND end_date

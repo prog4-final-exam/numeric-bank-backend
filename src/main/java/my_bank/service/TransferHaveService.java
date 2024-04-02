@@ -15,22 +15,22 @@ public class TransferHaveService {
     public List<TransferHave> findAll() {
         return transferHaveAutoCrudOperation.findAll();
     }
-    public TransferHave findById(Integer id) {
+    public TransferHave findById(Integer idTransferHave) {
        return transferHaveAutoCrudOperation.findFirstOneByKey(
-               List.of(new KeyAndValue("id", id.toString())),
+               List.of(new KeyAndValue("idTransferHave", idTransferHave.toString())),
                FindSourceType.TABLE,
                null
        ) ;
     }
     public TransferHave saveOrUpdate(TransferHave toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
+        if (toSaveOrUpdate.getIdTransferHave() == null) {
             return transferHaveAutoCrudOperation.save(toSaveOrUpdate);
-        } else if (findById(toSaveOrUpdate.getId()) != null) {
+        } else if (findById(toSaveOrUpdate.getIdTransferHave()) != null) {
             return transferHaveAutoCrudOperation.update(toSaveOrUpdate);
         }
         return null;
     }
-    public boolean deleteById(int id) {
-        return transferHaveAutoCrudOperation.deleteById(id);
+    public boolean deleteById(int idTransferHave) {
+        return transferHaveAutoCrudOperation.deleteById(idTransferHave);
     }
 }

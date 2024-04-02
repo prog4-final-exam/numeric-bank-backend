@@ -26,13 +26,13 @@ public class BalanceController {
         return ResponseEntity.ok(balanceService.saveOrUpdate(toSaveOrUpdate));
     }
 
-    @GetMapping("/balances/{id}")
-    public ResponseEntity<Balance> findById(@PathVariable int id) {
-        return ResponseEntity.ok(balanceService.findById(id));
+    @GetMapping("/balances/{idBalance}")
+    public ResponseEntity<Balance> findById(@PathVariable int idBalance) {
+        return ResponseEntity.ok(balanceService.findById(idBalance));
     }
-    @DeleteMapping("/balances/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) {
-        return ResponseEntity.ok(balanceService.deleteById(id));
+    @DeleteMapping("/balances/{idBalance}")
+    public ResponseEntity<Boolean> delete(@PathVariable int idBalance) {
+        return ResponseEntity.ok(balanceService.deleteById(idBalance));
     }
     @GetMapping("/accounts/{idAccount}/balances")
     public ResponseEntity<List<Balance>> findByIdAccount(
@@ -43,7 +43,7 @@ public class BalanceController {
         List<KeyAndValue> keyAndValueList = new ArrayList<>();
         keyAndValueList.add(new KeyAndValue("idAccount", idAccount.toString()));
         if (idBalance != null) {
-            keyAndValueList.add(new KeyAndValue("id", idBalance.toString()));
+            keyAndValueList.add(new KeyAndValue("idBalance", idBalance.toString()));
         }
         if (balanceDatetime != null) {
             keyAndValueList.add(new KeyAndValue("balanceDatetime", balanceDatetime.toString()));

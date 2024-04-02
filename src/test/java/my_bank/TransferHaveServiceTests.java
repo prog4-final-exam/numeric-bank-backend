@@ -12,7 +12,7 @@ public class TransferHaveServiceTests {
     static TransferHave toInsert;
     static TransferHave inserted;
     static TransferHave updated;
-    static int id;
+    static int idTransferHave;
     static TransferHave transferHave = new TransferHave(
             null,
             2,
@@ -22,26 +22,26 @@ public class TransferHaveServiceTests {
     void crudTest() {
         toInsert = transferHaveService.saveOrUpdate(transferHave);
         inserted = transferHaveService.findAll().getLast();
-        id = inserted.getId();
-        toInsert.setId(id);
+        idTransferHave = inserted.getIdTransferHave();
+        toInsert.setIdTransferHave(idTransferHave);
 
 
         System.out.println("Insert");
         Assertions.assertEquals(inserted, toInsert);
 
         System.out.println("Find by id");
-        Assertions.assertEquals(transferHaveService.findById(id), inserted);
+        Assertions.assertEquals(transferHaveService.findById(idTransferHave), inserted);
 
         System.out.println("Update");
         updated = transferHave;
-        updated.setId(id);
+        updated.setIdTransferHave(idTransferHave);
         updated.setIdTransfer(5);
         updated.setIdCategory(2);
 
-        Assertions.assertEquals(transferHaveService.saveOrUpdate(updated), transferHaveService.findById(id));
+        Assertions.assertEquals(transferHaveService.saveOrUpdate(updated), transferHaveService.findById(idTransferHave));
 
         System.out.println("Delete");
-        Assertions.assertEquals(transferHaveService.deleteById(id), true);
+        Assertions.assertEquals(transferHaveService.deleteById(idTransferHave), true);
 
     }
 }

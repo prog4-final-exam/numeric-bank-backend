@@ -23,12 +23,12 @@ public class AccountController {
        return ResponseEntity.ok(accountService.saveOrUpdate(toSaveOrUpdate));
     }
 
-    @GetMapping("/accounts/{id}")
-    public ResponseEntity<Account> findById(@PathVariable int id) {
-        return ResponseEntity.ok(accountService.findById(id));
+    @GetMapping("/accounts/{idAccount}")
+    public ResponseEntity<Account> findById(@PathVariable int idAccount) {
+        return ResponseEntity.ok(accountService.findById(idAccount));
     }
-    @DeleteMapping("/accounts/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) {
-        return ResponseEntity.ok(accountService.deleteById(id));
+    @DeleteMapping("/accounts/{idAccount}")
+    public ResponseEntity<Boolean> delete(@PathVariable int idAccount) {
+        return ResponseEntity.ok(accountService.deleteById(idAccount));
     }
 }

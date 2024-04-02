@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class Transfer implements Serializable {
-    private Integer id;
+    private Integer idTransfer;
     private String reason;
     private String label;
     private Double amount;

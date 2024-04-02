@@ -16,20 +16,20 @@ public class AccountService {
     public List<Account> findAll() {
         return accountAutoCrudOperation.findAll();
     }
-    public Account findById(Integer id) {
+    public Account findById(Integer idAccount) {
         return accountAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString())), TABLE, null
+                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
         );
     }
     public Account saveOrUpdate(Account toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
+        if (toSaveOrUpdate.getIdAccount() == null) {
             return accountAutoCrudOperation.save(toSaveOrUpdate);
-        } else if (findById(toSaveOrUpdate.getId()) != null) {
+        } else if (findById(toSaveOrUpdate.getIdAccount()) != null) {
             return accountAutoCrudOperation.update(toSaveOrUpdate);
         }
         return null;
     }
-    public boolean deleteById(int id) {
-        return accountAutoCrudOperation.deleteById(id);
+    public boolean deleteById(int idAccount) {
+        return accountAutoCrudOperation.deleteById(idAccount);
     }
 }

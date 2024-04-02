@@ -17,24 +17,24 @@ public class TransactionService {
     public List<Transaction> findAll() {
         return transactionAutoCrudOperation.findAll();
     }
-    public Transaction findById(Integer id) {
+    public Transaction findById(Integer idTransaction) {
         return transactionAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString())), TABLE, null
+                List.of(new KeyAndValue("idTransaction", idTransaction.toString())), TABLE, null
         );
     }
     public Transaction saveOrUpdate(Transaction toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
+        if (toSaveOrUpdate.getIdTransaction() == null) {
             if (!balanceUpdater.updateBalance(null, toSaveOrUpdate)) {
                 return null;
             }
             return transactionAutoCrudOperation.save(toSaveOrUpdate);
-        } else if (findById(toSaveOrUpdate.getId()) != null) {
+        } else if (findById(toSaveOrUpdate.getIdTransaction()) != null) {
             return transactionAutoCrudOperation.update(toSaveOrUpdate);
         }
         return null;
     }
-    public boolean deleteById(int id) {
-        return transactionAutoCrudOperation.deleteById(id);
+    public boolean deleteById(int idTransaction) {
+        return transactionAutoCrudOperation.deleteById(idTransaction);
     }
     public Transaction findLastOneByIdAccount(Integer idAccount) {
         return transactionAutoCrudOperation.findLastOneByKey(

@@ -16,21 +16,21 @@ public class BalanceService {
     public List<Balance> findAll() {
         return balanceAutoCrudOperation.findAll();
     }
-    public Balance findById(Integer id) {
+    public Balance findById(Integer idBalance) {
         return balanceAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("id", id.toString())), TABLE, null
+                List.of(new KeyAndValue("idBalance", idBalance.toString())), TABLE, null
         );
     }
     public Balance saveOrUpdate(Balance toSaveOrUpdate) {
-        if (toSaveOrUpdate.getId() == null) {
+        if (toSaveOrUpdate.getIdBalance() == null) {
             return balanceAutoCrudOperation.save(toSaveOrUpdate);
-        } else if (findById(toSaveOrUpdate.getId()) != null) {
+        } else if (findById(toSaveOrUpdate.getIdBalance()) != null) {
             return balanceAutoCrudOperation.update(toSaveOrUpdate);
         }
         return null;
     }
-    public boolean deleteById(int id) {
-        return balanceAutoCrudOperation.deleteById(id);
+    public boolean deleteById(int idBalance) {
+        return balanceAutoCrudOperation.deleteById(idBalance);
     }
     public Balance findLastOneByIdAccount(Integer idAccount) {
         return balanceAutoCrudOperation.findLastOneByKey(

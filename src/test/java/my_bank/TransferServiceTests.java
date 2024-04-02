@@ -55,14 +55,14 @@ public class TransferServiceTests {
         toInsert = transferService.saveOrUpdate(transfer);
         inserted = transferService.findLastOneByIdAccountSource(idAccountSource);
 
-        toInsert.setId(inserted.getId());
+        toInsert.setIdTransfer(inserted.getIdTransfer());
         toInsert.setTransferDatetime(inserted.getTransferDatetime());
         toInsert.setValueDatetime(inserted.getValueDatetime());
         toInsert.setReference(inserted.getReference());
 
-        transferService.deleteById(inserted.getId());
-        balanceService.deleteById(balance.getId());
-        balanceService.deleteById(balanceDestination.getId());
+        transferService.deleteById(inserted.getIdTransfer());
+        balanceService.deleteById(balance.getIdBalance());
+        balanceService.deleteById(balanceDestination.getIdBalance());
 
         Assertions.assertEquals(inserted, toInsert);
         System.out.println("lowerTransferTest --> OK");

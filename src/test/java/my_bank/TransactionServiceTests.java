@@ -46,10 +46,10 @@ public class TransactionServiceTests {
         toInsert = transactionService.saveOrUpdate(debitTransaction);
         inserted = transactionService.findLastOneByIdAccount(idAccountOverdraft);
 
-        toInsert.setId(inserted.getId());
+        toInsert.setIdTransaction(inserted.getIdTransaction());
         toInsert.setTransactionDatetime(inserted.getTransactionDatetime());
 
-        transactionService.deleteById(inserted.getId());
+        transactionService.deleteById(inserted.getIdTransaction());
         Assertions.assertEquals(inserted, toInsert);
         System.out.println("Transaction mount > Main balance && overdraft  ---> OK");
     }
@@ -62,10 +62,10 @@ public class TransactionServiceTests {
         toInsert = transactionService.saveOrUpdate(debitTransaction);
         inserted = transactionService.findLastOneByIdAccount(idAccount);
 
-        toInsert.setId(inserted.getId());
+        toInsert.setIdTransaction(inserted.getIdTransaction());
         toInsert.setTransactionDatetime(inserted.getTransactionDatetime());
 
-        transactionService.deleteById(inserted.getId());
+        transactionService.deleteById(inserted.getIdTransaction());
         Assertions.assertEquals(inserted, toInsert);
         System.out.println("Transaction amount =< Balance amount --> Ok");
     }

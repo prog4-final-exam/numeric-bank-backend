@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class TransferHave {
-    private Integer id;
+    private Integer idTransferHave;
     private Integer idTransfer;
     private Integer idCategory;
 }

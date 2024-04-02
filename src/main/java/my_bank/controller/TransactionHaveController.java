@@ -18,16 +18,16 @@ public class TransactionHaveController {
     public ResponseEntity<List<TransactionHave>> findAll() {
         return ResponseEntity.ok(transactionHaveService.findAll());
     }
-    @GetMapping("/transactions/categories/{id}")
-    public ResponseEntity<TransactionHave> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(transactionHaveService.findById(id));
+    @GetMapping("/transactions/categories/{idTransactionHave}")
+    public ResponseEntity<TransactionHave> findById(@PathVariable Integer idTransactionHave) {
+        return ResponseEntity.ok(transactionHaveService.findById(idTransactionHave));
     }
     @PutMapping("/transactions/categories")
     public ResponseEntity<TransactionHave> saveOrUpdate(@RequestBody TransactionHave toSaveOrUpdate){
         return ResponseEntity.ok(transactionHaveService.saveOrUpdate(toSaveOrUpdate));
     }
-    @DeleteMapping("/transactions/categories/{id}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable int id) {
-        return ResponseEntity.ok(transactionHaveService.deleteById(id));
+    @DeleteMapping("/transactions/categories/{idTransactionHave}")
+    public ResponseEntity<Boolean> deleteById(@PathVariable int idTransactionHave) {
+        return ResponseEntity.ok(transactionHaveService.deleteById(idTransactionHave));
     }
 }

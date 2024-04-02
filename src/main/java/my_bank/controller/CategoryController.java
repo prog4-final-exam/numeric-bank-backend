@@ -23,13 +23,13 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.saveOrUpdate(toSaveOrUpdate));
     }
 
-    @GetMapping("/categories/{id}")
-    public ResponseEntity<Category> findById(@PathVariable int id) {
-        return ResponseEntity.ok(categoryService.findById(id));
+    @GetMapping("/categories/{idCategory}")
+    public ResponseEntity<Category> findById(@PathVariable int idCategory) {
+        return ResponseEntity.ok(categoryService.findById(idCategory));
     }
-    @DeleteMapping("/categories/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) {
-        return ResponseEntity.ok(categoryService.deleteById(id));
+    @DeleteMapping("/categories/{idCategory}")
+    public ResponseEntity<Boolean> delete(@PathVariable int idCategory) {
+        return ResponseEntity.ok(categoryService.deleteById(idCategory));
     }
     @GetMapping("/transfers/{idTransfer}/category")
     public ResponseEntity<Category> findByIdTransfer(

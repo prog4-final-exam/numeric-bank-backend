@@ -9,7 +9,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION before_insert_accounts() RETURNS TRIGGER AS $$
 BEGIN
-    NEW.account_number := generate_account_number(NEW.id);
+    NEW.account_number := generate_account_number(NEW.id_account);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

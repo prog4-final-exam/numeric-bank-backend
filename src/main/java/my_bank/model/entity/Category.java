@@ -9,7 +9,7 @@ import my_bank.model.Enum.CategoryType;
 @NoArgsConstructor
 @Data
 public class Category {
-    private Integer id;
+    private Integer idCategory;
     private String name;
     private CategoryType categoryType;
     private String comment;

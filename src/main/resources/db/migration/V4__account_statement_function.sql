@@ -10,20 +10,20 @@ BEGIN
 	    t.reference,
 	    t.reason,
 	    CASE
-	        WHEN t.id_account_source = a.id THEN 0
+	        WHEN t.id_account_source = a.id_account THEN 0
 	        ELSE t.amount
 	    END AS credit_amount,
 	    CASE
-	        WHEN t.id_account_source = a.id THEN t.amount
+	        WHEN t.id_account_source = a.id_account THEN t.amount
 	        ELSE 0
 	    END AS debit_amount,
 	    b.main_balance AS balance
 	FROM
 	    account a
-	    JOIN transfer t ON a.id = t.id_account_source
-	    JOIN balance b ON a.id = b.id_account
+	    JOIN transfer t ON a.id_account = t.id_account_source
+	    JOIN balance b ON a.id_account = b.id_account
 	WHERE
-	    a.id = account_id
+	    a.id_account = account_id
 	ORDER BY DATE(t.transfer_datetime) DESC;
 END;
 $$
