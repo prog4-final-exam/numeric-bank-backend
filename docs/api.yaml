@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 4.1.2
+  version: 4.4.2
 
 servers:
   - url: "http://localhost:8080"
@@ -12,7 +12,10 @@ tags:
   - name: Transaction
   - name: Balance
   - name: Category
-  - name: Transfer
+  - name: Transfer 
+  - name: Transaction-with-category
+  - name: Transfer-with-category
+
 
 paths:
   ### Dashboard endpoint
@@ -197,13 +200,13 @@ paths:
         "500":
           $ref: "#/components/responses/500"        
 
-  /accounts/{id}:
+  /accounts/{idAccount}:
     get:
       tags:
         - Account
       summary: get account by his id
       parameters:
-        - $ref: "#/components/parameters/AccountId"
+        - $ref: "#/components/parameters/IdAccount"
       responses:
         200:
           description: the corresponding account
@@ -977,7 +980,198 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500"                           
+          $ref: "#/components/responses/500" 
+  /transactions/with-category:
+    get:
+      tags:
+        - Transaction-with-category
+      summary: get list of transactions associated with category
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TransactionWithCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+
+  /transactions/with-category/{idTransaction}:
+    get:
+     tags:
+        - Transaction-with-category 
+     summary: get transaction associated to a category by the idTransaction
+     parameters:
+        - $ref: "#/components/parameters/IdAccount"
+     responses:
+        200:
+          description: the corresponding transaction 
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/TransactionWithCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+  /accounts/{idaccount}/transactions/with-category:
+    get:
+      tags:
+        - Transaction-with-category
+      summary: get list of transactions associated with category
+      description: you can use optional query parameters to filter the answer
+      parameters:
+        - $ref: '#/components/parameters/IdAccount'
+        - $ref: '#/components/parameters/IdTransaction'
+        - $ref: '#/components/parameters/TransactionDatetime'
+        - $ref: '#/components/parameters/TransactionType'
+        - $ref: '#/components/parameters/IdCategory'
+        - $ref: '#/components/parameters/CategoryName'
+        - $ref: '#/components/parameters/CategoryType'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TransactionWithCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500" 
+  /transfers/with-category:
+    get:
+      tags:
+        - Transfer-with-category
+      summary: get list of transfers associated with category
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TransferWithCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+
+  /transfers/with-category/{idTransfer}:
+    get:
+     tags:
+        - Transfer-with-category 
+     summary: get transfer associated to a category by the idTransfer
+     parameters:
+        - $ref: "#/components/parameters/IdAccount"
+     responses:
+        200:
+          description: the corresponding transfer 
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    $ref: "#/components/schemas/TransferWithCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+  /accounts/{idaccount}/transfers/with-category:
+    get:
+      tags:
+        - Transfer-with-category
+      summary: get list of transfers associated with category
+      description: you can use optional query parameters to filter the answer
+      parameters:
+        - $ref: '#/components/parameters/IdAccount'
+        - $ref: '#/components/parameters/IdTransferQuery'
+        - $ref: '#/components/parameters/TransferDatetime'
+        - $ref: '#/components/parameters/Label'
+        - $ref: '#/components/parameters/Reference'
+        - $ref: '#/components/parameters/IdCategory'
+        - $ref: '#/components/parameters/CategoryName'
+        - $ref: '#/components/parameters/CategoryType'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TransactionWithCategory"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"                 
+
+
 
 components:
   ### requestBodies components
@@ -1059,6 +1253,12 @@ components:
 
   ### parameters components
   parameters:
+    IdCategory:
+      name: idCategory
+      in: query
+      required: false
+      schema:
+        type: integer
     IdAccount:
       name: idAccount
       in: path
@@ -1102,7 +1302,7 @@ components:
       in: query
       required: false
       schema:   
-        $ref: '#/components/schemas/transactionType' 
+        $ref: '#/components/schemas/OperationType' 
     AccountId:
       name: id
       in: path
@@ -1110,26 +1310,26 @@ components:
       schema:
         type: integer
     BalanceId:
-      name: id
+      name: idBalance
       in: path
       required: true
       schema:
         type: integer
     TransactionId:
-      name: id
+      name: idTransaction
       in: path
       required: true
       schema:
         type: integer
 
     TransferId:
-      name: id
+      name: idTransfer
       in: path
       required: true
       schema:
         type: integer    
     IdAccountSource:
-      name: idAccountSource
+      name: idAccountOwner
       in: path
       required: true
       schema:
@@ -1164,7 +1364,19 @@ components:
       in: query
       required: false
       schema:
-        type: string                  
+        type: string      
+    CategoryName: 
+      name: categoryName
+      in: query
+      required: false
+      schema:
+        type: string         
+    CategoryType: 
+      name: categoryType
+      in: query
+      required: false
+      schema:
+        type: string            
 
 
   ### responses component
@@ -1202,12 +1414,6 @@ components:
 
   ### schemas components
   schemas:
-    CommonId:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
     accountUtils:
       type: object
       properties:
@@ -1217,13 +1423,20 @@ components:
         lastname:
           type: string
           description: User's lastname  
-        net_monthly_pay:
+        netMonthlyPay:
           type: number
           format: double
-          description: User's net month salary        
+          description: User's net month salary   
+    IdAccount:
+      type: object
+      properties:
+        idAccount:
+          type: integer
+          format: int64
+
     updateAccount:    
       allOf:
-        - $ref: '#/components/schemas/CommonId'
+        - $ref: '#/components/schemas/IdAccount'
         - $ref: '#/components/schemas/accountUtils'
 
     postAccount:
@@ -1240,7 +1453,7 @@ components:
 
     account:
       allOf:
-        - $ref: "#/components/schemas/CommonId"
+        - $ref: "#/components/schemas/IdAccount"
         - $ref: "#/components/schemas/accountUtils"
       type: object
       properties:
@@ -1248,33 +1461,39 @@ components:
           type: string
           format: date
           description: User's birthday
-        overdraft_allowed:
+        overdraftAllowed:
           type: boolean
           description: Indicates whether overdraft is authorized for the user.
           example: false
-        account_number:
+        accountNumber:
           type: string
-          description: User's unique account number  
+          description: User's unique account number 
+    IdBalance:
+      type: object
+      properties:
+        idBalance:
+          type: integer
+          format: int64       
 
     balanceUtils:
       type: object
       properties:        
-        main_balance:
+        mainBalance:
           type: number
           format: double
           description: Main account balance at balance date.
-        loan_amount:
+        loanAmount:
           type: number
           format: double
           description: Amount of loan associated with the account on the balance date.
-        loan_interest:
+        loanInterest:
           type: number
           format: double
           description: Interest on the loan associated with the account at the balance date.
 
     updateBalance:
       allOf:
-        - $ref: "#/components/schemas/CommonId"
+        - $ref: "#/components/schemas/IdBalance"
         - $ref: "#/components/schemas/balanceUtils"
 
     postBalance:
@@ -1282,26 +1501,32 @@ components:
         - $ref: "#/components/schemas/balanceUtils"
       type: object
       properties:
-        id_account:
+        idAccount:
           type: integer
           format: int64
           description: Account ID associated with this balance entry
       required:
-        - id_account
+        - idAccount
     Balance:
       allOf:
-        - $ref: "#/components/schemas/CommonId"
+        - $ref: "#/components/schemas/IdBalance"
         - $ref: "#/components/schemas/balanceUtils"
       type: object  
       properties:
-        id_account:
+        idAccount:
           type: integer
           format: int64
           description: Account ID associated with this balance entry
-        balance_date:
+        balanceDatetime:
           type: string
-          format: date
+          format: datetime
           description: Date of balance entry
+    IdCategory:
+      type: object
+      properties:
+        idCategory:
+          type: integer
+          format: int64      
 
     categoryType:
       type: string
@@ -1310,29 +1535,28 @@ components:
         - INCOME
     updateCategory:
       allOf:
-        - $ref: "#/components/schemas/CommonId"
-      type: object
-      properties:
-        comment:
-          type: string
-          format: text      
+        - $ref: "#/components/schemas/IdCategory"
+        - $ref: "#/components/schemas/crudCategory"
 
     crudCategory:
       type: object
       properties:
-        name:
+        categoryName:
           type: string
         categoryType:
           $ref: "#/components/schemas/categoryType"
-        comment:
-          type: string
-          format: text
     category:
       allOf:
-        - $ref: "#/components/schemas/CommonId"
+        - $ref: "#/components/schemas/IdCategory"
         - $ref: "#/components/schemas/crudCategory"
+    IdTransaction:
+      type: object
+      properties:
+        idTransaction:
+          type: integer
+          format: int64    
 
-    transactionType:
+    OperationType:
       type: string
       enum:
         - CREDIT
@@ -1340,22 +1564,28 @@ components:
     crudTransaction:
       type: object
       properties:
-        id_account:
+        idAccount:
           type: integer
           format: int64
-        transaction_datetime:
+        transactionDatetime:
           type: string 
           format: datetime
         amount:
           type: integer
           format: double
-        type:
-          $ref: '#/components/schemas/transactionType'
+        operationType:
+          $ref: '#/components/schemas/OperationType'
 
     Transaction:
       allOf:
-        - $ref: '#/components/schemas/CommonId'
+        - $ref: '#/components/schemas/IdTransaction'
         - $ref: '#/components/schemas/crudTransaction'
+    IdTransfer:
+      type: object
+      properties:
+        idTransfer:
+          type: integer
+          format: int64     
 
     transferStatus:
       type: string 
@@ -1365,7 +1595,7 @@ components:
         - COMPLETED      
     updateTransfer:
       allOf:
-        - $ref: '#/components/schemas/CommonId'
+        - $ref: '#/components/schemas/IdTransfer'
       type: object  
       properties: 
         status:
@@ -1374,15 +1604,15 @@ components:
     crudTransfer:
       type: object
       properties:
-        id_account_source:
+        idAccountOwner:
           type: integer
           format: int64      
-        destination_account_number:
+        correspondantAccountNumber:
           type: string
-        transfer_datetime:
+        transferDatetime:
           type: string 
           format: datetime
-        value_datetime:
+        valueDatetime:
           type: string 
           format: datetime
         amount:
@@ -1390,11 +1620,17 @@ components:
           format: double
         reference:
           type: string
-        is_external_bank:
+        reason:
+          type: string
+        label:
+          type: string    
+        isExternalBank:
           type: boolean
+        operationType:  
+          $ref: '#/components/schemas/OperationType'
     Transfer:
       allOf:
-        - $ref: '#/components/schemas/CommonId'
+        - $ref: '#/components/schemas/IdTransfer'
         - $ref: '#/components/schemas/crudTransfer'  
       type: object  
       properties: 
@@ -1410,10 +1646,10 @@ components:
           type: string   
         reason:
           type: string
-        credit_amount:
+        creditAmount:
           type: number
           format: double
-        debit_amount:
+        debitAmount:
           type: number
           format: double
         balance:
@@ -1422,10 +1658,10 @@ components:
     StartAndEndDate:
      type: object
      properties:
-       start_date:
+       startDate:
          type: string
          format: date      
-       end_date:
+       endDate:
          type: string
          format: date  
     SumReceiptsExpenses:
@@ -1434,10 +1670,10 @@ components:
        period:
          type: string
          format: datetime
-       total_receipts:
+       totalReceipts:
         type: number
         format: double
-       total_expenses:
+       totalExpenses:
         type: number
         format: double  
     SumAmountByCategory:
@@ -1448,7 +1684,7 @@ components:
         period:
           type: string
           format: datetime
-        total_amount:
+        totalAmount:
           type: number
           format: double    
     AmountByCategoryParams:
@@ -1456,8 +1692,10 @@ components:
           - $ref: '#/components/schemas/StartAndEndDate'  
       type: object
       properties:
-        type_category:
+        typeCategory:
           $ref: '#/components/schemas/categoryType' 
+        accountId:
+          type: integer  
     ReceiptsAndExpensesParams:
       allOf:
           - $ref: '#/components/schemas/StartAndEndDate'
@@ -1469,7 +1707,23 @@ components:
             - month
             - day    
           default: month  
-             
+    TransactionWithCategory:
+      type: object
+      properties:
+        transaction:
+          $ref: '#/components/schemas/Transaction'    
+        category:
+          $ref: '#/components/schemas/category'             
+        comment:
+          type: string
+    TransferWithCategory:
+      properties:             
+        transfer:
+          $ref: '#/components/schemas/Transfer'    
+        category:
+          $ref: '#/components/schemas/category'    
+        comment:
+          type: string      
                
 
 
