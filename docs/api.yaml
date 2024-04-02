@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 3.8.0
+  version: 3.9.0
 
 servers:
   - url: "http://localhost:8080"
@@ -99,6 +99,40 @@ paths:
           $ref: "#/components/responses/429"
         "500":
           $ref: "#/components/responses/500"
+  /accounts/{accounId}/statements:
+    get:
+      tags:
+        - Account
+      summary: get statement of an given account
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AccountStatement"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"        
 
   /accounts/{id}:
     get:
@@ -1292,7 +1326,26 @@ components:
       type: object  
       properties: 
         status:
-          $ref: '#/components/schemas/transferStatus'                                       
+          $ref: '#/components/schemas/transferStatus'
+    AccountStatement:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        reference:
+          type: string   
+        reason:
+          type: string
+        credit_amount:
+          type: number
+          format: double
+        debit_amount:
+          type: number
+          format: double
+        balance:
+          type: number
+          format: double  
 
     ### RESPONSE MAIN LAYOUT
     ResponseStatus:
