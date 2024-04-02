@@ -14,11 +14,14 @@ public class BalanceService {
     AutoCrudOperation<Balance> balanceAutoCrudOperation = new AutoCrudOperation<>(new Balance());
 
     public List<Balance> findAll() {
-        return balanceAutoCrudOperation.findAll();
+        return balanceAutoCrudOperation.findAll(null);
     }
     public Balance findById(Integer idBalance) {
         return balanceAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idBalance", idBalance.toString())), TABLE, null
+                List.of(new KeyAndValue("idBalance", idBalance.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public Balance saveOrUpdate(Balance toSaveOrUpdate) {
@@ -34,15 +37,25 @@ public class BalanceService {
     }
     public Balance findLastOneByIdAccount(Integer idAccount) {
         return balanceAutoCrudOperation.findLastOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
+                List.of(new KeyAndValue("idAccount", idAccount.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public Balance findFirstOneByIdAccount(Integer idAccount) {
         return balanceAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
+                List.of(new KeyAndValue("idAccount", idAccount.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public List<Balance> findManyByIdAccount(List<KeyAndValue> keyAndValueList) {
-        return balanceAutoCrudOperation.findManyByKey(keyAndValueList, TABLE, null);
+        return balanceAutoCrudOperation.findManyByKey(keyAndValueList,
+                TABLE,
+                null,
+                null
+        );
     }
 }

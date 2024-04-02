@@ -14,11 +14,14 @@ public class CategoryService {
     AutoCrudOperation<Category> transferCategoryAutoCrudOperation = new AutoCrudOperation<>(new Category());
 
     public List<Category> findAll() {
-        return transferCategoryAutoCrudOperation.findAll();
+        return transferCategoryAutoCrudOperation.findAll(null);
     }
     public Category findById(Integer idCategory) {
         return transferCategoryAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idCategory", idCategory.toString())), TABLE, null
+                List.of(new KeyAndValue("idCategory", idCategory.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public Category saveOrUpdate(Category toSaveOrUpdate) {
@@ -31,17 +34,5 @@ public class CategoryService {
     }
     public boolean deleteById(int idCategory) {
         return transferCategoryAutoCrudOperation.deleteById(idCategory);
-    }
-    public Category findOneByIdTransfer(Integer idTransfer) {
-        return transferCategoryAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idTransfer", idTransfer.toString())), TABLE, null
-        );
-    }
-    public Category findOneByIdTransaction(Integer idTransaction) {
-        return transferCategoryAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idTransaction", idTransaction.toString())),
-                TABLE,
-                null
-        );
     }
 }

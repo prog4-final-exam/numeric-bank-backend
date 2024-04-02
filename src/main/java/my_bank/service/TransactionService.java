@@ -15,11 +15,14 @@ public class TransactionService {
     BalanceUpdater balanceUpdater = new BalanceUpdater();
 
     public List<Transaction> findAll() {
-        return transactionAutoCrudOperation.findAll();
+        return transactionAutoCrudOperation.findAll(null);
     }
     public Transaction findById(Integer idTransaction) {
         return transactionAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idTransaction", idTransaction.toString())), TABLE, null
+                List.of(new KeyAndValue("idTransaction", idTransaction.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public Transaction saveOrUpdate(Transaction toSaveOrUpdate) {
@@ -38,20 +41,34 @@ public class TransactionService {
     }
     public Transaction findLastOneByIdAccount(Integer idAccount) {
         return transactionAutoCrudOperation.findLastOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
+                List.of(new KeyAndValue("idAccount", idAccount.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public Transaction findFirstOneByIdAccount(Integer idAccount) {
         return transactionAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
+                List.of(new KeyAndValue("idAccount", idAccount.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public List<Transaction> findManyByIdAccount(Integer idAccount) {
         return transactionAutoCrudOperation.findManyByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
+                List.of(new KeyAndValue("idAccount", idAccount.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public List<Transaction> findManyByKey(List<KeyAndValue> keyAndValueList) {
-        return transactionAutoCrudOperation.findManyByKey(keyAndValueList, TABLE, null);
+        return transactionAutoCrudOperation.findManyByKey(
+                keyAndValueList,
+                TABLE,
+                null,
+                null
+        );
     }
 }

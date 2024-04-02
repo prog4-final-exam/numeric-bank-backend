@@ -14,11 +14,14 @@ public class AccountService {
     AutoCrudOperation<Account> accountAutoCrudOperation = new AutoCrudOperation<>(new Account());
 
     public List<Account> findAll() {
-        return accountAutoCrudOperation.findAll();
+        return accountAutoCrudOperation.findAll(null);
     }
     public Account findById(Integer idAccount) {
         return accountAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idAccount", idAccount.toString())), TABLE, null
+                List.of(new KeyAndValue("idAccount", idAccount.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public Account saveOrUpdate(Account toSaveOrUpdate) {

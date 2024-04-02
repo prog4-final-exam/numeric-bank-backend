@@ -15,11 +15,14 @@ public class TransferService {
     BalanceUpdater balanceUpdater = new BalanceUpdater();
 
     public List<Transfer> findAll() {
-        return transferAutoCrudOperation.findAll();
+        return transferAutoCrudOperation.findAll(null);
     }
     public Transfer findById(Integer idTransfer) {
         return transferAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idTransfer", idTransfer.toString())), TABLE, null
+                List.of(new KeyAndValue("idTransfer", idTransfer.toString())),
+                TABLE,
+                null,
+                null
         );
     }
     public Transfer saveOrUpdate(Transfer toSaveOrUpdate) {
@@ -36,17 +39,28 @@ public class TransferService {
     public boolean deleteById(int idTransfer) {
         return transferAutoCrudOperation.deleteById(idTransfer);
     }
-    public List<Transfer> findManyByIdAccountSource(List<KeyAndValue> keyAndValueList) {
-        return transferAutoCrudOperation.findManyByKey(keyAndValueList, TABLE, null);
-    }
-    public Transfer findFirstOneByIdAccountSource(Integer idAccountSource) {
-        return transferAutoCrudOperation.findFirstOneByKey(
-                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString())), TABLE, null
+    public List<Transfer> findManyByIdAccountOwner(List<KeyAndValue> keyAndValueList) {
+        return transferAutoCrudOperation.findManyByKey(
+                keyAndValueList,
+                TABLE,
+                null,
+                null
         );
     }
-    public Transfer findLastOneByIdAccountSource(Integer idAccountSource) {
+    public Transfer findFirstOneByIdAccountOwner(Integer idAccountOwner) {
+        return transferAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("idAccountOwner", idAccountOwner.toString())),
+                TABLE,
+                null,
+                null
+        );
+    }
+    public Transfer findLastOneByIdAccountOwner(Integer idAccountOwner) {
         return transferAutoCrudOperation.findLastOneByKey(
-                List.of(new KeyAndValue("idAccountSource", idAccountSource.toString())), TABLE, null
+                List.of(new KeyAndValue("idAccountOwner", idAccountOwner.toString())),
+                TABLE,
+                null,
+                null
         );
     }
 }

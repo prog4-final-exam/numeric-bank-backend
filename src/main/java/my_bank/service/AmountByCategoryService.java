@@ -13,6 +13,11 @@ import static my_bank.model.Enum.FindSourceType.FUNCTION;
 public class AmountByCategoryService {
     AutoCrudOperation<SumAmountsByCategory> sumAmountsByCategoryAutoCrudOperation = new AutoCrudOperation<>(new SumAmountsByCategory());
     public List<SumAmountsByCategory> getSumAmountsByCategory(AmountByCategoryParams paramsObj) throws IllegalAccessException {
-        return sumAmountsByCategoryAutoCrudOperation.findManyByKey(null, FUNCTION, paramsObj);
+        return sumAmountsByCategoryAutoCrudOperation.findManyByKey(
+                null,
+                FUNCTION,
+                paramsObj,
+                null
+        );
     }
 }

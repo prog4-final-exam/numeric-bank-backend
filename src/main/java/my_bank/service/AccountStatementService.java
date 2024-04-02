@@ -17,6 +17,7 @@ public class AccountStatementService {
         return accountStatementServiceAutoCrudOperation.findManyByKey(
                 List.of(new KeyAndValue("accountId", accountId.toString())),
                 FUNCTION,
+                null,
                 null
         );
     }

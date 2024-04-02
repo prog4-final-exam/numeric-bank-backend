@@ -14,6 +14,11 @@ public class ReceiptExpenseService {
     AutoCrudOperation<SumReceiptsExpenses> sumReceiptsExpensesAutoCrudOperation = new AutoCrudOperation<>(new SumReceiptsExpenses());
 
     public List<SumReceiptsExpenses> getSumReceiptsExpenses(ReceiptExpenseParams paramsObj) throws IllegalAccessException {
-        return sumReceiptsExpensesAutoCrudOperation.findManyByKey(null, FUNCTION, paramsObj);
+        return sumReceiptsExpensesAutoCrudOperation.findManyByKey(
+                null,
+                FUNCTION,
+                paramsObj,
+                null
+        );
     }
 }
