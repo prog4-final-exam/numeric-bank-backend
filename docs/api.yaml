@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 3.3.0
+  version: 3.6.0
 
 servers:
   - url: "http://localhost:8080"
@@ -270,6 +270,40 @@ paths:
           $ref: "#/components/responses/429"
         "500":
           $ref: "#/components/responses/500"
+
+  /account/{idAccount}/balances:
+    get:
+      tags:
+        - Balance
+      summary: get balance by the account_id
+      description: You van also filter it with the id_balance or balance_datetime
+      parameters:
+        - $ref: "#/components/parameters/IdAccount"
+        - $ref: "#/components/parameters/IdBalance"
+        - $ref: "#/components/parameters/BalanceDatetime"
+      responses:
+        200:
+          description: the corresponding balance
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Balance"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"        
 
   /balances/{id}:
     get:
@@ -552,7 +586,41 @@ paths:
         "429":
           $ref: "#/components/responses/429"
         "500":
-          $ref: "#/components/responses/500"       
+          $ref: "#/components/responses/500" 
+  /accounts/{idAccount}/transactions:
+    get:
+      tags:
+        - Transaction
+      summary: get list of Transaction by the id_account
+      description: You can filter it with id of the transaction, transaction_datetime and the transaction_type
+      parameters:
+        - $ref: '#/components/parameters/IdAccount'
+        - $ref: '#/components/parameters/IdTransaction'
+        - $ref: '#/components/parameters/TransactionDatetime'
+        - $ref: '#/components/parameters/TransactionType'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ResponseBody"
+                properties:
+                  body:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/400"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"              
 
   /transactions/{id}:
     get:
@@ -818,6 +886,44 @@ components:
 
   ### parameters components
   parameters:
+    IdAccount:
+      name: idAccount
+      in: path
+      required: true
+      schema:
+        type: integer
+    IdBalance:
+      name: idBalance
+      in: query
+      required: false
+      schema:
+        type: integer    
+    BalanceDatetime:
+      name: balanceDatetime
+      in: query
+      required: false
+      schema:
+        type: string
+        format: datetime  
+    IdTransaction:
+      name: idTransaction
+      in: query
+      required: false
+      schema:
+        type: integer    
+    TransactionDatetime:
+      name: TransactionDatetime
+      in: query
+      required: false
+      schema:
+        type: string
+        format: datetime       
+    TransactionType:
+      name: transactionType
+      in: query
+      required: false
+      schema:   
+        $ref: '#/components/schemas/transactionType' 
     AccountId:
       name: id
       in: path
