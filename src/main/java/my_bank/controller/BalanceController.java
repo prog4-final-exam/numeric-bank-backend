@@ -24,7 +24,6 @@ public class BalanceController {
     @PutMapping("/balances")
     public ResponseEntity<Balance> saveOrUpdate(@RequestBody Balance toSaveOrUpdate) {
         return ResponseEntity.ok(balanceService.saveOrUpdate(toSaveOrUpdate));
-
     }
 
     @GetMapping("/balances/{id}")

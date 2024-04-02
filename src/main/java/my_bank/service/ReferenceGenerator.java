@@ -1,6 +1,5 @@
 package my_bank.service;
 
-import lombok.Getter;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 

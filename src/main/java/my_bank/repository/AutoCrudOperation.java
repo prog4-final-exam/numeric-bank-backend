@@ -13,14 +13,12 @@ import static my_bank.repository.CaseConverter.convertToSnakeCase;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 public class AutoCrudOperation<T> implements CrudOperation<T> {

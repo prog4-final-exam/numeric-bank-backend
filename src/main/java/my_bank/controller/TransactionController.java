@@ -24,7 +24,6 @@ public class TransactionController {
     @PutMapping("/transactions")
     public ResponseEntity<Transaction> saveOrUpdate(@RequestBody Transaction toSaveOrUpdate) {
         return ResponseEntity.ok(transactionService.saveOrUpdate(toSaveOrUpdate));
-
     }
 
     @GetMapping("/transactions/{id}")
