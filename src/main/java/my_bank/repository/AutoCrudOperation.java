@@ -15,9 +15,11 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
@@ -118,9 +120,9 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         } catch (Exception exception) {
             System.err.println(
                     String.format("Error occurred while deleting the %s with id %s :\n  > %s",
-                    className,
-                    id,
-                    exception.getMessage())
+                            className,
+                            id,
+                            exception.getMessage())
             );
         } finally {
             try {
@@ -211,8 +213,8 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
     }
 
     @Override
-    public List<T> findAll() {
-        List<T> dataList = find(null, null, null);
+    public List<T> findAll(String customRequest) {
+        List<T> dataList = find(null, TABLE, null, customRequest);
         if (dataList.getFirst() == null) {
             dataList.clear();
         }
@@ -220,20 +222,20 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
     }
 
     @Override
-    public List<T> findManyByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object params) {
-        return find(keyAndValueList, findSourceType, params);
+    public List<T> findManyByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj, String customRequest) {
+        return find(keyAndValueList, findSourceType, paramsObj, customRequest);
     }
 
     @Override
-    public T findFirstOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj) {
-        return find(keyAndValueList, findSourceType, null).getFirst();
+    public T findFirstOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj, String customRequest) {
+        return find(keyAndValueList, findSourceType, paramsObj, customRequest).getFirst();
     }
     @Override
-    public T findLastOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj) {
-        return find(keyAndValueList, findSourceType, paramsObj).getLast();
+    public T findLastOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj, String customRequest) {
+        return find(keyAndValueList, findSourceType, paramsObj, customRequest).getLast();
     }
 
-    private List<T> find(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj) {
+    private List<T> find(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj, String customRequest) {
         DbConnect dbConnect = new DbConnect();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -246,20 +248,21 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         dataList.add(null);
         Field[] paramsFields = null;
 
-        if (paramsObj != null) {
-            Class<?> paramsClazz = paramsObj.getClass();
-            paramsFields = paramsClazz.getDeclaredFields();
-        }
-
         try {
             connection = dbConnect.createConnection();
             String queryConstraint = "";
             String key;
             String value;
             Integer id;
-            String sourceName = convertToSnakeCase(className);
+            String classNameInSnakeCase = convertToSnakeCase(className);
+            String source;
             String params = "";
             int paramsCount = 0;
+
+            if (paramsObj != null) {
+                Class<?> paramsClazz = paramsObj.getClass();
+                paramsFields = paramsClazz.getDeclaredFields();
+            }
 
             if (findSourceType == FUNCTION) {
                 if (paramsObj != null) {
@@ -268,8 +271,16 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
                     paramsCount = keyAndValueList.size();
                 }
                 params += ",? ".repeat(paramsCount).substring(1);
-                sourceName = "get_" + sourceName
+                source = "get_" + classNameInSnakeCase
                         + String.format("(%s)", params);
+            } else if (findSourceType == TABLE && customRequest != null){
+                source = String.format(
+                        "(%s) AS %s",
+                        customRequest,
+                        classNameInSnakeCase
+                );
+            } else {
+                source = classNameInSnakeCase;
             }
 
             if (keyAndValueList != null && findSourceType == TABLE) {
@@ -300,7 +311,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
                 }
             }
 
-            String query = "SELECT * FROM " + sourceName + queryConstraint;
+            String query = "SELECT * FROM " + source + queryConstraint;
             preparedStatement = connection.prepareStatement(query);
 
             if (findSourceType == FUNCTION) {
@@ -326,43 +337,16 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
 
             resultSet = preparedStatement.executeQuery();
 
-            T data = null;
+            T data;
             int i = 0;
             while (resultSet.next()) {
                 if (i++ == 0) {
                     dataList.clear();
                 }
-                GenericModel genericModel = new GenericModel();
-                Class<?> genericModelClass = genericModel.getClass();
-                Field[] modelGenericFields = genericModelClass.getDeclaredFields();
 
-                for (Field modelGenericField : modelGenericFields) {
-                    modelGenericField.setAccessible(true);
-                    if (modelGenericField.getType() == clazz) {
-                        data = (T) modelGenericField.get(genericModel);
-                    }
-                }
 
-                for (Field field : fields) {
-                    field.setAccessible(true);
-                    if (field.getType() == LocalDate.class) {
-                        field.set(data,
-                                resultSet.getDate(convertToSnakeCase(field.getName())).toLocalDate()
-                        );
-                    } else if (field.getType() == LocalDateTime.class) {
-                        field.set(data,
-                                resultSet.getTimestamp(convertToSnakeCase(field.getName())).toLocalDateTime()
-                        );
-                    } else if (field.getType().isEnum()) {
-                        field.set(data,
-                                EnumConverter.convertStringToEnum((Class) field.getType(),
-                                        resultSet.getString(convertToSnakeCase(field.getName()))
-                                )
-                        );
-                    } else {
-                        field.set(data, resultSet.getObject(convertToSnakeCase(field.getName())));
-                    }
-                }
+                data = (T) getData(clazz);
+                setFieldValue(resultSet, fields, data);
                 dataList.add(data);
             }
         } catch (Exception exception) {
@@ -376,6 +360,59 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
             closeSession(connection, preparedStatement, resultSet);
         }
         return dataList;
+    }
+
+    private Object getData(Class clazz) throws IllegalAccessException {
+        GenericModel genericModel = new GenericModel();
+        Class<?> genericModelClass = genericModel.getClass();
+        Field[] genericModelFields = genericModelClass.getDeclaredFields();
+
+        for (Field genericModelField : genericModelFields) {
+            genericModelField.setAccessible(true);
+            if (genericModelField.getType() == clazz) {
+                return genericModelField.get(genericModel);
+            }
+        }
+        return null;
+    }
+
+    private void setFieldValue(ResultSet resultSet, Field[] fields, Object data) throws SQLException, IllegalAccessException {
+
+        for (Field field : fields) {
+            field.setAccessible(true);
+            String fieldNameInSnakeCase = convertToSnakeCase(field.getName());
+            if (field.getType() == LocalDate.class) {
+                field.set(data,
+                        resultSet.getDate(fieldNameInSnakeCase).toLocalDate()
+                );
+            } else if (field.getType() == LocalDateTime.class) {
+                field.set(data,
+                        resultSet.getTimestamp(fieldNameInSnakeCase).toLocalDateTime()
+                );
+            } else if (field.getType().isEnum()) {
+                if (resultSet.getString(fieldNameInSnakeCase) != null) {
+                    field.set(data,
+                            EnumConverter.convertStringToEnum((Class) field.getType(),
+                                    resultSet.getString(fieldNameInSnakeCase)
+                            )
+                    );
+                } else {
+                    field.set(data, null);
+                }
+            } else if (
+                    Arrays.stream(
+                            GenericModel.class.getDeclaredFields()
+                    ).toList().toString().contains(field.getType().getSimpleName())
+            ) {
+                Class<?> fieldClazz = field.getType();
+                Field[] declaredFields = fieldClazz.getDeclaredFields();
+                Object insideData = getData(fieldClazz);
+                setFieldValue(resultSet, declaredFields, insideData);
+                field.set(data, insideData);;
+            } else {
+                field.set(data, resultSet.getObject(fieldNameInSnakeCase));
+            }
+        }
     }
 
     private void closeSession(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
@@ -396,7 +433,7 @@ public class AutoCrudOperation<T> implements CrudOperation<T> {
         }
     }
 
-    private Integer getModelId(Object objectModel) throws Exception{
+    private Integer getModelId(Object objectModel) throws Exception {
         Class<?> clazz = getModel().getClass();
         Field[] fields = clazz.getDeclaredFields();
         Integer id = null;

@@ -17,4 +17,6 @@ public class GenericModel {
     AccountStatement accountStatement = new AccountStatement();
     SumAmountsByCategory sumAmountsByCategory = new SumAmountsByCategory();
     SumReceiptsExpenses sumReceiptsExpenses = new SumReceiptsExpenses();
+    TransactionWithCategory transactionWithCategory = new TransactionWithCategory();
+    TransferWithCategory transferWithCategory  = new TransferWithCategory();
 }

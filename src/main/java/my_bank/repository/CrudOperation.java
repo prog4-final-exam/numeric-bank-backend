@@ -9,8 +9,8 @@ public interface CrudOperation<T> {
     T save(T toSave);
     boolean deleteById(int id);
     T update(T toUpdate);
-    List<T> findAll();
-    T findFirstOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj);
-    T findLastOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj);
-    List<T> findManyByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj);
+    List<T> findAll(String customRequest);
+    T findFirstOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj, String customRequest);
+    T findLastOneByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj, String customRequest);
+    List<T> findManyByKey(List<KeyAndValue> keyAndValueList, FindSourceType findSourceType, Object paramsObj, String customRequest);
 }
