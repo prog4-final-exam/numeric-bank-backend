@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Numeric bank api specs
   description: This document specify the endpoints we'll use for our numeric bank web application
-  version: 4.1.0
+  version: 4.1.2
 
 servers:
   - url: "http://localhost:8080"
@@ -11,7 +11,7 @@ tags:
   - name: Account
   - name: Transaction
   - name: Balance
-  - name: Transfer_category
+  - name: Category
   - name: Transfer
 
 paths:
@@ -459,10 +459,10 @@ paths:
         "500":
           $ref: "#/components/responses/500"
 
-  /transfers/categories:
+  /categories:
     get:
       tags:
-        - Transfer_category
+        - Category
       summary: get list of transfer's category
       responses:
         200:
@@ -490,7 +490,7 @@ paths:
 
     post:
       tags:
-        - Transfer_category
+        - Category
       summary: create new transfer's category
       requestBody:
         $ref: "#/components/requestBodies/TransferCategoryBody"
@@ -518,7 +518,7 @@ paths:
 
     put:
       tags:
-        - Transfer_category
+        - Category
       summary: update an existent transfer's category
       requestBody:
         $ref: "#/components/requestBodies/UpdateTransferCategoryBody"
@@ -546,7 +546,7 @@ paths:
   /transfers/{idTransfer}/category:
     get:
       tags:
-        - Transfer_category
+        - Category
       summary: get transfer's category by the id_transfer
       parameters:
         - $ref: "#/components/parameters/IdTransferPath"
@@ -571,10 +571,10 @@ paths:
           $ref: "#/components/responses/429"
         "500":
           $ref: "#/components/responses/500"        
-  /transfers/categories/{id}:
+  /categories/{id}:
     get:
       tags:
-        - Transfer_category
+        - Category
       summary: get transfer's category by his id
       parameters:
         - $ref: "#/components/parameters/AccountId"
@@ -601,7 +601,7 @@ paths:
           $ref: "#/components/responses/500"        
     delete:
       tags:
-        - Transfer_category
+        - Category
       summary: delete a transfer's category
       parameters:
         - $ref: "#/components/parameters/AccountId"
@@ -1327,8 +1327,6 @@ components:
         comment:
           type: string
           format: text
-        idTransfer:
-          type: integer
     category:
       allOf:
         - $ref: "#/components/schemas/CommonId"
