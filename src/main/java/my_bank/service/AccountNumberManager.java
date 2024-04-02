@@ -16,6 +16,9 @@ public class AccountNumberManager {
 
     public Integer extractAccountId(String accountNumber) {
         try {
+            if (!(accountNumber.contains(prefix) && accountNumber.contains(suffix))) {
+                return null;
+            }
             String idAccountString = accountNumber
                     .replace(prefix, "")
                     .replace(suffix, "");
