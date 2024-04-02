@@ -14,21 +14,25 @@ import java.util.List;
 public class TransferHaveController {
     TransferHaveService transferHaveService;
 
-    @GetMapping("/transfers/categories")
+    @GetMapping("/transfers/categories/have")
     public ResponseEntity<List<TransferHave>> findAll() {
         return ResponseEntity.ok(transferHaveService.findAll());
     }
-    @GetMapping("/transfers/categories/{idTransferHave}")
-    public ResponseEntity<TransferHave> findById(@PathVariable Integer idTransferHave) {
+    @GetMapping("/transfers/categories/have/{idTransferHave}")
+    public ResponseEntity<TransferHave> findById(@PathVariable int idTransferHave) {
         return ResponseEntity.ok(transferHaveService.findById(idTransferHave));
     }
 
-    @PutMapping("/transfers/categories")
+    @PutMapping("/transfers/categories/have")
     public ResponseEntity<TransferHave> saveOrUpdate(@RequestBody TransferHave toSaveOrUpdate) {
         return ResponseEntity.ok(transferHaveService.saveOrUpdate(toSaveOrUpdate));
     }
-    @DeleteMapping("/transfers/categories/{idTransferHave}")
-    public ResponseEntity<Boolean> deleteById(@PathVariable Integer idTransferHave) {
+    @DeleteMapping("/transfers/categories/have/{idTransferHave}")
+    public ResponseEntity<Boolean> deleteById(@PathVariable int idTransferHave) {
         return ResponseEntity.ok(transferHaveService.deleteById(idTransferHave));
+    }
+    @GetMapping("/transfers/{idTransfer}/category/have")
+    public ResponseEntity<TransferHave> findByIdTransfer(@PathVariable int idTransfer) {
+        return ResponseEntity.ok(transferHaveService.findByIdTransfer(idTransfer));
     }
 }

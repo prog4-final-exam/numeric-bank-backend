@@ -14,20 +14,24 @@ import java.util.List;
 public class TransactionHaveController {
     TransactionHaveService transactionHaveService;
 
-    @GetMapping("/transactions/categories")
+    @GetMapping("/transactions/categories/have")
     public ResponseEntity<List<TransactionHave>> findAll() {
         return ResponseEntity.ok(transactionHaveService.findAll());
     }
-    @GetMapping("/transactions/categories/{idTransactionHave}")
+    @GetMapping("/transactions/categories/have/{idTransactionHave}")
     public ResponseEntity<TransactionHave> findById(@PathVariable Integer idTransactionHave) {
         return ResponseEntity.ok(transactionHaveService.findById(idTransactionHave));
     }
-    @PutMapping("/transactions/categories")
+    @PutMapping("/transactions/categories/have")
     public ResponseEntity<TransactionHave> saveOrUpdate(@RequestBody TransactionHave toSaveOrUpdate){
         return ResponseEntity.ok(transactionHaveService.saveOrUpdate(toSaveOrUpdate));
     }
-    @DeleteMapping("/transactions/categories/{idTransactionHave}")
+    @DeleteMapping("/transactions/categories/have/{idTransactionHave}")
     public ResponseEntity<Boolean> deleteById(@PathVariable int idTransactionHave) {
         return ResponseEntity.ok(transactionHaveService.deleteById(idTransactionHave));
+    }
+    @GetMapping("/transactions/{idTransaction}/category/have")
+    public ResponseEntity<TransactionHave> findByIdTransaction(@PathVariable int idTransaction) {
+        return ResponseEntity.ok(transactionHaveService.findByIdTransaction(idTransaction));
     }
 }

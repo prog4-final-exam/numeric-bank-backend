@@ -13,14 +13,15 @@ public class TransferHaveService {
     AutoCrudOperation<TransferHave> transferHaveAutoCrudOperation = new AutoCrudOperation<>(new TransferHave());
 
     public List<TransferHave> findAll() {
-        return transferHaveAutoCrudOperation.findAll();
+        return transferHaveAutoCrudOperation.findAll(null);
     }
     public TransferHave findById(Integer idTransferHave) {
-       return transferHaveAutoCrudOperation.findFirstOneByKey(
-               List.of(new KeyAndValue("idTransferHave", idTransferHave.toString())),
-               FindSourceType.TABLE,
-               null
-       ) ;
+        return transferHaveAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("idTransferHave", idTransferHave.toString())),
+                FindSourceType.TABLE,
+                null,
+                null
+        ) ;
     }
     public TransferHave saveOrUpdate(TransferHave toSaveOrUpdate) {
         if (toSaveOrUpdate.getIdTransferHave() == null) {
@@ -32,5 +33,13 @@ public class TransferHaveService {
     }
     public boolean deleteById(int idTransferHave) {
         return transferHaveAutoCrudOperation.deleteById(idTransferHave);
+    }
+    public TransferHave findByIdTransfer(Integer idTransfer) {
+        return transferHaveAutoCrudOperation.findFirstOneByKey(
+                List.of(new KeyAndValue("idTransfer", idTransfer.toString())),
+                FindSourceType.TABLE,
+                null,
+                null
+        );
     }
 }
